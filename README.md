@@ -1,4 +1,4 @@
-# SmartStay - Rental House booking system
+# SmartStay - Rental house booking system
 
 A full-stack web application demonstrating user authentication, sessions, and property management using Node.js, Express, and MongoDB.
 This project showcases secure login/logout functionality, session persistence, and a host dashboard for managing property listings.
