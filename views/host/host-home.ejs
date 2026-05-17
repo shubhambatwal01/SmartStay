@@ -1,0 +1,59 @@
+<%- include('./partials/head') %>
+
+    <body class="pt-16">
+
+        <!-- Header/ Navbar -->
+        <header>
+            <%- include('./partials/nav') %>
+        </header>
+
+        <!-- Main -->
+        <main class="min-h-screen mt-11">
+            <!-- heading -->
+            <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">Hey Host! Here are your homes :</h1>
+            <ol class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
+                <!-- render (RegisteredHomes) and showing them 1-by-1 -->
+                <% RegisteredHomes.forEach(home=> { %>
+                    <li
+                        class="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center">
+                        <!-- House Image -->
+                        <div class="text-5xl text-[#ff5a5f] m-2">
+                            <img class="h-[200px] w-auto " src="<%= home.houseImg %>" alt="<%= home.houseName %>"
+                                class="w-full h-full object-cover rounded-lg" />
+                        </div>
+                        <!-- House Name -->
+                        <h2 class="text-2xl font-bold text-[#ff5a5f] mb-2 text-center">
+                            <%= home.houseName %> House
+                        </h2>
+                        <!-- House Address -->
+                        <p class="text-[#ff5a5f] mb-2 text-center">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <%= home.houseAddr %>
+                        </p>
+                        <!-- House Price -->
+                        <p class="text-lg font-semibold text-[#ff5a5f] mb-2 text-center">
+                            ₹<%= home.housePrice %> / night
+                        </p>
+                        <!-- Buttons -->
+                        <div class="flex gap-2">
+                            <a href="/host/edit-home/<%=home._id%>?editing=true"
+                                class="mt-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition">
+                                Edit
+                            </a>
+                            <form action="/host/delete-home/<%=home._id%>" method="POST">
+                                <button type="submit"
+                                    class="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                    <% }); %>
+            </ol>
+        </main>
+
+        <!-- Footer -->
+        <%- include('./partials/footer') %>
+    </body>
+
+    </html>

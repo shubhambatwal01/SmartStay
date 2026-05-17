@@ -1,0 +1,32 @@
+{
+  "name": "project-SmartHome",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwindcss": "npx tailwindcss -i ./views/input.css -o ./public/output.css --watch",
+    "start": "nodemon app.js && npm run tailwindcss"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "body-parser": "^2.2.0",
+    "bootstrap": "^5.3.7",
+    "bootstrap-icons": "^1.13.1",
+    "connect-mongodb-session": "^5.0.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.19.0",
+    "mongodb": "^6.20.0",
+    "mongoose": "^9.1.2",
+    "mysql2": "^3.15.2",
+    "nodemon": "^3.1.10",
+    "parser": "^0.1.4",
+    "postcss": "^8.5.6",
+    "sweetalert2": "^11.26.17",
+    "tailwindcss": "^3.4.17"
+  }
+}

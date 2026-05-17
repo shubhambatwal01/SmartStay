@@ -1,0 +1,101 @@
+<nav class="bg-[#FF5A5F] px-6 py-8 flex items-center fixed top-0 w-full ">
+    <!-- SmartHome Heart Icon -->
+    <a href="/"><svg class="w-6 h-6 mr-0 fill-white flex-shrink-0" xmlns="http://www.w3.org/2000/svg" href="/"
+            viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg></a>
+    <!-- SmartHome Text -->
+    <a href="/" class="text-white font-bold text-xl select-none">SmartHome</a>
+    <!-- Navigation Links -->
+    <div class="hidden md:flex ml-auto space-x-1 gap-1 font-semibold">
+        <ul class="ml-auto flex ">
+            <% if(isLoggedIn) { %>
+                <li>
+                    <a href="/homes"
+                        class=" text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition <%= (currentPage === 'homeList' || currentPage === 'home-detail') ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOME</a>
+                </li>
+                <li>
+                    <a href="/favourite-list"
+                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition <%= currentPage === 'favourites' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %> ">FAVOURITES</a>
+                </li>
+                <li>
+                    <a href="/bookings"
+                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'bookings' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">BOOKINGS</a>
+                </li>
+                <li>
+                    <a href="/host/host-home"
+                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition <%= currentPage === 'host-home' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOST
+                        HOME</a>
+                </li>
+                <li>
+                    <a href="/host/add-home"
+                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'addHome' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">ADD
+                        HOME</a>
+                </li>
+                <% } %>
+                    <% if(!isLoggedIn) { %>
+                        <a href="/login"
+                            class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                            LOGIN
+                        </a>
+                        <% } else { %>
+                            <form action="/logout" method="POST">
+                                <button type="submit"
+                                    class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">LOGOUT
+                                </button>
+                            </form>
+                            <% } %>
+        </ul>
+    </div>
+    <!-- Mobile Hamburger -->
+    <div class="md:hidden ml-auto">
+        <button id="menu-btn" class="focus:outline-none">
+            <!-- Hamburger Icon -->
+            <svg class="w-6 h-6 " fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+            </svg>
+        </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden flex flex-col md:hidden px-2 py-0 space-y-2 font-semibold">
+
+        <% if(isLoggedIn) { %>
+            <a href="/homes"
+                class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= (currentPage === 'homeList' || currentPage === 'home-detail') ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOME</a>
+            <a href="/favourite-list"
+                class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'favourites' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">FAVOURITES</a>
+            <a href="/bookings"
+                class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'bookings' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">BOOKINGS</a>
+            <a href="/host/host-home"
+                class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'host-home' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOST
+                HOME</a>
+            <a href="/host/add-home"
+                class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'addHome' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">ADD
+                HOME</a>
+            <% } %>
+                <% if(!isLoggedIn) { %>
+                    <a href="/login"
+                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        LOGIN
+                    </a>
+                    <% } else { %>
+                        <form action="/logout" method="POST">
+                            <button type="submit"
+                                class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">LOGOUT
+                            </button>
+                        </form>
+                        <% } %>
+    </div>
+    <script>
+        // Toggle mobile menu
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+    </script>
+</nav>
