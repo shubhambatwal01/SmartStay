@@ -57,5 +57,6 @@ This project showcases secure login/logout functionality, session persistence, a
 
 
 ## Screenshots
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/893698fc-b5d9-4acd-939f-ae7b51f51d82" />
 
 ## License
