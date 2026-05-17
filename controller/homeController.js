@@ -7,7 +7,7 @@ const Favourite = require("../models/favourites");
 //   Home.find().then((RegisteredHomes) => {
 //     res.render("homeList", {
 //       RegisteredHomes,
-//       pageTitle: "SmartHome",
+//       pageTitle: "SmartStay",
 //       currentPage: "index-home",
 //       isLoggedIn: req.session.isLoggedIn,
 //     });
@@ -19,7 +19,7 @@ exports.getHomes = (req, res, next) => {
   Home.find().then((RegisteredHomes) => {
     res.render("user/homeList", {
       RegisteredHomes,
-      pageTitle: "SmartHome",
+      pageTitle: "SmartStay",
       currentPage: "homeList",
       isLoggedIn: req.session.isLoggedIn,
     });
