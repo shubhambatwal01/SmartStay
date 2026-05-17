@@ -22,33 +22,31 @@ This project showcases secure login/logout functionality, session persistence, a
 2. Install dependencies:
    ```
    npm install
-
+   
 3. Update MongoDB Connection:
     Open app.js and replace the DB_PATH with your MongoDB Atlas connection string
 
 4. Start the development server:
-  ```
-  npm start
-  ```
+   ```
+   npm start
+   
 5. Open http://localhost:1101 to view it in your browser.
 
 ## Folder Structure
 
-  ```
-  ├── app.js                    # Main application entry point
-  ├── controller/               # Business logic handlers
-  │   ├── authController.js    # Login/logout logic
-  │   ├── hostController.js    # Property management
-  │   └── homeController.js    # General controllers
-  ├── routes/                  # API route definitions
-  │   ├── authRouter.js        # Auth routes
-  │   ├── hostRouter.js        # Host property routes
-  │   └── userRouter.js        # User routes
-  ├── models/                  # MongoDB schemas
-  ├── views/                   # EJS template files
-  ├── public/                  # Static assets (CSS, images)
-  └── utils/                   # Utility functions
-  ```
+     ├── app.js                    # Main application entry point
+     ├── controller/               # Business logic handlers
+     │   ├── authController.js    # Login/logout logic
+     │   ├── hostController.js    # Property management
+     │   └── homeController.js    # General controllers
+     ├── routes/                  # API route definitions
+     │   ├── authRouter.js        # Auth routes
+     │   ├── hostRouter.js        # Host property routes
+     │   └── userRouter.js        # User routes
+     ├── models/                  # MongoDB schemas
+     ├── views/                   # EJS template files
+     ├── public/                  # Static assets (CSS, images)
+     └── utils/                   # Utility functions
 
 ## Tech Stack
 
