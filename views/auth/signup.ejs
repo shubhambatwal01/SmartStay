@@ -1,0 +1,70 @@
+<%- include('../partials/head') %>
+
+    <body>
+        <header>
+            <%- include('../partials/nav') %>
+        </header>
+        <main class="min-h-screen mt-28">
+
+            <!-- heading -->
+            <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">
+                Sign Up for a New Account
+            </h1>
+            
+            <!-- Error Messages -->
+
+            <div class="flex justify-center">
+                <form action="/signup" method="POST" class="bg-white p-8 rounded shadow-md w-full max-w-md">
+                    <div class="mb-6">
+
+                        <!-- Your Name -->
+                        <label for="fullName" class="block text-gray-700 font-semibold m-2">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your Full Name" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                        <!-- Email Address -->
+                        <label for="email" class="block text-gray-700 font-semibold m-2">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your Email" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                        <!-- Password -->
+                        <label for="password" class="block text-gray-700 font-semibold m-2">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your Password" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                        <!-- Confirm Password -->
+                        <label for="confirmPassword" class="block text-gray-700 font-semibold m-2">Confirm
+                            Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Confirm your Password" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                        <!-- User Type -->
+                        <label for="userType" class="block text-gray-700 font-semibold m-2">UserType</label>
+                        <label>
+                            <input type="radio" id="userCheck" name="userType" value="user" />
+                            <span>User</span></label>
+                        <label for="adminCheck">
+                            <input type="radio" id="adminCheck" name="userType" value="admin" />
+                            <span>Admin</span></label>
+                        <!-- Terms and Conditions -->
+                        <div class="mt-4">
+                            <label>
+                                <input type="checkbox" name="terms" required
+                                    class="form-checkbox h-5 w-5 text-blue-600">
+                                <span class="ml-2 text-gray-700 font-semibold ">I agree to the <a href="#"
+                                        class="text-blue-600 underline">Terms and Conditions</a></span>
+                            </label>
+                        </div><br>
+
+                        <!-- Login button -->
+                        <input type="submit" value="Sign Up"
+                            class="w-full bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-bold py-2 px-4 rounded  transition-colors">
+                </form>
+            </div>
+        </main>
+        <!-- Footer -->
+        <%- include('../partials/footer') %>
+    </body>
+
+    </html>
