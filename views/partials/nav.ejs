@@ -106,6 +106,12 @@
             <% } %>
             <% if(!isLoggedIn) { %>
                 <li>
+                    <a href="/signup"
+                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                                SIGN UP
+                    </a>
+                </li>
+                <li>
                     <a href="/login"
                         class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
                                 LOGIN

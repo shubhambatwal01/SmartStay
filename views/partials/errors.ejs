@@ -1,0 +1,10 @@
+<% if (typeof errors !=='undefined' && errors && errors.length> 0) { %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+        <strong class="font-bold">Error! </strong>
+        <% errors.forEach((error)=> { %>
+            <span class="block sm:inline">
+                <%= error.msg %>
+            </span>
+            <% }); %>
+    </div>
+<% } %>
