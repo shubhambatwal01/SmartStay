@@ -7,37 +7,32 @@ exports.getLogin = (req, res, next) => {
     pageTitle: "Login",
     currentPage: "Login",
     isLoggedIn: false,
+    errors: [],
+    oldInput: {
+      fullName: "",
+      email: "",
+    },
   });
 };
 
-exports.postLogin = (req, res, next) => {
-  console.log(req.body);
-  req.session.isLoggedIn = true;
-  const name = req.body.Name;
-  const email = req.body.Email;
-  const password = req.body.Password;
-
-  const hardcodedName = "Shubz";
-  const hardcodedEmail = "shubhambatwal14@gmail.com";
-  const hardcodedPassword = "1234";
-
-  if (
-    name === hardcodedName &&
-    email === hardcodedEmail &&
-    password === hardcodedPassword
-  ) {
-    // Successful login
-    res.redirect("/homes");
-  } else {
-    req.session.isLoggedIn = false;
-    // Failed login
-    res.render("auth/login", {
+exports.postLogin = async (req, res, next) => {
+  const { fullName, email, userType } = req.body;
+  console.log("Login attempt with:", { fullName, email });
+  const user = await User.findOne({ fullName, email });
+  if (!user) {
+    return res.status(422).render("auth/login", {
       pageTitle: "Login",
       currentPage: "Login",
-      errorMessage: "Invalid email or password.",
       isLoggedIn: false,
+      errors: ["User not found with the provided details"],
+      oldInput: {
+        fullName,
+        email,
+      },
     });
   }
+  req.session.isLoggedIn = true;
+  res.redirect("/");
 };
 
 exports.postLogout = (req, res, next) => {
@@ -52,7 +47,6 @@ exports.getSignup = (req, res, next) => {
     currentPage: "Signup",
     isLoggedIn: false,
     errors: [],
-    errorMessage: null,
     oldInput: {
       fullName: "",
       email: "",
@@ -110,11 +104,7 @@ exports.postSignup = [
       return res.status(422).render("auth/signup", {
         pageTitle: "Signup",
         currentPage: "Signup",
-        errors: errors.array(),
-        errorMessage: errors
-          .array()
-          .map((err) => err.msg)
-          .join("\n"),
+        errors: errors.array().map((err) => err.msg),
         oldInput: {
           fullName,
           email,
@@ -127,33 +117,37 @@ exports.postSignup = [
     }
 
     bcrypt.hash(password, 12).then((hashedPassword) => {
-
-    const user = new User({ fullName, email, password: hashedPassword, userType });
-    user
-      .save()
-      .then(() => {
-        res.redirect("/login");
-      })
-      .catch((err) => {
-        console.error(err);
-        return res.status(422).render("auth/signup", {
-          pageTitle: "Signup",
-          currentPage: "Signup",
-          errors: errors.array(),
-          errorMessage: errors
-            .array()
-            .map((err) => err.msg)
-            .join("\n"),
-          oldInput: {
-            fullName,
-            email,
-            password,
-            userType,
-            terms: req.body.terms ? true : false,
-          },
-          isLoggedIn: false,
-        });
+      const user = new User({
+        fullName,
+        email,
+        password: hashedPassword,
+        userType,
       });
+      user
+        .save()
+        .then(() => {
+          res.redirect("/login");
+        })
+        .catch((err) => {
+          console.error(err);
+          return res.status(422).render("auth/signup", {
+            pageTitle: "Signup",
+            currentPage: "Signup",
+            errors: errors.array(),
+            errorMessage: errors
+              .array()
+              .map((err) => err.msg)
+              .join("\n"),
+            oldInput: {
+              fullName,
+              email,
+              password,
+              userType,
+              terms: req.body.terms ? true : false,
+            },
+            isLoggedIn: false,
+          });
+        });
     });
   },
 ];
