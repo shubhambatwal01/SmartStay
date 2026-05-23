@@ -16,8 +16,8 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
-  const { fullName, email, userType } = req.body;
-  console.log("Login attempt with:", { fullName, email });
+  const { fullName, email, password, userType } = req.body;
+  console.log("Login attempt with:", { fullName, email, password, userType });
   const user = await User.findOne({ fullName, email });
   if (!user) {
     return res.status(422).render("auth/login", {
@@ -28,11 +28,37 @@ exports.postLogin = async (req, res, next) => {
       oldInput: {
         fullName,
         email,
+        userType,
+      },
+    });
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  console.log("Password match result:", password, user.password, passwordMatch);
+  if (!passwordMatch) {
+    return res.status(422).render("auth/login", {
+      pageTitle: "Login",
+      currentPage: "Login",
+      isLoggedIn: false,
+      errors: ["Invalid password"],
+      oldInput: {
+        fullName,
+        email,
+        userType,
       },
     });
   }
   req.session.isLoggedIn = true;
-  res.redirect("/");
+  req.session.user = user;
+  // Save session before redirect
+  req.session.save((err) => {
+    if (err) {
+      console.log(err);
+      return next(err);
+    }
+
+    res.redirect("/");
+  });
 };
 
 exports.postLogout = (req, res, next) => {

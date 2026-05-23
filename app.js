@@ -42,7 +42,7 @@ app.use(
     secret: "Shubz0111",
     resave: false,
     saveUninitialized: true,
-    store,
+    store: store,
   })
 );
 
