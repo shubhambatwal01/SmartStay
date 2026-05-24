@@ -4,7 +4,7 @@ const rootDir = require("../utils/pathUtil"); // Local Module
 const { RegisteredHomes } = require("./hostRouter");
 const homeController = require("../controller/homeController");
 
-// userRouter.get("/", homeController.getIndexHomes);
+userRouter.get("/", homeController.getIndexHomes);
 userRouter.get("/homes", homeController.getHomes);
 userRouter.get("/bookings", homeController.getBookings);
 userRouter.get("/favourite-list", homeController.getFavouriteList);

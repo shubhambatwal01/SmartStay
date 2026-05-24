@@ -3,17 +3,17 @@ const Favourite = require("../models/favourites");
 
 // const RegisteredHomes = [];
 
-// exports.getIndexHomes = (req, res, next) => {
-//   Home.find().then((RegisteredHomes) => {
-//     res.render("user/index-homes", {
-//       RegisteredHomes,
-//       pageTitle: "SmartStay",
-//       currentPage: "index-home",
-//       isLoggedIn: req.session.isLoggedIn,
-//       user: {},
-//     });
-//   });
-// };
+exports.getIndexHomes = (req, res, next) => {
+  Home.find().then((RegisteredHomes) => {
+    res.render("user/index", {
+      RegisteredHomes,
+      pageTitle: "SmartStay",
+      currentPage: "SmartStay Homes",
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
+    });
+  });
+};
 
 exports.getHomes = (req, res, next) => {
   console.log("Sesion Object :", req.session);
