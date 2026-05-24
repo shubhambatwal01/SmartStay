@@ -12,6 +12,7 @@ exports.getLogin = (req, res, next) => {
       fullName: "",
       email: "",
     },
+    user: {}, //passing empty because e are in login page and we dont have user data yet
   });
 };
 
@@ -30,6 +31,7 @@ exports.postLogin = async (req, res, next) => {
         email,
         userType,
       },
+      user: {},
     });
   }
 
@@ -46,6 +48,7 @@ exports.postLogin = async (req, res, next) => {
         email,
         userType,
       },
+      user: {},
     });
   }
   req.session.isLoggedIn = true;
@@ -79,6 +82,7 @@ exports.getSignup = (req, res, next) => {
       userType: "",
       terms: false,
     },
+    user: {},
   });
 };
 
@@ -139,6 +143,7 @@ exports.postSignup = [
           terms: req.body.terms ? true : false,
         },
         isLoggedIn: false,
+        user: {},
       });
     }
 
@@ -172,6 +177,7 @@ exports.postSignup = [
               terms: req.body.terms ? true : false,
             },
             isLoggedIn: false,
+            user: {},
           });
         });
     });

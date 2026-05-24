@@ -22,6 +22,7 @@ exports.getHomes = (req, res, next) => {
       pageTitle: "SmartStay",
       currentPage: "homeList",
       isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
     });
   }); //find() function from models/home.js
   // console.log("RegisteredHomes :", RegisteredHomes);
@@ -42,6 +43,7 @@ exports.getFavouriteList = (req, res, next) => {
         pageTitle: "My Favourites",
         currentPage: "favourites",
         isLoggedIn: req.session.isLoggedIn,
+        user: req.session.user,
       });
     });
   });
@@ -54,6 +56,7 @@ exports.getBookings = (req, res, next) => {
       pageTitle: "Bookings",
       currentPage: "bookings",
       isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
     });
   });
 };
@@ -63,6 +66,7 @@ exports.getAddContact = (req, res, next) => {
     pageTitle: "Contact Us",
     currentPage: "addContact",
     isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user,
   });
 };
 
@@ -79,6 +83,7 @@ exports.getDetails = (req, res, next) => {
         pageTitle: "Home Detail",
         currentPage: "home-detail",
         isLoggedIn: req.session.isLoggedIn,
+        user: req.session.user,
       });
     }
   });
@@ -89,6 +94,7 @@ exports.postAddContact = (req, res, next) => {
     pageTitle: "Thank You",
     currentPage: "contactAdded",
     isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user,
   });
 };
 

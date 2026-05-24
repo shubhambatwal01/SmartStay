@@ -11,61 +11,80 @@
     <a href="/" class="text-white font-bold text-xl select-none">SmartStay</a>
 
     <!-- Navigation Links -->
-    <div class="hidden md:flex ml-auto space-x-1 gap-1 font-semibold">
-        <ul class="ml-auto flex flex-row space-x-2">
-            <% if(isLoggedIn) { %>
+    <div class="hidden md:flex ml-auto items-center">
+    <ul class="flex flex-row items-center gap-3">
+        <% if(isLoggedIn) { %>
+            <% if(user && user.userType==="user" ) { %>
                 <li>
                     <a href="/homes"
-                        class=" text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition <%= (currentPage === 'homeList' || currentPage === 'home-detail') ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOME
+                        class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= (currentPage === 'homeList' || currentPage === 'home-detail') ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        HOME
                     </a>
                 </li>
+
                 <li>
                     <a href="/favourite-list"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition <%= currentPage === 'favourites' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %> ">FAVOURITES
+                        class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'favourites' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        FAVOURITES
                     </a>
                 </li>
+
                 <li>
                     <a href="/bookings"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'bookings' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">BOOKINGS
+                        class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'bookings' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        BOOKINGS
                     </a>
                 </li>
+
+            <% } else if(user && user.userType==="admin" ) { %>
+
                 <li>
                     <a href="/host/host-home"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition <%= currentPage === 'host-home' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOST
-                        HOME
+                        class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'host-home' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        HOST HOME
                     </a>
                 </li>
+
                 <li>
                     <a href="/host/add-home"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'addHome' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">ADD
-                        HOME
+                        class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'addHome' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        ADD HOME
                     </a>
                 </li>
+
             <% } %>
-            <% if(!isLoggedIn) { %>
-                <li>
-                    <a href="/signup"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
-                                SIGN UP
-                    </a>
-                </li>
-                <li>
-                    <a href="/login"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
-                                LOGIN
-                    </a>
-                </li>
-            <% } else { %>
-                <li>
-                    <form action="/logout" method="POST">
-                        <button type="submit"
-                            class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">LOGOUT
-                        </button>
-                    </form>
-                </li>
-            <% } %>
-        </ul>
-    </div>
+        <% } %>
+
+        <% if(!isLoggedIn) { %>
+
+            <li>
+                <a href="/signup"
+                    class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'signup' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                    SIGN UP
+                </a>
+            </li>
+
+            <li>
+                <a href="/login"
+                    class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                    LOGIN
+                </a>
+            </li>
+
+        <% } else { %>
+
+            <li>
+                <form action="/logout" method="POST">
+                    <button type="submit"
+                        class="inline-flex items-center justify-center min-w-[120px] text-center text-white font-semibold hover:bg-[#ff4b51] py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        LOGOUT
+                    </button>
+                </form>
+            </li>
+
+        <% } %>
+    </ul>
+</div>
     <!-- Mobile Hamburger -->
     <div class="md:hidden ml-auto">
         <button id="menu-btn" class="focus:outline-none">
@@ -78,63 +97,103 @@
         </button>
     </div>
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden px-2 py-0 font-semibold">
-        <ul class="flex flex-col space-y-2">
-            <% if(isLoggedIn) { %>
+    <div id="mobile-menu" class="hidden md:hidden px-3 py-3 font-semibold">
+    <ul class="flex flex-col gap-3">
+
+        <% if(isLoggedIn) { %>
+
+            <% if(user && user.userType==="user" ) { %>
+
                 <li>
                     <a href="/homes"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= (currentPage === 'homeList' || currentPage === 'home-detail') ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOME</a>
+                        class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= (currentPage === 'homeList' || currentPage === 'home-detail') ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        HOME
+                    </a>
                 </li>
+
                 <li>
                     <a href="/favourite-list"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'favourites' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">FAVOURITES</a>
+                        class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'favourites' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        FAVOURITES
+                    </a>
                 </li>
+
                 <li>
                     <a href="/bookings"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'bookings' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">BOOKINGS</a>
+                        class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'bookings' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        BOOKINGS
+                    </a>
                 </li>
+
+            <% } else if(user && user.userType==="admin" ) { %>
+
                 <li>
                     <a href="/host/host-home"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'host-home' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">HOST
-                        HOME</a>
+                        class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'host-home' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        HOST HOME
+                    </a>
                 </li>
+
                 <li>
                     <a href="/host/add-home"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'addHome' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">ADD
-                        HOME</a>
-                </li>
-            <% } %>
-            <% if(!isLoggedIn) { %>
-                <li>
-                    <a href="/signup"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
-                                SIGN UP
+                        class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'addHome' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        ADD HOME
                     </a>
                 </li>
-                <li>
-                    <a href="/login"
-                        class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
-                                LOGIN
-                    </a>
-                </li>
-            <% } else { %>
-                <li>
-                    <form action="/logout" method="POST">
-                        <button type="submit"
-                            class="text-white font-semibold hover:bg-[#ff4b51] py-2 px-4 rounded transition  <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">LOGOUT
-                        </button>
-                    </form>
-                </li>
+
             <% } %>
-        </ul>
-    </div>
+
+        <% } %>
+
+        <% if(!isLoggedIn) { %>
+
+            <li>
+                <a href="/signup"
+                    class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'signup' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                    SIGN UP
+                </a>
+            </li>
+
+            <li>
+                <a href="/login"
+                    class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                    LOGIN
+                </a>
+            </li>
+
+        <% } else { %>
+
+            <li>
+                <form action="/logout" method="POST">
+                    <button type="submit"
+                        class="flex items-center justify-center w-full text-center text-white font-semibold hover:bg-[#ff4b51] py-3 px-4 rounded-lg shadow-sm transition-all duration-200 <%= currentPage === 'login' ? 'bg-[#ff4b51]' : 'bg-[#ff5a5f]' %>">
+                        LOGOUT
+                    </button>
+                </form>
+            </li>
+
+        <% } %>
+
+    </ul>
+</div>
     <script>
         // Toggle mobile menu
         const menuBtn = document.getElementById("menu-btn");
         const mobileMenu = document.getElementById("mobile-menu");
 
-        menuBtn.addEventListener("click", () => {
+        menuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             mobileMenu.classList.toggle("hidden");
+        });
+
+        // Close menu when clicking anywhere outside the menu and button
+        document.addEventListener("click", (e) => {
+            const isClickInsideMenu = mobileMenu.contains(e.target);
+            const isClickOnButton = menuBtn.contains(e.target);
+            
+            if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains("hidden")) {
+                mobileMenu.classList.add("hidden");
+            }
         });
     </script>
 </nav>
