@@ -5,11 +5,12 @@ const Favourite = require("../models/favourites");
 
 // exports.getIndexHomes = (req, res, next) => {
 //   Home.find().then((RegisteredHomes) => {
-//     res.render("homeList", {
+//     res.render("user/index-homes", {
 //       RegisteredHomes,
 //       pageTitle: "SmartStay",
 //       currentPage: "index-home",
 //       isLoggedIn: req.session.isLoggedIn,
+//       user: {},
 //     });
 //   });
 // };

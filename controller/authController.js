@@ -17,17 +17,16 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
-  const { fullName, email, password, userType } = req.body;
-  console.log("Login attempt with:", { fullName, email, password, userType });
-  const user = await User.findOne({ fullName, email });
+  const { email, password, userType } = req.body;
+  console.log("Login attempt with:", { email, password, userType });
+  const user = await User.findOne({ email });
   if (!user) {
     return res.status(422).render("auth/login", {
       pageTitle: "Login",
       currentPage: "Login",
       isLoggedIn: false,
-      errors: ["User not found with the provided details"],
+      errors: ["User doeqs not exist"],
       oldInput: {
-        fullName,
         email,
         userType,
       },
@@ -44,7 +43,6 @@ exports.postLogin = async (req, res, next) => {
       isLoggedIn: false,
       errors: ["Invalid password"],
       oldInput: {
-        fullName,
         email,
         userType,
       },
@@ -60,7 +58,11 @@ exports.postLogin = async (req, res, next) => {
       return next(err);
     }
 
-    res.redirect("/");
+    if (user.userType === "admin") {
+      return res.redirect("/host/host-home");
+    } else if (user.userType === "user") {
+      return res.redirect("/homes");
+    }
   });
 };
 
@@ -96,7 +98,14 @@ exports.postSignup = [
   check("email")
     .isEmail()
     .withMessage("Please enter a valid email address")
-    .normalizeEmail(),
+    .normalizeEmail()
+    .custom(async (value) => {
+      const existingUser = await User.findOne({ email: value });
+      if (existingUser) {
+        throw new Error("User with this email already exists");
+      }
+      return true;
+    }),
   check("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long")
