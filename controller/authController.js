@@ -51,7 +51,7 @@ exports.postLogin = async (req, res, next) => {
   req.session.isLoggedIn = true;
   req.session.user = user;
   // Save session before redirect
-  req.session.save((err) => {
+  await req.session.save((err) => {
     if (err) {
       console.log(err);
       return next(err);
