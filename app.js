@@ -4,7 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const DB_PATH =
-  "mongodb+srv://shubz:shubz@shubz.rvkyior.mongodb.net/airbnb?retryWrites=true&w=majority&appName=Shubz";
+  "mongodb+srv://shubz:shubz@shubz.rvkyior.mongodb.net/SmartStay?retryWrites=true&w=majority&appName=Shubz";
 
 const app = express();
 
