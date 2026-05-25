@@ -6,6 +6,11 @@ const homeSchema = mongoose.Schema({
   houseImg: { type: String, required: true },
   houseDesc: String,
   housePrice: String,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Host",
+    required: true,
+  },
 });
 
 // homeSchema.pre("findOneAndDelete", async function (next) {
@@ -14,7 +19,6 @@ const homeSchema = mongoose.Schema({
 // });
 
 module.exports = mongoose.model("Home", homeSchema);
-exports
 
 /**
  * this._id = _id;

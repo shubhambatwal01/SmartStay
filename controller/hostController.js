@@ -10,40 +10,41 @@ exports.getAddHome = (req, res, next) => {
   });
 };
 
-exports.getEditHome = (req, res, next) => {
+exports.getEditHome = async (req, res, next) => {
+  const home = await Home.findOne({
+    _id: req.params.id,
+    owner: req.session.user._id,
+  });
+
+  if (!home) {
+    return res.status(403).send("Unauthorized");
+  }
+  res.render("host/edit-home", {
+    pageTitle: "Edit Home",
+    currentPage: "editHome",
+    editing: true,
+    isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user,
+    home,
+  });
   const homeId = req.params.id;
-  // const editing = req.query.editing === "true"; //compare true for boolean value
-  Home.findById(homeId).then((home) => {
-    // console.log("Home Details Are Founded :", home);
-    if (!home) {
-      console.log("Home not found for editing.");
-      return res.redirect("/host-home");
-    }
-    console.log(homeId, home);
-    res.render("host/edit-home", {
-      home: home,
-      pageTitle: "Edit Home",
-      currentPage: "Edit Home",
-      editing: true,
-      isLoggedIn: req.session.isLoggedIn,
-      user: req.session.user,
-    });
+};
+
+exports.getHostHome = async (req, res, next) => {
+  const homes = await Home.find({
+    owner: req.session.user._id,
+  });
+
+  res.render("host/host-home", {
+    pageTitle: "My Homes",
+    currentPage: "hostHome",
+    isLoggedIn: req.session.isLoggedIn,
+    homes,
+    user: req.session.user,
   });
 };
 
-exports.getHostHome = (req, res, next) => {
-  Home.find().then((RegisteredHomes) => {
-    res.render("host/host-home", {
-      RegisteredHomes,
-      pageTitle: "Host-Home",
-      currentPage: "host-home",
-      isLoggedIn: req.session.isLoggedIn,
-      user: req.session.user,
-    });
-  });
-};
-
-exports.postAddHome = (req, res) => {
+exports.postAddHome = async (req, res) => {
   const { houseName, houseAddr, houseImg, houseDesc, housePrice } = req.body; //destructuring req.body
   // Create new home without _id (MongoDB will generate one)
   const home = new Home({
@@ -52,8 +53,9 @@ exports.postAddHome = (req, res) => {
     houseImg: houseImg,
     houseDesc: houseDesc,
     housePrice: housePrice,
+    owner: req.session.user._id,
   }); //Home Object from models/home.js
-  home
+  await home
     .save()
     .then(() => res.redirect("/host/host-home"))
     .catch((err) => {
@@ -62,33 +64,30 @@ exports.postAddHome = (req, res) => {
     });
 };
 
-exports.postEditHome = (req, res) => {
+exports.postEditHome = async (req, res) => {
   const { id, houseName, houseAddr, houseImg, houseDesc, housePrice } =
     req.body;
-  Home.findById(id).then((home) => {
-    home.houseName = houseName;
-    home.houseAddr = houseAddr;
-    home.houseImg = houseImg;
-    home.houseDesc = houseDesc;
-    home.housePrice = housePrice;
-    home
-      .save()
-      .then(() => res.redirect("/host/host-home"))
-      .catch((err) => {
-        console.error("Error editing home", err);
-        res.status(500).send("Server error");
-      })
-      .catch((err) => {
-        console.log("Error Finding Home for Edit :", err);
-      });
+  const home = await Home.findOne({
+    _id: id,
+    owner: req.session.user._id,
   });
+  await home
+    .save()
+    .then(() => res.redirect("/host/host-home"))
+    .catch((err) => {
+      console.error("Error editing home", err);
+      res.status(500).send("Server error");
+    })
+    .catch((err) => {
+      console.log("Error Finding Home for Edit :", err);
+    });
 };
 
-exports.postDeleteHome = (req, res, next) => {
-  const id = req.params.id;
-  console.log("Deleting Home with ID:", id);
-  Home.findByIdAndDelete(id)
-    .then(() => {
+exports.postDeleteHome = async (req, res, next) => {
+  await Home.findOneAndDelete({
+      _id: req.params.id,
+      owner: req.session.user._id,
+    }).then(() => {
       res.redirect("/host/host-home");
     })
     .catch((err) => {
