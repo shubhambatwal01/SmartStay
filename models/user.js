@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Favourite = require("./favourites");
 
 const userSchema = mongoose.Schema({
   fullName: { type: String, required: true },
@@ -11,6 +10,7 @@ const userSchema = mongoose.Schema({
     required: true,
     default: "user",
   },
+  favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Home" }],
 });
 
 module.exports = mongoose.model("User", userSchema);
