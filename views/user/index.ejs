@@ -18,7 +18,7 @@
                         class="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center ">
                         <!-- House Image -->
                         <div class="text-5xl text-[#ff5a5f] m-2">
-                            <a href="/homes/<%= home._id %>">
+                            <a href="<% if(isLoggedIn) { %>/homes/<%= home._id %><% } else { %>/login<% } %>">
                                 <img class="h-[200px] w-auto " src="<%= home.houseImg %>" alt="<%= home.houseName %>"
                                     class="w-full h-full object-cover rounded-lg" />
                             </a>
