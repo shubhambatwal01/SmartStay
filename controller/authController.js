@@ -17,8 +17,8 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
-  const { email, password, userType } = req.body;
-  console.log("Login attempt with:", { email, password, userType });
+  const { email, password } = req.body;
+  console.log("Login attempt with:", { email, password });
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(422).render("auth/login", {

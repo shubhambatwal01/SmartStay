@@ -20,7 +20,7 @@
                 <!-- render (RegisteredHomes) and showing them 1-by-1 -->
                 <% RegisteredHomes.forEach(home=> { %>
                     <li
-                        class="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center ">
+                        class="bg-[#fde8e9] rounded-xl shadow-lg py-6 hover:bg-[#fbd6d7] transition flex flex-col items-center ">
                         <!-- House Image -->
                         <div class="text-5xl text-[#ff5a5f] m-2">
                             <a href="/homes/<%= home._id %>">
@@ -48,7 +48,7 @@
                             <%-include('../partials/favourite', {home: home}) %>
                                 <!-- <% } %> -->
                                 <a href="<% if(isLoggedIn) { %>/homes/<%= home._id %><% } else { %>/login<% } %>"
-                                    class="mt-auto bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-semibold py-2 px-4 rounded transition ">
+                                    class="bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-semibold py-2 px-4 rounded transition ">
                                     Details
                                 </a>
                         </div>

@@ -71,23 +71,23 @@ exports.postEditHome = async (req, res) => {
     _id: id,
     owner: req.session.user._id,
   });
+    home.houseName = houseName;
+    home.houseAddr = houseAddr;
+    home.houseImg = houseImg;
+    home.houseDesc = houseDesc;
+    home.housePrice = housePrice;
+ ;
   await home
-    .save()
-    .then(() => res.redirect("/host/host-home"))
-    .catch((err) => {
-      console.error("Error editing home", err);
-      res.status(500).send("Server error");
-    })
-    .catch((err) => {
-      console.log("Error Finding Home for Edit :", err);
-    });
+    .save();
+    res.redirect("/host/host-home");
 };
 
 exports.postDeleteHome = async (req, res, next) => {
   await Home.findOneAndDelete({
-      _id: req.params.id,
-      owner: req.session.user._id,
-    }).then(() => {
+    _id: req.params.id,
+    owner: req.session.user._id,
+  })
+    .then(() => {
       res.redirect("/host/host-home");
     })
     .catch((err) => {
