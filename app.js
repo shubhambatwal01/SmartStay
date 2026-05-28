@@ -32,7 +32,7 @@ app.set("views", "views");
 // });
 
 const store = new MongoDBStore({
-  uri: process.env.DB_PATH,
+  uri: process.env.MONGO_URL,
   collection: "sessions",
 });
 
@@ -42,7 +42,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: store,
-  })
+  }),
 );
 
 // app.use(express.urlencoded());
@@ -72,7 +72,7 @@ app.use(express.static(path.join(rootDir, "public"))); // CSS styling file
 app.use(homeController.get404);
 
 mongoose
-  .connect(process.env.DB_PATH)
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Mongoose connected to MongoDB");
     app.listen(process.env.PORT, () => {

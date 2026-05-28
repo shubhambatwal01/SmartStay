@@ -15,21 +15,26 @@ This project showcases secure login/logout functionality, session persistence, a
 ## Getting Started
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/shubhambatwal03/SmartStay.git
    cd Airbnb-Clone
 
+   ```
+
 2. Install dependencies:
    ```
    npm install
-   
+
+   ```
 3. Update MongoDB Connection:
-    Open app.js and replace the DB_PATH with your MongoDB Atlas connection string
+   Open app.js and replace the MONGO_URL with your MongoDB Atlas connection string
 
 4. Start the development server:
    ```
    npm start
-   
+
+   ```
 5. Open http://localhost:1101 to view it in your browser.
 
 ## Folder Structure
@@ -50,13 +55,13 @@ This project showcases secure login/logout functionality, session persistence, a
 
 ## Tech Stack
 
-  **Frontend**: EJS, Bootstrap 5, Tailwind CSS
-  **Backend**: Node.js, Express.js, Nodemon
-  **Database**: MongoDB, Mongoose
-  **Session Management**: express-session, connect-mongodb-session
-
+**Frontend**: EJS, Bootstrap 5, Tailwind CSS
+**Backend**: Node.js, Express.js, Nodemon
+**Database**: MongoDB, Mongoose
+**Session Management**: express-session, connect-mongodb-session
 
 ## Screenshots
+
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/893698fc-b5d9-4acd-939f-ae7b51f51d82" />
 
 ## License
