@@ -1,21 +1,16 @@
+// Core Module
+const path = require("path");
+
 // External Module
 const mongoose = require("mongoose");
+const multer = require("multer");
 const express = require("express");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 require("dotenv").config();
 const os = require("os");
-
 const app = express();
 
-// For parsing application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-
-// For parsing application/json
-app.use(express.json());
-
-// Core Module
-const path = require("path");
 // Local Module
 const rootDir = require("./utils/pathUtil");
 const authRouter = require("./routes/authRouter");
@@ -27,16 +22,43 @@ const paymentRouter = require("./routes/paymentRouter");
 app.set("view engine", "ejs"); // Set the view engine to EJS
 app.set("views", "views");
 
-// app.use((req, res, next) => {
-//   // for console log the requests.
-//   console.log(req.url, req.method);
-//   next();
-// });
-
 const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
   collection: "sessions",
 });
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const multerOptions = {
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      cb(null, uniqueSuffix + "-" + file.originalname);
+    },
+  }),
+  fileFilter,
+};
+
+app.use(express.urlencoded({ extended: true }));
+app.use(multer(multerOptions).single("houseImg"));
+app.use(express.json());
+app.use(express.static(path.join(rootDir, "public")));
+app.use("/uploads", express.static(path.join(rootDir, "uploads")));
+app.use("/host/uploads", express.static(path.join(rootDir, "uploads")));
+app.use("/homes/uploads", express.static(path.join(rootDir, "uploads")));
 
 app.use(
   session({
@@ -46,17 +68,6 @@ app.use(
     store: store,
   }),
 );
-
-// app.use(express.urlencoded());
-
-// middleware to set isLoggedIn for every request
-// app.use((req, res, next) => {
-//   req.session.isLoggedIn = req.session.isLoggedIn;
-//   // req.session.isLoggedIn = req.get("Cookie")
-//   //   ? req.get("Cookie").split("=")[1] === "true"
-//   //   : false;
-//   next();
-// });
 
 app.use(authRouter);
 app.use(userRouter);
@@ -71,8 +82,6 @@ app.use("/host", hostRouter);
 
 app.use("/payment", paymentRouter);
 app.locals.razorpayKey = process.env.RAZORPAY_KEY_ID;
-
-app.use(express.static(path.join(rootDir, "public"))); // CSS styling file
 
 app.use(homeController.get404);
 

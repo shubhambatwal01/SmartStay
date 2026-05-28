@@ -1,4 +1,5 @@
 const Home = require("../models/home");
+const fs = require("fs");
 
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
@@ -45,8 +46,17 @@ exports.getHostHome = async (req, res, next) => {
 };
 
 exports.postAddHome = async (req, res) => {
-  const { houseName, houseAddr, houseImg, houseDesc, housePrice } = req.body; //destructuring req.body
+  const { houseName, houseAddr, houseDesc, housePrice } = req.body; //destructuring req.body
   // Create new home without _id (MongoDB will generate one)
+  console.log(req.file);
+
+  if (!req.file) {
+    return res.status(422).send("No image uploaded");
+    res.redirect("/host/add-home");
+  }
+
+  const houseImg = req.file.path;
+
   const home = new Home({
     houseName: houseName,
     houseAddr: houseAddr,
@@ -65,21 +75,27 @@ exports.postAddHome = async (req, res) => {
 };
 
 exports.postEditHome = async (req, res) => {
-  const { id, houseName, houseAddr, houseImg, houseDesc, housePrice } =
-    req.body;
+  const { id, houseName, houseAddr, houseDesc, housePrice } = req.body;
   const home = await Home.findOne({
     _id: id,
     owner: req.session.user._id,
   });
-    home.houseName = houseName;
-    home.houseAddr = houseAddr;
-    home.houseImg = houseImg;
-    home.houseDesc = houseDesc;
-    home.housePrice = housePrice;
- ;
-  await home
-    .save();
-    res.redirect("/host/host-home");
+  home.houseName = houseName;
+  home.houseAddr = houseAddr;
+  home.houseDesc = houseDesc;
+  home.housePrice = housePrice;
+
+  if (req.file) {
+    fs.unlink(home.houseImg, (err) => {
+      if (err) {
+        console.error("Error deleting old image", err);
+      }
+    });
+    home.houseImg = req.file.path;
+  }
+
+  await home.save();
+  res.redirect("/host/host-home");
 };
 
 exports.postDeleteHome = async (req, res, next) => {
