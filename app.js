@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const DB_PATH =
-  "mongodb+srv://shubz:shubz@shubz.rvkyior.mongodb.net/SmartStay?retryWrites=true&w=majority&appName=Shubz";
+require("dotenv").config();
 
 const app = express();
 
@@ -33,7 +32,7 @@ app.set("views", "views");
 // });
 
 const store = new MongoDBStore({
-  uri: DB_PATH,
+  uri: process.env.DB_PATH,
   collection: "sessions",
 });
 
@@ -72,13 +71,12 @@ app.use(express.static(path.join(rootDir, "public"))); // CSS styling file
 
 app.use(homeController.get404);
 
-const port = 1101;
 mongoose
-  .connect(DB_PATH)
+  .connect(process.env.DB_PATH)
   .then(() => {
     console.log("Mongoose connected to MongoDB");
-    app.listen(port, () => {
-      console.log(`http://localhost:${port}/`);
+    app.listen(process.env.PORT, () => {
+      console.log(`http://localhost:${process.env.PORT}/`);
     });
   })
   .catch((err) => {
