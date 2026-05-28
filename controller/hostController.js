@@ -1,5 +1,7 @@
 const Home = require("../models/home");
 const fs = require("fs");
+const path = require("path");
+const rootDir = require("../utils/pathUtil");
 
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
@@ -55,7 +57,9 @@ exports.postAddHome = async (req, res) => {
     res.redirect("/host/add-home");
   }
 
-  const houseImg = req.file.path;
+  // Normalize path to use forward slashes and make it an absolute URL path
+  const filePath = req.file.path.replace(/\\/g, "/");
+  const houseImg = filePath.startsWith("/") ? filePath : "/" + filePath;
 
   const home = new Home({
     houseName: houseName,
@@ -86,12 +90,24 @@ exports.postEditHome = async (req, res) => {
   home.housePrice = housePrice;
 
   if (req.file) {
-    fs.unlink(home.houseImg, (err) => {
-      if (err) {
-        console.error("Error deleting old image", err);
-      }
-    });
-    home.houseImg = req.file.path;
+    // Delete old image from uploads folder (resolve full path)
+    try {
+      const oldImgRelative = home.houseImg.startsWith("/")
+        ? home.houseImg.slice(1)
+        : home.houseImg;
+      const oldImgFull = path.join(rootDir, oldImgRelative);
+      fs.unlink(oldImgFull, (err) => {
+        if (err) console.error("Error deleting old image", err);
+      });
+    } catch (err) {
+      console.error("Error resolving old image path", err);
+    }
+
+    // store new image as a URL path (leading slash, forward slashes)
+    const newFilePath = req.file.path.replace(/\\/g, "/");
+    home.houseImg = newFilePath.startsWith("/")
+      ? newFilePath
+      : "/" + newFilePath;
   }
 
   await home.save();
