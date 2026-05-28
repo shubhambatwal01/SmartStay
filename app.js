@@ -21,6 +21,7 @@ const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const hostRouter = require("./routes/hostRouter");
 const homeController = require("./controller/error");
+const paymentRouter = require("./routes/paymentRouter");
 
 app.set("view engine", "ejs"); // Set the view engine to EJS
 app.set("views", "views");
@@ -66,6 +67,9 @@ app.use("/host", (req, res, next) => {
   }
 });
 app.use("/host", hostRouter);
+
+app.use("/payment", paymentRouter);
+app.locals.razorpayKey = process.env.RAZORPAY_KEY_ID;
 
 app.use(express.static(path.join(rootDir, "public"))); // CSS styling file
 

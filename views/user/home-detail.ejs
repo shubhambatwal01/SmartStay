@@ -43,9 +43,9 @@
                         <div class="flex justify-center items-center mt-4 gap-2">
                             <% if(user && user.userType==="user" ) { %>
                                 <%-include('../partials/favourite', {home: home}) %>
-                                    <a href="/bhahbj"
+                                    <button id="payBtn"
                                         class="bg-[#ff5a5f] text-white px-4 py-2 rounded hover:bg-[#ff4b51]">Book
-                                        Now</a>
+                                        Now</button>
                                 <% } %>
                         </div>
 
@@ -57,5 +57,44 @@
         <!-- Footer -->
         <%- include('../partials/footer') %>
     </body>
+
+    <script>
+
+        document.getElementById("payBtn").onclick = async function () {
+            const amount = "<%= home.housePrice %>";
+
+            const res = await fetch("/payment/create-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    amount: amount,
+                })
+            });
+
+            const order = await res.json();
+
+            const options = {
+                key: "<%= process.env.RAZORPAY_KEY_ID %>",
+                amount: order.amount,
+                currency: "INR",
+                name: "SmartStay",
+                description: "Room Booking Payment",
+                order_id: order.id,
+
+                handler: function (response) {
+                    alert("Payment Successful!");
+                    window.location.href = "/booking-success";
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        };
+
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     </html>
