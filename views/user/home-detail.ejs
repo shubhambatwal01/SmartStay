@@ -40,11 +40,11 @@
                             <%= home.houseDesc %>
                         </h3>
                         <hr />
-                        <div class="flex justify-center items-center gap-2">
+                        <div class="flex justify-center items-center mt-4 gap-2">
                             <% if(user && user.userType==="user" ) { %>
                                 <%-include('../partials/favourite', {home: home}) %>
                                     <a href="/bhahbj"
-                                        class="mt-8 bg-[#ff5a5f] text-white px-4 py-2 rounded hover:bg-[#ff4b51]">Book
+                                        class="bg-[#ff5a5f] text-white px-4 py-2 rounded hover:bg-[#ff4b51]">Book
                                         Now</a>
                                 <% } %>
                         </div>
