@@ -4,29 +4,28 @@ A Full-Stack Vacation Rental & Home Booking Platform
 Browse homes, manage property listings, save favorites, authenticate users securely, and integrate online payments using Razorpay.
 
 ## 🚀 Features
-   # 👤 User Features
-         User Registration & Login
-         Secure Password Hashing using BCrypt
-         Session-based Authentication
-         Browse Available Homes
-         View Detailed Home Information
-         Add Homes to Favorites
-         Remove Homes from Favorites
-         Responsive UI for Desktop & Mobile
-   # 🏠 Admin/Host Features
-         Add New Property Listings
-         Upload Property Images
-         Edit Existing Listings
-         Delete Listings
-         View Only Your Own Listed Properties
-         Protected Routes using Authentication
-   # 💳 Payment Features
-         Razorpay Payment Gateway Integration
-         Dynamic Order Creation
-         Secure Payment Processing
+   ## 👤 User Features
+   1. User Registration & Login
+   2. Secure Password Hashing using BCrypt
+   3. Session-based Authentication
+   4. Browse Available Homes
+   5. View Detailed Home Information
+   6. Add Homes to Favorites
+   7. Remove Homes from Favorites
+   8. Responsive UI for Desktop & Mobile
+   ## 🏠 Admin/Host Features
+   1. Add New Property Listings
+   2. Upload Property Images
+   3. Edit Existing Listings
+   4. Delete Listings
+   5. View Only Your Own Listed Properties
+   6. Protected Routes using Authentication
+   ## 💳 Payment Features
+   1. Razorpay Payment Gateway Integration
+   2. Dynamic Order Creation
+   3. Secure Payment Processing
 
 ## 🛠️ Tech Stack
-
    **Frontend**: HTML5, CSS3, Tailwind CSS, EJS 
    **Backend**: Node.js, Express.js, Nodemon
    **Database**: MongoDB Atlas, Mongoose ODM
@@ -108,14 +107,12 @@ Browse homes, manage property listings, save favorites, authenticate users secur
 ```
 
 ## ⚙️ Installation
-
    1. **Clone the repository:**
    
       ```
       git clone https://github.com/shubhambatwal01/SmartStay.git
       cd SmartStay
       ```
-   
    2. Environment Variables
       Create a .env file in the root directory.
       ```
@@ -124,7 +121,6 @@ Browse homes, manage property listings, save favorites, authenticate users secur
          RAZORPAY_KEY_ID=your_razorpay_key
          RAZORPAY_KEY_SECRET=your_razorpay_secret
       ```
-      
    3. Install dependencies:
       ```
       npm install
@@ -145,6 +141,5 @@ Browse homes, manage property listings, save favorites, authenticate users secur
    *Full Stack Developer*
    **LinkedIn**: https://www.linkedin.com/in/shubhambatwal01
    **Portfolio**: https://shubzportfolio.vercel.app/
-
 
 # 💡 SmartStay – Find, Host, and Manage Homes with Ease. 🏡✨
