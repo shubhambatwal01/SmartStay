@@ -36,6 +36,7 @@ Browse homes, manage property listings, save favorites, authenticate users secur
    **Deployment**: Render
 
 ## 📂 Folder Structure
+```
    SmartStay/
    ├── controllers/
    │   ├── authController.js
@@ -104,6 +105,7 @@ Browse homes, manage property listings, save favorites, authenticate users secur
    ├── package.json
    ├── package-lock.json
    └── tailwind.config.js
+```
 
 ## ⚙️ Installation
 
