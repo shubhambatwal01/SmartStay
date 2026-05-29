@@ -25,10 +25,9 @@ exports.postLogin = async (req, res, next) => {
       pageTitle: "Login",
       currentPage: "Login",
       isLoggedIn: false,
-      errors: ["User doeqs not exist"],
+      errors: ["User does not exist"],
       oldInput: {
         email,
-        userType,
       },
       user: {},
     });
@@ -44,7 +43,6 @@ exports.postLogin = async (req, res, next) => {
       errors: ["Invalid password"],
       oldInput: {
         email,
-        userType,
       },
       user: {},
     });

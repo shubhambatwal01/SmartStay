@@ -38,9 +38,8 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
                         <!-- House Description -->
                         <label for="houseDesc" class="block text-gray-700 font-semibold m-2">House Description</label>
-                        <input type="text" id="houseDesc" name="houseDesc" value="<%= editing ? home.houseDesc : '' %>"
-                            placeholder="Enter the Description of your house" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <textarea id="houseDesc" name="houseDesc" placeholder="Enter the Description of your house" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"><%= editing ? home.houseDesc : '' %></textarea>
                     </div>
                     <!-- submit button -->
                     <input type="submit" value="<%= editing ? 'Update Home' : 'Add Home' %>"
