@@ -1,67 +1,154 @@
-# SmartStay - Rental house booking system
+# 🏡SmartStay - Rental home booking system
 
-A full-stack web application demonstrating user authentication, sessions, and property management using Node.js, Express, and MongoDB.
-This project showcases secure login/logout functionality, session persistence, and a host dashboard for managing property listings.
+A Full-Stack Vacation Rental & Home Booking Platform
+Browse homes, manage property listings, save favorites, authenticate users securely, and integrate online payments using Razorpay.
 
-## Features
+## 🚀 Features
+   # 👤 User Features
+         User Registration & Login
+         Secure Password Hashing using BCrypt
+         Session-based Authentication
+         Browse Available Homes
+         View Detailed Home Information
+         Add Homes to Favorites
+         Remove Homes from Favorites
+         Responsive UI for Desktop & Mobile
+   # 🏠 Admin/Host Features
+         Add New Property Listings
+         Upload Property Images
+         Edit Existing Listings
+         Delete Listings
+         View Only Your Own Listed Properties
+         Protected Routes using Authentication
+   # 💳 Payment Features
+         Razorpay Payment Gateway Integration
+         Dynamic Order Creation
+         Secure Payment Processing
 
-- **User Authentication** – Secure login and logout with password protection
-- **Session Management** – MongoDB-backed session storage for persistent authentication
-- **Protected Routes** – Host-only routes secured with session middleware
-- **Property Management** – Add, edit, and delete property listings
-- **Responsive Design** – Modern UI with Bootstrap 5 and Tailwind CSS
-- **User Dashboard** – Personalized interface for hosts and users
+## 🛠️ Tech Stack
 
-## Getting Started
+   **Frontend**: HTML5, CSS3, Tailwind CSS, EJS 
+   **Backend**: Node.js, Express.js, Nodemon
+   **Database**: MongoDB Atlas, Mongoose ODM
+   **Authentication & Security**: Express Session, BCryptJS, Express Validator
+   **File Uploads**: Multer
+   **Payments**: Razorpay
+   **Deployment**: Render
 
-1. **Clone the repository:**
+## 📂 Folder Structure
+   SmartStay/
+   ├── controllers/
+   │   ├── authController.js
+   │   ├── homeController.js
+   │   ├── hostController.js
+   │   ├── favouriteController.js
+   │   └── paymentController.js
+   ├── models/
+   │   ├── home.js
+   │   ├── user.js
+   │   └── favourite.js
+   ├── routes/
+   │   ├── authRouter.js
+   │   ├── homeRouter.js
+   │   ├── hostRouter.js
+   │   ├── favouriteRouter.js
+   │   └── paymentRouter.js
+   ├── middleware/
+   │   ├── auth.js
+   │   ├── isLoggedIn.js
+   │   ├── isHost.js
+   │   └── uploadMiddleware.js
+   ├── views/
+   │   ├── auth/
+   │   │   ├── login.ejs
+   │   │   └── signup.ejs
+   │   ├── home/
+   │   │   ├── index.ejs
+   │   │   ├── home-list.ejs
+   │   │   ├── home-detail.ejs
+   │   │   └── favourites.ejs
+   │   ├── host/
+   │   │   ├── host-home-list.ejs
+   │   │   ├── add-home.ejs
+   │   │   └── edit-home.ejs
+   │   ├── payment/
+   │   │   └── checkout.ejs
+   │   └── partials/
+   │       ├── head.ejs
+   │       ├── nav.ejs
+   │       ├── footer.ejs
+   │       └── message.ejs
+   ├── public/
+   │   │
+   │   ├── css/
+   │   │   ├── input.css
+   │   │   └── output.css
+   │   ├── js/
+   │   │   ├── navbar.js
+   │   │   ├── favourite.js
+   │   │   └── payment.js
+   │   └── images/
+   ├── uploads/
+   │   └── home-images/
+   ├── config/
+   │   ├── db.js
+   │   ├── session.js
+   │   └── razorpay.js
+   ├── utils/
+   │   ├── validation.js
+   │   ├── helpers.js
+   │   └── constants.js
+   ├── .env
+   ├── .gitignore
+   ├── app.js
+   ├── package.json
+   ├── package-lock.json
+   └── tailwind.config.js
 
-   ```bash
-   git clone https://github.com/shubhambatwal03/SmartStay.git
-   cd Airbnb-Clone
+## ⚙️ Installation
 
-   ```
-
-2. Install dependencies:
-   ```
-   npm install
-
-   ```
-3. Update MongoDB Connection:
-   Open app.js and replace the MONGO_URL with your MongoDB Atlas connection string
-
-4. Start the development server:
-   ```
-   npm start
-
-   ```
-5. Open http://localhost:1101 to view it in your browser.
-
-## Folder Structure
-
-     ├── app.js                    # Main application entry point
-     ├── controller/               # Business logic handlers
-     │   ├── authController.js    # Login/logout logic
-     │   ├── hostController.js    # Property management
-     │   └── homeController.js    # General controllers
-     ├── routes/                  # API route definitions
-     │   ├── authRouter.js        # Auth routes
-     │   ├── hostRouter.js        # Host property routes
-     │   └── userRouter.js        # User routes
-     ├── models/                  # MongoDB schemas
-     ├── views/                   # EJS template files
-     ├── public/                  # Static assets (CSS, images)
-     └── utils/                   # Utility functions
-
-## Tech Stack
-
-**Frontend**: EJS, Bootstrap 5, Tailwind CSS
-**Backend**: Node.js, Express.js, Nodemon
-**Database**: MongoDB, Mongoose
-**Session Management**: express-session, connect-mongodb-session
+   1. **Clone the repository:**
+   
+      ```
+      git clone https://github.com/shubhambatwal01/SmartStay.git
+      cd SmartStay
+   
+      ```
+   
+   2. Environment Variables
+      Create a .env file in the root directory.
+      ```
+         PORT=1101
+         MONGO_URL=your_mongodb_connection_string
+         RAZORPAY_KEY_ID=your_razorpay_key
+         RAZORPAY_KEY_SECRET=your_razorpay_secret
+      
+   3. Install dependencies:
+      ```
+      npm install
+   
+      ```
+   5. Start the development server:
+      ```
+      npm start
+      npm run tailwindcss
+      
+      ```
+   6. Open http://localhost:1101 to view it in your browser.
+      
 
 ## Screenshots
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/893698fc-b5d9-4acd-939f-ae7b51f51d82" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/65e13d17-1859-475b-a474-5a7b7fa817cb" />
 
-## License
+
+## 👨‍💻 Developer
+   Shubham Batwal
+   
+   Full Stack Developer
+   
+   GitHub: https://github.com/shubhambatwal01
+   LinkedIn: https://www.linkedin.com/in/shubhambatwal01
+   Portfolio: https://shubzportfolio.vercel.app/
+
+## 💡 SmartStay – Find, Host, and Manage Homes with Ease. 🏡✨
