@@ -114,7 +114,6 @@ Browse homes, manage property listings, save favorites, authenticate users secur
       ```
       git clone https://github.com/shubhambatwal01/SmartStay.git
       cd SmartStay
-   
       ```
    
    2. Environment Variables
@@ -124,17 +123,16 @@ Browse homes, manage property listings, save favorites, authenticate users secur
          MONGO_URL=your_mongodb_connection_string
          RAZORPAY_KEY_ID=your_razorpay_key
          RAZORPAY_KEY_SECRET=your_razorpay_secret
+      ```
       
    3. Install dependencies:
       ```
       npm install
-   
       ```
    5. Start the development server:
       ```
       npm start
       npm run tailwindcss
-      
       ```
    6. Open http://localhost:1101 to view it in your browser.
       
@@ -144,9 +142,9 @@ Browse homes, manage property listings, save favorites, authenticate users secur
 
 ## 👨‍💻 Developer
    **Shubham Batwal**
-   **Full Stack Developer**
-   **GitHub**: https://github.com/shubhambatwal01
+   *Full Stack Developer*
    **LinkedIn**: https://www.linkedin.com/in/shubhambatwal01
    **Portfolio**: https://shubzportfolio.vercel.app/
+
 
 # 💡 SmartStay – Find, Host, and Manage Homes with Ease. 🏡✨
