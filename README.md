@@ -138,19 +138,15 @@ Browse homes, manage property listings, save favorites, authenticate users secur
       ```
    6. Open http://localhost:1101 to view it in your browser.
       
-
 ## Screenshots
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/65e13d17-1859-475b-a474-5a7b7fa817cb" />
 
-
 ## 👨‍💻 Developer
-   Shubham Batwal
-   
-   Full Stack Developer
-   
-   GitHub: https://github.com/shubhambatwal01
-   LinkedIn: https://www.linkedin.com/in/shubhambatwal01
-   Portfolio: https://shubzportfolio.vercel.app/
+   **Shubham Batwal**
+   **Full Stack Developer**
+   **GitHub**: https://github.com/shubhambatwal01
+   **LinkedIn**: https://www.linkedin.com/in/shubhambatwal01
+   **Portfolio**: https://shubzportfolio.vercel.app/
 
-## 💡 SmartStay – Find, Host, and Manage Homes with Ease. 🏡✨
+# 💡 SmartStay – Find, Host, and Manage Homes with Ease. 🏡✨
