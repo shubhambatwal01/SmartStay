@@ -1,5 +1,18 @@
 const Home = require("../models/home");
-const fs = require("fs");
+const cloudinary = require("../utils/cloudinaryConfig");
+
+const streamUpload = (buffer, folder = "SmartStayHomes") => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder },
+      (error, result) => {
+        if (result) resolve(result);
+        else reject(error);
+      },
+    );
+    stream.end(buffer);
+  });
+};
 
 exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
@@ -46,32 +59,33 @@ exports.getHostHome = async (req, res, next) => {
 };
 
 exports.postAddHome = async (req, res) => {
-  const { houseName, houseAddr, houseDesc, housePrice } = req.body; //destructuring req.body
-  // Create new home without _id (MongoDB will generate one)
-  console.log(req.file);
+  const { houseName, houseAddr, houseDesc, housePrice } = req.body; 
+
+  // console.log(req.file);
 
   if (!req.file) {
     return res.status(422).send("No image uploaded");
     res.redirect("/host/add-home");
   }
+  try {
+    const result = await streamUpload(req.file.buffer, "SmartStayHomes");
 
-  const houseImg = req.file.path;
-
-  const home = new Home({
-    houseName: houseName,
-    houseAddr: houseAddr,
-    houseImg: houseImg,
-    houseDesc: houseDesc,
-    housePrice: housePrice,
-    owner: req.session.user._id,
-  }); //Home Object from models/home.js
-  await home
-    .save()
-    .then(() => res.redirect("/host/host-home"))
-    .catch((err) => {
-      console.error("Error Adding Home", err);
-      res.status(500).send("Server error");
+    const home = new Home({
+      houseName: houseName,
+      houseAddr: houseAddr,
+      houseImg: result.secure_url,
+      // houseImgId: result.public_id,
+      houseDesc: houseDesc,
+      housePrice: housePrice,
+      owner: req.session.user._id,
     });
+
+    await home.save();
+    return res.redirect("/host/host-home");
+  } catch (err) {
+    console.error("Error Adding Home", err);
+    return res.status(500).send("Server error");
+  }
 };
 
 exports.postEditHome = async (req, res) => {
@@ -86,12 +100,21 @@ exports.postEditHome = async (req, res) => {
   home.housePrice = housePrice;
 
   if (req.file) {
-    fs.unlink(home.houseImg, (err) => {
-      if (err) {
-        console.error("Error deleting old image", err);
+    if (home.houseImg) {
+      try {
+        await cloudinary.uploader.destroy(home.houseImg);
+      } catch (err) {
+        console.error("Error deleting old cloud image", err);
       }
-    });
-    home.houseImg = req.file.path;
+    }
+
+    try {
+      const result = await streamUpload(req.file.buffer, "SmartStayHomes");
+      home.houseImg = result.secure_url;
+      // home.houseImgId = result.public_id;
+    } catch (err) {
+      console.error("Error uploading new image", err);
+    }
   }
 
   await home.save();
@@ -99,14 +122,29 @@ exports.postEditHome = async (req, res) => {
 };
 
 exports.postDeleteHome = async (req, res, next) => {
-  await Home.findOneAndDelete({
-    _id: req.params.id,
-    owner: req.session.user._id,
-  })
-    .then(() => {
-      res.redirect("/host/host-home");
-    })
-    .catch((err) => {
-      console.log("Error while deleting", err);
+  try {
+    const home = await Home.findOne({
+      _id: req.params.id,
+      owner: req.session.user._id,
     });
+
+    if (!home) return res.redirect("/host/host-home");
+
+    if (home.houseImg) {
+      try {
+        await cloudinary.uploader.destroy(home.houseImg);
+      } catch (err) {
+        console.error("Error deleting cloud image on home delete", err);
+      }
+    }
+
+    await Home.findOneAndDelete({
+      _id: req.params.id,
+      owner: req.session.user._id,
+    });
+    return res.redirect("/host/host-home");
+  } catch (err) {
+    console.log("Error while deleting", err);
+    return res.status(500).send("Server error");
+  }
 };

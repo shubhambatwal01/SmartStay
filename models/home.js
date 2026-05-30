@@ -4,12 +4,13 @@ const homeSchema = mongoose.Schema({
   houseName: { type: String, required: true },
   houseAddr: { type: String, required: true },
   houseImg: { type: String, required: true },
+  // houseImgId: { type: String },
   houseDesc: String,
   housePrice: String,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Host",
-    required: true,
+    ref: "User",
+    required: false,
   },
 });
 

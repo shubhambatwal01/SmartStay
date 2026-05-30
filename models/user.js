@@ -13,4 +13,15 @@ const userSchema = mongoose.Schema({
   favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Home" }],
 });
 
+// When a user is removed, keep their homes but unset the owner field
+userSchema.pre("remove", async function (next) {
+  const Home = require("./home");
+  try {
+    await Home.updateMany({ owner: this._id }, { $unset: { owner: "" } });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = mongoose.model("User", userSchema);
