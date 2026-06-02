@@ -1,7 +1,7 @@
 # 🏡SmartStay - Rental home booking system
 
-A Full-Stack Vacation Rental & Home Booking Platform
-Browse homes, manage property listings, save favorites, authenticate users securely, and integrate online payments using Razorpay.
+_A Full-Stack Vacation Rental & Home Booking Platform_
+_Browse homes, manage property listings, save favorites, authenticate users securely, and integrate online payments using Razorpay._
 
 ## 🚀 Features
    ## 👤 User Features
@@ -24,6 +24,7 @@ Browse homes, manage property listings, save favorites, authenticate users secur
    1. Razorpay Payment Gateway Integration
    2. Dynamic Order Creation
    3. Secure Payment Processing
+---
 
 ## 🛠️ Tech Stack
    **Frontend**: HTML5, CSS3, Tailwind CSS, EJS 
@@ -33,6 +34,7 @@ Browse homes, manage property listings, save favorites, authenticate users secur
    **File Uploads**: Multer
    **Payments**: Razorpay
    **Deployment**: Render
+---
 
 ## 📂 Folder Structure
 ```
@@ -105,6 +107,7 @@ Browse homes, manage property listings, save favorites, authenticate users secur
    ├── package-lock.json
    └── tailwind.config.js
 ```
+---
 
 ## ⚙️ Installation
    1. **Clone the repository:**
@@ -131,15 +134,25 @@ Browse homes, manage property listings, save favorites, authenticate users secur
       npm run tailwindcss
       ```
    6. Open http://localhost:1101 to view it in your browser.
+---
       
 ## Screenshots
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/65e13d17-1859-475b-a474-5a7b7fa817cb" />
 
-## 👨‍💻 Developer
-   **Shubham Batwal**
-   *Full Stack Developer*
-   **LinkedIn**: https://www.linkedin.com/in/shubhambatwal01
-   **Portfolio**: https://shubzportfolio.vercel.app/
+---
 
-# 💡 SmartStay – Find, Host, and Manage Homes with Ease. 🏡✨
+## 👨‍💻 Developer
+
+### Shubham Batwal
+Full Stack Developer
+
+🔗 LinkedIn:  
+https://www.linkedin.com/in/shubhambatwal01
+
+🌐 Portfolio:  
+https://shubzportfolio.vercel.app
+
+---
+
+### 💡 SmartStay – Find, Host, and Manage Homes with Ease. 🏡✨
