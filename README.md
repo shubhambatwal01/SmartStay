@@ -27,6 +27,7 @@ _Browse homes, manage property listings, save favorites, authenticate users secu
 ---
 
 ## 🛠️ Tech Stack
+-
    **Frontend**: HTML5, CSS3, Tailwind CSS, EJS 
    **Backend**: Node.js, Express.js, Nodemon
    **Database**: MongoDB Atlas, Mongoose ODM
