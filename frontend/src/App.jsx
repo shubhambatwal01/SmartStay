@@ -1,14 +1,8 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Test from '../pages/test'
-
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Test/>}></Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <center className="text-4xl font-bold bg-red-500">Hello this is Shubham!</center>
+    </>
   );
 }
 
