@@ -1,0 +1,40 @@
+{
+  "name": "project-smartstay",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwindcss": "npx tailwindcss -i ./views/input.css -o ./public/output.css --watch",
+    "start": "node app.js",
+    "build": "npx tailwindcss -i ./views/input.css -o ./public/output.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.0",
+    "bootstrap": "^5.3.7",
+    "bootstrap-icons": "^1.13.1",
+    "bson": "^6.10.4",
+    "cloudinary": "^2.10.0",
+    "connect-mongodb-session": "^5.0.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "mongodb": "^6.21.0",
+    "mongoose": "^8.24.0",
+    "multer": "^2.1.1",
+    "mysql2": "^3.15.2",
+    "nodemon": "^3.1.10",
+    "parser": "^0.1.4",
+    "postcss": "^8.5.6",
+    "razorpay": "^2.9.6",
+    "sweetalert2": "^11.26.17",
+    "tailwindcss": "^3.4.17"
+  }
+}

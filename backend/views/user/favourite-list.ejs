@@ -1,0 +1,69 @@
+<%- include('../partials/head') %>
+
+    <body class="pt-16">
+
+        <!-- Header/ Navbar -->
+        <header>
+            <%- include('../partials/nav') %>
+        </header>
+
+        <!-- Main -->
+        <main class="min-h-screen mt-16">
+            <!-- heading -->
+            <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">My Favourites:</h1>
+            <ol class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
+                <!-- render (RegisteredHomes) and showing them 1-by-1 -->
+                <% if(favouriteHomes===null || favouriteHomes.length===0) { %>
+                    <div class="flex justify-center items-center">
+                        <p class="text-2xl font-bold text-red-500">No favourite homes found.</p>
+                    </div>
+                    <% } else { %>
+                        <% favouriteHomes.forEach(home=> { %>
+                            <li
+                                class="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center">
+                                <!-- House Image -->
+                                <div class="text-5xl text-[#ff5a5f] m-2">
+                                    <a href="/homes/<%= home._id %>">
+                                        <img class="h-[200px] w-auto " src="<%= home.houseImg %>"
+                                            alt="<%= home.houseName %>" class="w-full h-full object-cover rounded-lg" />
+                                    </a>
+                                </div>
+                                <!-- House Name -->
+                                <h2 class="text-2xl font-bold text-[#ff5a5f] mb-2 text-center">
+                                    <%= home.houseName %> House
+                                </h2>
+                                <!-- House Address -->
+                                <p class="text-[#ff5a5f] mb-2 text-center">
+                                    <i class="fas fa-map-marker-alt mr-1"></i>
+                                    <%= home.houseAddr %>
+                                </p>
+                                <!-- House Price -->
+                                <p class="text-lg font-semibold text-[#ff5a5f] mb-2 text-center">
+                                    ₹<%= home.housePrice %> / night
+                                </p>
+                                <!-- Now More Details about that Home -->
+
+
+                                <div class="flex gap-2">
+                                    <a href="/homes/<%= home._id %>"
+                                        class="mt-auto bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-semibold py-2 px-4 rounded transition">
+                                        Book Now
+                                    </a>
+                                    <form action="/favourites/delete/<%=home._id%>" method="POST">
+                                        <button type="submit"
+                                            class="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                            <% }); %>
+                                <% } %>
+            </ol>
+        </main>
+
+        <!-- Footer -->
+        <%- include('../partials/footer') %>
+    </body>
+
+    </html>

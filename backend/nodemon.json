@@ -1,0 +1,11 @@
+{
+    "watch": [
+        "."
+    ],
+    "ext": "js, json, ejs",
+    "ignore": [
+        "node_mpdule/",
+        "data/"
+    ],
+    "exec": "node app.js"
+}

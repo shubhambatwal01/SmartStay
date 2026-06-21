@@ -1,0 +1,100 @@
+<%- include('../partials/head') %>
+
+    <body class="pt-16">
+
+        <!-- Header/ Navbar -->
+        <header>
+            <%- include('../partials/nav') %>
+        </header>
+
+        <!-- Main -->
+        <main class="min-h-screen mt-16">
+            <!-- heading -->
+            <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">Your home detail :</h1>
+
+            <!-- Home Description Card  -->
+            <div class="mt-10 max-w-full mx-auto p-4 bg-gray-100 rounded">
+                <div class="flex flex-col md:flex-row md:items-start gap-8">
+                    <!-- Image on top for small screens, left for md+ screens -->
+                    <img src="<%=home.houseImg%>" alt="House Image"
+                        class="w-full md:w-2/4 h-auto object-cover rounded" />
+                    <!-- Text content -->
+                    <div class="md:w-2/3">
+                        <label class="text-xl font-bold">Name:</label>
+                        <h4 class="text-xl font-bold text-[#ff5a5f] mb-2">
+                            <%= home.houseName %>
+                        </h4>
+                        <hr />
+                        <label class="text-xl font-bold">Address :</label>
+                        <h3 class="text-xl font-bold text-[#ff5a5f] mb-2">
+                            <%= home.houseAddr%>
+                        </h3>
+                        <hr />
+                        <label class="text-xl font-bold">Price :</label>
+                        <h2 class="text-xl font-bold text-[#ff5a5f] mb-2">
+                            Rs.<%= home.housePrice %>/night
+                        </h2>
+                        <hr />
+                        <label class="text-xl font-bold">Description :</label>
+                        <h3 class="text-xl font-bold text-[#ff5a5f] mb-2">
+                            <%= home.houseDesc %>
+                        </h3>
+                        <hr />
+                        <div class="flex justify-center items-center mt-4 gap-2">
+                            <% if(user && user.userType==="user" ) { %>
+                                <%-include('../partials/favourite', {home: home}) %>
+                                    <button id="payBtn"
+                                        class="bg-[#ff5a5f] text-white px-4 py-2 rounded hover:bg-[#ff4b51]">Book
+                                        Now</button>
+                                <% } %>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <%- include('../partials/footer') %>
+    </body>
+
+    <script>
+
+        document.getElementById("payBtn").onclick = async function () {
+            const amount = "<%= home.housePrice %>";
+
+            const res = await fetch("/payment/create-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    amount: amount,
+                })
+            });
+
+            const order = await res.json();
+
+            const options = {
+                key: "<%= process.env.RAZORPAY_KEY_ID %>",
+                amount: order.amount,
+                currency: "INR",
+                name: "SmartStay",
+                description: "Room Booking Payment",
+                order_id: order.id,
+
+                handler: function (response) {
+                    alert("Payment Successful!");
+                    window.location.href = "/booking-success";
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        };
+
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    </html>
