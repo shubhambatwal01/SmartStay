@@ -3,7 +3,8 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 
 exports.getLogin = (req, res, next) => {
-  res.render("auth/login", {
+  res.json({
+    message: "Get Login API",
     pageTitle: "Login",
     currentPage: "Login",
     isLoggedIn: false,
@@ -21,7 +22,8 @@ exports.postLogin = async (req, res, next) => {
   console.log("Login attempt with:", { email, password });
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(422).render("auth/login", {
+    return res.status(422).json({
+      message: "Post Login API",
       pageTitle: "Login",
       currentPage: "Login",
       isLoggedIn: false,
@@ -36,7 +38,8 @@ exports.postLogin = async (req, res, next) => {
   const passwordMatch = await bcrypt.compare(password, user.password);
   console.log("Password match result:", password, user.password, passwordMatch);
   if (!passwordMatch) {
-    return res.status(422).render("auth/login", {
+    return res.status(422).json({
+      message: "Password Match API",
       pageTitle: "Login",
       currentPage: "Login",
       isLoggedIn: false,
@@ -66,12 +69,16 @@ exports.postLogin = async (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(() => {
-    res.redirect("/login");
+    res.status(201).json({
+      success: true,
+      message: "User LoggedOut Successfully",
+    });
   });
 };
 
 exports.getSignup = (req, res, next) => {
-  res.render("auth/signup", {
+  res.json({
+    message: "Get SignUp API",
     pageTitle: "Signup",
     currentPage: "Signup",
     isLoggedIn: false,
@@ -138,7 +145,8 @@ exports.postSignup = [
     const { fullName, email, password, userType } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).render("auth/signup", {
+      return res.status(422).json({
+        message: "Post SignUp API",
         pageTitle: "Signup",
         currentPage: "Signup",
         errors: errors.array().map((err) => err.msg),
@@ -164,11 +172,15 @@ exports.postSignup = [
       user
         .save()
         .then(() => {
-          res.redirect("/login");
+          res.status(201).json({
+            success: true,
+            message: "User Registered Successfully",
+          });
         })
         .catch((err) => {
           console.error(err);
-          return res.status(422).render("auth/signup", {
+          return res.status(422).json({
+            message: "Hashed SignUp API",
             pageTitle: "Signup",
             currentPage: "Signup",
             errors: errors.array(),

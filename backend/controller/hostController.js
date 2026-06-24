@@ -15,7 +15,8 @@ const streamUpload = (buffer, folder = "SmartStayHomes") => {
 };
 
 exports.getAddHome = (req, res, next) => {
-  res.render("host/edit-home", {
+  resres.json({
+    message: "Add Home Page",
     pageTitle: "Add Home",
     currentPage: "addHome",
     editing: false,
@@ -33,7 +34,8 @@ exports.getEditHome = async (req, res, next) => {
   if (!home) {
     return res.status(403).send("Unauthorized");
   }
-  res.render("host/edit-home", {
+  resres.json({
+    message: "Edit Home Page",
     pageTitle: "Edit Home",
     currentPage: "editHome",
     editing: true,
@@ -49,7 +51,8 @@ exports.getHostHome = async (req, res, next) => {
     owner: req.session.user._id,
   });
 
-  res.render("host/host-home", {
+  resres.json({
+    message: "Host Home Page",
     pageTitle: "My Homes",
     currentPage: "hostHome",
     isLoggedIn: req.session.isLoggedIn,
@@ -59,7 +62,7 @@ exports.getHostHome = async (req, res, next) => {
 };
 
 exports.postAddHome = async (req, res) => {
-  const { houseName, houseAddr, houseDesc, housePrice } = req.body; 
+  const { houseName, houseAddr, houseDesc, housePrice } = req.body;
 
   // console.log(req.file);
 
@@ -81,7 +84,10 @@ exports.postAddHome = async (req, res) => {
     });
 
     await home.save();
-    return res.redirect("/host/host-home");
+    return res.status(201).json({
+      success: true,
+      message: "Home Added Successfully",
+    });
   } catch (err) {
     console.error("Error Adding Home", err);
     return res.status(500).send("Server error");
@@ -118,7 +124,10 @@ exports.postEditHome = async (req, res) => {
   }
 
   await home.save();
-  res.redirect("/host/host-home");
+  res.status(201).json({
+    success: true,
+    message: "Home Edited Successfully",
+  });
 };
 
 exports.postDeleteHome = async (req, res, next) => {
@@ -129,7 +138,6 @@ exports.postDeleteHome = async (req, res, next) => {
     });
 
     if (!home) return res.redirect("/host/host-home");
-
     if (home.houseImg) {
       try {
         await cloudinary.uploader.destroy(home.houseImg);
@@ -142,7 +150,10 @@ exports.postDeleteHome = async (req, res, next) => {
       _id: req.params.id,
       owner: req.session.user._id,
     });
-    return res.redirect("/host/host-home");
+    return res.status(201).json({
+      success: true,
+      message: "Home Deleted Successfully",
+    });
   } catch (err) {
     console.log("Error while deleting", err);
     return res.status(500).send("Server error");
