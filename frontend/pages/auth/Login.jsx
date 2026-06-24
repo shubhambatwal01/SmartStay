@@ -1,64 +1,58 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Nav from '../../components/Nav';
-import Footer from '../../components/Footer';
-import ErrorMessages from '../../components/ErrorMessages';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import ErrorMessage from "../components/ErrorMessage";
 
-export default function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false);
+function Login() {
   const navigate = useNavigate();
 
+  // Equivalent to oldInput in EJS
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  // Equivalent to errors partial
+  const [errors, setErrors] = useState([]);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setErrors([]);
-    setLoading(true);
 
     try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axios.post("/auth/login", formData);
 
-      const data = await response.json();
+      console.log(response.data);
 
-      if (!response.ok) {
-        setErrors(data.errors || ['Login failed. Please try again.']);
-        return;
-      }
-
-      // Login successful - redirect to home
-      navigate('/');
+      // Redirect after successful login
+      navigate("/");
     } catch (error) {
-      setErrors(['An error occurred. Please try again.']);
-      console.error('Login error:', error);
-    } finally {
-      setLoading(false);
+      console.log(error);
+
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      } else {
+        setErrors(["Login failed. Please try again."]);
+      }
     }
   };
 
   return (
     <>
-      <header>
-        <Nav />
-      </header>
+      <Navbar />
+
       <main className="min-h-screen mt-32">
-        {/* heading */}
+        {/* Heading */}
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
           Login to Your Account
         </h1>
@@ -68,17 +62,18 @@ export default function Login() {
             onSubmit={handleSubmit}
             className="bg-white p-8 rounded shadow-md w-full max-w-md"
           >
-            {/* error messages */}
-            {errors.length > 0 && <ErrorMessages errors={errors} />}
+            {/* Error Messages */}
+            {errors.length > 0 && <ErrorMessage errors={errors} />}
 
             <div className="mb-6">
-              {/* Email Address */}
+              {/* Email */}
               <label
                 htmlFor="email"
                 className="block text-gray-700 font-semibold m-2"
               >
                 Email
               </label>
+
               <input
                 type="email"
                 id="email"
@@ -97,6 +92,7 @@ export default function Login() {
               >
                 Password
               </label>
+
               <input
                 type="password"
                 id="password"
@@ -109,26 +105,28 @@ export default function Login() {
               />
             </div>
 
-            {/* Login button */}
-            <input
+            {/* Login Button */}
+            <button
               type="submit"
-              value={loading ? 'Logging in...' : 'Login'}
-              disabled={loading}
-              className="w-full bg-[#ff5a5f] hover:bg-[#ff4b51] disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded transition-colors mb-3 cursor-pointer"
-            />
+              className="w-full bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-bold py-2 px-4 rounded transition-colors mb-3"
+            >
+              Login
+            </button>
 
             <div className="text-center">
-              <span>Don't have an account?</span>
-              <a href="/signup" className="text-blue-600 underline ml-1">
+              <span>Don't have an account? </span>
+
+              <Link to="/signup" className="text-blue-600 underline">
                 Sign up here
-              </a>
+              </Link>
             </div>
           </form>
         </div>
       </main>
 
-      {/* Footer */}
       <Footer />
     </>
   );
 }
+
+export default Login;
