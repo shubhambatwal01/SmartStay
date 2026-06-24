@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
-// import Footer from "../components/Footer";
+import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
 
 function Login() {
@@ -124,7 +124,7 @@ function Login() {
         </div>
       </main>
 
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }
