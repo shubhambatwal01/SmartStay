@@ -5,8 +5,9 @@ const User = require("../models/user");
 
 exports.getIndexHomes = (req, res, next) => {
   Home.find().then((RegisteredHomes) => {
-    res.render("user/index", {
-      RegisteredHomes,
+    res.status(200).json({
+      success: true,
+      homes: RegisteredHomes,
       pageTitle: "SmartStay",
       currentPage: "SmartStay Homes",
       isLoggedIn: req.session.isLoggedIn,
@@ -18,8 +19,9 @@ exports.getIndexHomes = (req, res, next) => {
 exports.getHomes = (req, res, next) => {
   console.log("Sesion Object :", req.session);
   Home.find().then((RegisteredHomes) => {
-    res.render("user/homeList", {
-      RegisteredHomes,
+    res.status(200).json({
+      success: true,
+      homes: RegisteredHomes,
       pageTitle: "SmartStay",
       currentPage: "homeList",
       isLoggedIn: req.session.isLoggedIn,
@@ -34,8 +36,8 @@ exports.getFavouriteList = async (req, res, next) => {
   const userId = req.session.user._id;
   const user = await User.findById(userId).populate("favourites");
   const favouriteHomes = user.favourites;
-  res.render("user/favourite-list", {
-    favouriteHomes: favouriteHomes,
+  res.status(200).json({
+    favouriteHomes,
     pageTitle: "My Favourites",
     currentPage: "favourites",
     isLoggedIn: req.session.isLoggedIn,
@@ -45,8 +47,10 @@ exports.getFavouriteList = async (req, res, next) => {
 
 exports.getBookings = (req, res, next) => {
   Home.find().then((RegisteredHomes) => {
-    res.render("user/bookings", {
-      RegisteredHomes,
+    res.status(200).json({
+      success: true,
+      homes: RegisteredHomes,
+      bookings,
       pageTitle: "Bookings",
       currentPage: "bookings",
       isLoggedIn: req.session.isLoggedIn,
@@ -56,7 +60,7 @@ exports.getBookings = (req, res, next) => {
 };
 
 exports.getAddContact = (req, res, next) => {
-  res.render("user/addContact", {
+  res.status(200).json({
     pageTitle: "Contact Us",
     currentPage: "addContact",
     isLoggedIn: req.session.isLoggedIn,
@@ -72,8 +76,8 @@ exports.getDetails = (req, res, next) => {
       console.log("Home is not found");
       res.redirect("/homes");
     } else {
-      res.render("user/home-detail", {
-        home: home,
+      res.status(200).json({
+        home,
         pageTitle: "Home Detail",
         currentPage: "home-detail",
         isLoggedIn: req.session.isLoggedIn,
@@ -84,7 +88,7 @@ exports.getDetails = (req, res, next) => {
 };
 
 exports.postAddContact = (req, res, next) => {
-  res.render("contactAdded", {
+  res.status(200).json({
     pageTitle: "Thank You",
     currentPage: "contactAdded",
     isLoggedIn: req.session.isLoggedIn,

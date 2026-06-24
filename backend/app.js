@@ -1,14 +1,12 @@
-const path = require("path");
-
 const mongoose = require("mongoose");
 const multer = require("multer");
-const express = require("express");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 require("dotenv").config();
-const os = require("os");
+const express = require("express");
 const app = express();
 const connectDB = require("./config/dbConfig");
+const cors = require("cors");
 
 const rootDir = require("./utils/pathUtil");
 const authRouter = require("./routes/authRouter");
@@ -16,9 +14,6 @@ const userRouter = require("./routes/userRouter");
 const hostRouter = require("./routes/hostRouter");
 const homeController = require("./controller/error");
 const paymentRouter = require("./routes/paymentRouter");
-
-// app.set("view engine", "ejs"); // Set the view engine to EJS
-// app.set("views", "views");
 
 const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
@@ -46,13 +41,15 @@ const multerOptions = {
   },
 };
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(multer(multerOptions).single("houseImg"));
 app.use(express.json());
-app.use(express.static(path.join(rootDir, "public")));
-app.use("/uploads", express.static(path.join(rootDir, "uploads")));
-app.use("/host/uploads", express.static(path.join(rootDir, "uploads")));
-app.use("/homes/uploads", express.static(path.join(rootDir, "uploads")));
 
 app.use(
   session({
@@ -74,19 +71,16 @@ app.use((err, req, res, next) => {
 
 app.use(authRouter);
 app.use(userRouter);
-app.use("/host", (req, res, next) => {
+app.use("/api/host", (req, res, next) => {
   if (req.session.isLoggedIn) {
     return next();
   } else {
     res.redirect("/login");
   }
 });
-app.use("/host", hostRouter);
-
-app.use("/payment", paymentRouter);
+app.use("/api/host", hostRouter);
+app.use("/api/payment", paymentRouter);
 app.locals.razorpayKey = process.env.RAZORPAY_KEY_ID;
-
 app.use(homeController.get404);
-
 
 connectDB(app);
