@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "../api/axios";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import axios from "axios";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
 
 function Login() {
@@ -49,7 +49,7 @@ function Login() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="min-h-screen mt-32">
         {/* Heading */}
@@ -124,7 +124,7 @@ function Login() {
         </div>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
