@@ -33,7 +33,7 @@ function Navbar({ isLoggedIn, user }) {
   // Logout handler
   const handleLogout = async () => {
     try {
-      await axios.post("/auth/logout");
+      await axios.post("http://localhost:1101/logout");
 
       // Optional: remove token/localStorage
       localStorage.removeItem("token");

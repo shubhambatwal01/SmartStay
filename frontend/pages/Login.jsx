@@ -30,7 +30,10 @@ function Login() {
     setErrors([]);
 
     try {
-      const response = await axios.post("/auth/login", formData);
+      const response = await axios.post(
+        "http://localhost:1101/login",
+        formData,
+      );
 
       console.log(response.data);
 

@@ -71,15 +71,15 @@ app.use((err, req, res, next) => {
 
 app.use(authRouter);
 app.use(userRouter);
-app.use("/api/host", (req, res, next) => {
+app.use("/host", (req, res, next) => {
   if (req.session.isLoggedIn) {
     return next();
   } else {
     res.redirect("/login");
   }
 });
-app.use("/api/host", hostRouter);
-app.use("/api/payment", paymentRouter);
+app.use("/host", hostRouter);
+app.use("/payment", paymentRouter);
 app.locals.razorpayKey = process.env.RAZORPAY_KEY_ID;
 app.use(homeController.get404);
 

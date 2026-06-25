@@ -31,7 +31,7 @@ function Home() {
 
   return (
     <>
-      <Navbar currentPage="SmartStay Homes" />
+      <Navbar />
 
       <main className="min-h-screen mt-32">
         {/* Title */}

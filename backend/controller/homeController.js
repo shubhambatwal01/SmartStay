@@ -9,7 +9,7 @@ exports.getIndexHomes = (req, res, next) => {
       success: true,
       homes: RegisteredHomes,
       pageTitle: "SmartStay",
-      currentPage: "SmartStay Homes",
+      currentPage: "IndexHomes",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
     });
