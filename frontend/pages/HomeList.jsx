@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-// import FavouriteButton from "../components/FavouriteButton";
+import FavBtn from "../components/FavBtn";
 
 function HomeList() {
   const [homes, setHomes] = useState([]);
@@ -76,8 +76,7 @@ function HomeList() {
 
                 {/* fav btn */}
                 <div className="flex justify-center items-center gap-2">
-                
-                  {/* <FavouriteButton homeId={home._id} /> */}
+                  <FavBtn homeId={home._id} />
 
                   {/* Details btn */}
                   <Link
