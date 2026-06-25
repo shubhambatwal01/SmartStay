@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import HomeIndex from "../pages/HomeIndex";
 import Signup from "../pages/Signup";
 import HomeList from "../pages/HomeList";
+import FavList from "../pages/FavList";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<HomeIndex />} />
         <Route path="/homes" element={<HomeList />} />
+        <Route path="/favourite-list" element={<FavList />} />
       </Routes>
     </BrowserRouter>
   );

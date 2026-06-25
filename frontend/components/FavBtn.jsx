@@ -7,7 +7,6 @@ function FavBtn({ homeId }) {
   const isLoggedIn = localStorage.getItem("token");
 
   const handleFavourite = async () => {
-    // If user is not logged in
     if (!isLoggedIn) {
       navigate("/login");
       return;
