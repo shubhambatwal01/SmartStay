@@ -5,6 +5,7 @@ import Signup from "../pages/Signup";
 import HomeList from "../pages/HomeList";
 import FavList from "../pages/FavList";
 import HomeDetails from "../pages/HomeDetails";
+import Bookings from "../pages/Bookings";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/homes" element={<HomeList />} />
         <Route path="/homes/:id" element={<HomeDetails />} />
         <Route path="/favourite-list" element={<FavList />} />
+        <Route path="/bookings" element={<Bookings />} />
       </Routes>
     </BrowserRouter>
   );
