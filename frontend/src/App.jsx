@@ -6,6 +6,8 @@ import HomeList from "../pages/HomeList";
 import FavList from "../pages/FavList";
 import HomeDetails from "../pages/HomeDetails";
 import Bookings from "../pages/Bookings";
+import AddContact from "../pages/AddContact";
+import ContactAdded from "../pages/ContactAdded";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/homes/:id" element={<HomeDetails />} />
         <Route path="/favourite-list" element={<FavList />} />
         <Route path="/bookings" element={<Bookings />} />
+        <Route path="/addContact" element={<AddContact />} />
+        <Route path="/addContact" element={<ContactAdded />} />
       </Routes>
     </BrowserRouter>
   );
