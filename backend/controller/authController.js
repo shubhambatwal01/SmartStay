@@ -145,7 +145,7 @@ exports.postSignup = [
     const { fullName, email, password, userType } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(422).json({
+      return res.status().json({
         message: "Post SignUp API",
         pageTitle: "Signup",
         currentPage: "Signup",
