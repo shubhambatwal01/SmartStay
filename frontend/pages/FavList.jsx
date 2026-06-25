@@ -16,7 +16,7 @@ function FavList() {
 
   const fetchFavourites = async () => {
     try {
-      const response = await axios.get("/favourites");
+      const response = await axios.get("http://localhost:1101/favourite-list");
 
       setFavouriteHomes(response.data.favouriteHomes || []);
     } catch (error) {
