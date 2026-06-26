@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
 
 function AddHome() {
-  const { id } = useParams(); // present only during edit
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const editing = Boolean(id);
@@ -17,9 +17,11 @@ function AddHome() {
     houseName: "",
     houseAddr: "",
     housePrice: "",
-    houseImg: "",
     houseDesc: "",
   });
+
+  const [houseImg, setHouseImg] = useState(null);
+  const [previewImage, setPreviewImage] = useState("");
 
   useEffect(() => {
     if (editing) {
@@ -33,17 +35,16 @@ function AddHome() {
         `http://localhost:1101/host/host-home/${id}`,
       );
 
-      const home = response.data.home;
-      console.log(response.data);
-      console.log(response.data.home);
+      const home = response.data.home || response.data;
 
       setFormData({
         houseName: home.houseName || "",
         houseAddr: home.houseAddr || "",
         housePrice: home.housePrice || "",
-        houseImg: home.houseImg || "",
         houseDesc: home.houseDesc || "",
       });
+
+      setPreviewImage(home.houseImg || "");
     } catch (error) {
       console.log(error);
       setErrors(["Unable to fetch home details"]);
@@ -57,18 +58,46 @@ function AddHome() {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setHouseImg(file);
+
+    // img preview
+    setPreviewImage(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setErrors([]);
 
     try {
+      const data = new FormData();
+
+      data.append("houseName", formData.houseName);
+      data.append("houseAddr", formData.houseAddr);
+      data.append("housePrice", formData.housePrice);
+      data.append("houseDesc", formData.houseDesc);
+
+      if (houseImg) {
+        data.append("houseImg", houseImg);
+      }
+
       if (editing) {
-        // Edit
-        await axios.put(`http://localhost:1101/host/edit-home/${id}`, formData);
+        await axios.put(`http://localhost:1101/host/edit-home/${id}`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       } else {
-        // Add Home
-        await axios.post("http://localhost:1101/host/add-home", formData);
+        await axios.post("http://localhost:1101/host/add-home", data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       }
 
       navigate("/host-home");
@@ -95,6 +124,7 @@ function AddHome() {
         <div className="flex justify-center">
           <form
             onSubmit={handleSubmit}
+            encType="multipart/form-data"
             className="bg-white p-8 rounded shadow-md w-full max-w-md"
           >
             {errors.length > 0 && <ErrorMessage errors={errors} />}
@@ -154,27 +184,37 @@ function AddHome() {
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
 
+              {/* Img */}
               <label
                 htmlFor="houseImg"
                 className="block text-gray-700 font-semibold m-2"
               >
-                House Image URL
+                House Image
               </label>
 
               <input
-                type="url"
+                type="file"
                 id="houseImg"
                 name="houseImg"
-                value={formData.houseImg}
-                onChange={handleChange}
-                placeholder="Enter the image URL of your house"
-                required
+                accept="image/jpg, image/jpeg, image/png"
+                onChange={handleImageChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
 
+              {/* Preview Img */}
+              {previewImage && (
+                <div className="mt-4">
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className="w-full h-52 object-cover rounded"
+                  />
+                </div>
+              )}
+
               <label
                 htmlFor="houseDesc"
-                className="block text-gray-700 font-semibold m-2"
+                className="block text-gray-700 font-semibold m-2 mt-4"
               >
                 House Description
               </label>
