@@ -9,6 +9,7 @@ import Bookings from "../pages/Bookings";
 import AddContact from "../pages/AddContact";
 import ContactAdded from "../pages/ContactAdded";
 import AddHome from "../pages/AddHome";
+import HostHome from "../pages/HostHome";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/add-home" element={<AddHome />} />
         <Route path="/edit-home" element={<AddHome />} />
         <Route path="/edit-home/:id" element={<AddHome />} />
+        <Route path="/host-home" element={<HostHome />} />
       </Routes>
     </BrowserRouter>
   );
