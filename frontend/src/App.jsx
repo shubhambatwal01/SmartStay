@@ -8,6 +8,7 @@ import HomeDetails from "../pages/HomeDetails";
 import Bookings from "../pages/Bookings";
 import AddContact from "../pages/AddContact";
 import ContactAdded from "../pages/ContactAdded";
+import AddHome from "../pages/AddHome";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/addContact" element={<AddContact />} />
         <Route path="/addContact" element={<ContactAdded />} />
+        <Route path="/add-home" element={<AddHome />} />
+        <Route path="/edit-home" element={<AddHome />} />
+        <Route path="/edit-home/:id" element={<AddHome />} />
       </Routes>
     </BrowserRouter>
   );

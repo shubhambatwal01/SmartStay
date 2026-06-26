@@ -61,6 +61,7 @@ exports.getBookings = (req, res, next) => {
 
 exports.getAddContact = (req, res, next) => {
   res.status(200).json({
+    message: "Get AddContact API",
     pageTitle: "Contact Us",
     currentPage: "addContact",
     isLoggedIn: req.session.isLoggedIn,
@@ -89,6 +90,7 @@ exports.getDetails = (req, res, next) => {
 
 exports.postAddContact = (req, res, next) => {
   res.status(200).json({
+    message: "Post AddContact API",
     pageTitle: "Thank You",
     currentPage: "contactAdded",
     isLoggedIn: req.session.isLoggedIn,

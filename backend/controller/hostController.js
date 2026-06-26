@@ -15,7 +15,7 @@ const streamUpload = (buffer, folder = "SmartStayHomes") => {
 };
 
 exports.getAddHome = (req, res, next) => {
-  resres.json({
+  res.json({
     message: "Add Home Page",
     pageTitle: "Add Home",
     currentPage: "addHome",
@@ -34,7 +34,7 @@ exports.getEditHome = async (req, res, next) => {
   if (!home) {
     return res.status(403).send("Unauthorized");
   }
-  resres.json({
+  res.json({
     message: "Edit Home Page",
     pageTitle: "Edit Home",
     currentPage: "editHome",
@@ -51,7 +51,7 @@ exports.getHostHome = async (req, res, next) => {
     owner: req.session.user._id,
   });
 
-  resres.json({
+  res.json({
     message: "Host Home Page",
     pageTitle: "My Homes",
     currentPage: "hostHome",
