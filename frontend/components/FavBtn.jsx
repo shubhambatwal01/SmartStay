@@ -1,10 +1,11 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../src/AuthContext";
 
 function FavBtn({ homeId }) {
   const navigate = useNavigate();
-
-  const isLoggedIn = localStorage.getItem("token");
+  const { isLoggedIn } = useContext(AuthContext);
 
   const handleFavourite = async () => {
     if (!isLoggedIn) {
@@ -13,7 +14,7 @@ function FavBtn({ homeId }) {
     }
 
     try {
-      await axios.post("http://localhost:1101/favourite-list", {
+      await axios.post("http://localhost:1101/favourites", {
         id: homeId,
       });
 

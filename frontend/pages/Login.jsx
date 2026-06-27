@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
+import { AuthContext } from "../src/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   // Equivalent to oldInput in EJS
   const [formData, setFormData] = useState({
@@ -33,12 +35,14 @@ function Login() {
       const response = await axios.post(
         "http://localhost:1101/login",
         formData,
+        { withCredentials: true },
       );
 
       console.log(response.data);
+      login(response.data.user);
 
       // Redirect after successful login
-      navigate("/");
+      navigate(response.data.redirect || "/homes");
     } catch (error) {
       console.log(error);
 
@@ -82,6 +86,7 @@ function Login() {
                 id="email"
                 name="email"
                 placeholder="Enter your Email"
+                autoComplete="username"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -100,6 +105,7 @@ function Login() {
                 type="password"
                 id="password"
                 name="password"
+                autoComplete="current-password"
                 placeholder="Enter your Password"
                 value={formData.password}
                 onChange={handleChange}

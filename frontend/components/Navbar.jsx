@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../src/AuthContext";
 
-function Navbar({ isLoggedIn, user }) {
+function Navbar() {
+  const { isLoggedIn, user, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
@@ -33,11 +35,8 @@ function Navbar({ isLoggedIn, user }) {
   // Logout handler
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:1101/logout");
-
-      // Optional: remove token/localStorage
-      localStorage.removeItem("token");
-
+      await axios.post("http://localhost:1101/logout", {}, { withCredentials: true });
+      logout();
       navigate("/login");
     } catch (error) {
       console.log(error);

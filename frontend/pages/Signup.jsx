@@ -22,6 +22,7 @@ function Signup() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(e.target);
 
     setFormData((prev) => ({
       ...prev,
@@ -46,7 +47,10 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post("http://localhost:1101/signup", formData);
+      const response = await axios.post(
+        "http://localhost:1101/signup",
+        formData,
+      );
 
       console.log(response.data);
 
@@ -118,6 +122,7 @@ function Signup() {
                 id="email"
                 name="email"
                 placeholder="Enter your Email"
+                autoComplete="username"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -125,7 +130,6 @@ function Signup() {
               />
             </div>
 
-            {/* Password Fields */}
             <div className="grid gap-6 md:grid-cols-2 mb-6">
               <div>
                 <label
@@ -139,6 +143,7 @@ function Signup() {
                   type="password"
                   id="password"
                   name="password"
+                  autoComplete="new-password"
                   placeholder="Enter your Password"
                   value={formData.password}
                   onChange={handleChange}
@@ -159,6 +164,7 @@ function Signup() {
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
+                  autoComplete="new-password"
                   placeholder="Confirm your Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}

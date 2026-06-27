@@ -52,18 +52,26 @@ exports.postLogin = async (req, res, next) => {
   }
   req.session.isLoggedIn = true;
   req.session.user = user;
-  // Save session before redirect
+  // Save session before returning JSON
   await req.session.save((err) => {
     if (err) {
       console.log(err);
       return next(err);
     }
 
-    if (user.userType === "admin") {
-      return res.redirect("/host/host-home");
-    } else if (user.userType === "user") {
-      return res.redirect("/homes");
-    }
+    const safeUser = {
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      userType: user.userType,
+    };
+
+    return res.status(200).json({
+      success: true,
+      isLoggedIn: true,
+      user: safeUser,
+      redirect: user.userType === "admin" ? "/host/host-home" : "/homes",
+    });
   });
 };
 

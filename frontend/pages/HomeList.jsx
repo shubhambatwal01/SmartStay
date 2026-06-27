@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FavBtn from "../components/FavBtn";
+import { AuthContext } from "../src/AuthContext";
 
 function HomeList() {
   const [homes, setHomes] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const isLoggedIn = localStorage.getItem("token"); //later replaxe with redux
+  const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchHomes = async () => {
@@ -29,7 +29,6 @@ function HomeList() {
 
   return (
     <>
-      {/* nav */}
       <Navbar currentPage="homeList" />
 
       <main className="min-h-screen mt-16">
