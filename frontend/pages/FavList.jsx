@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -16,7 +16,9 @@ function FavList() {
 
   const fetchFavourites = async () => {
     try {
-      const response = await axios.get("http://localhost:1101/favourites");
+      const response = await axios.get("http://localhost:1101/favourites", {
+        withCredentials: true,
+      });
 
       setFavouriteHomes(response.data.favouriteHomes || []);
     } catch (error) {
@@ -28,7 +30,9 @@ function FavList() {
 
   const handleDelete = async (homeId) => {
     try {
-      await axios.delete(`http://localhost:1101/favourites/delete/${homeId}`);
+      await axios.delete(`http://localhost:1101/favourites/delete/${homeId}`, {
+        withCredentials: true,
+      });
 
       setFavouriteHomes((prevHomes) =>
         prevHomes.filter((home) => home._id !== homeId),
@@ -43,7 +47,6 @@ function FavList() {
       <Navbar />
 
       <main className="min-h-screen mt-16">
-
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
           My Favourites:
         </h1>
@@ -65,7 +68,6 @@ function FavList() {
                 key={home._id}
                 className="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center"
               >
-
                 <div className="text-5xl text-[#ff5a5f] m-2">
                   <img
                     src={home.houseImg}

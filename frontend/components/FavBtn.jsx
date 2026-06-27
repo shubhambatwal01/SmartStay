@@ -14,11 +14,13 @@ function FavBtn({ homeId }) {
     }
 
     try {
-      await axios.post("http://localhost:1101/favourites", {
-        id: homeId,
-      });
-
-      alert("Added to favourites");
+      await axios.post(
+        "http://localhost:1101/favourites",
+        { id: homeId },
+        { withCredentials: true },
+      );
+      navigate("/favourites");
+      alert(`Home is Added to favourites`);
     } catch (error) {
       console.error("Error adding favourite:", error);
       alert("Unable to add favourite");

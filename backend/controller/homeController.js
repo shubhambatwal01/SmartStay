@@ -34,6 +34,7 @@ exports.getHomes = (req, res, next) => {
 
 exports.getFavouriteList = async (req, res, next) => {
   const userId = req.session.user._id;
+  console.log(userId);
   console.log(req.session.user._id);
   const user = await User.findById(userId).populate("favourites");
   const favouriteHomes = user.favourites;
@@ -118,7 +119,10 @@ exports.postDeleteFavourite = async (req, res, next) => {
     user.favourites.pull(homeId);
     await user.save();
   }
-  res.redirect("/favourites");
+  res.status(200).json({
+    success: true,
+    message: "Favourite removed",
+  });
 };
 
 // exports.RegisteredHomes = RegisteredHomes;
