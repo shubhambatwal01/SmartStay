@@ -60,15 +60,6 @@ app.use(
   }),
 );
 
-app.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError) {
-    if (err.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).send("File size should be 500 KB");
-    }
-  }
-  next(err);
-});
-
 app.use(authRouter);
 app.use(userRouter);
 app.use("/host", (req, res, next) => {

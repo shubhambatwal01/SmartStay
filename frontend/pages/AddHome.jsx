@@ -62,13 +62,18 @@ function AddHome() {
   };
 
   const handleImageChange = (e) => {
+    setErrors([]);
+
     const file = e.target.files[0];
 
     if (!file) return;
 
-    setHouseImg(file);
+    if (file.size > 500 * 1024) {
+      setErrors(["File size should be less than 500 KB"]);
+      return;
+    }
 
-    // img preview
+    setHouseImg(file);
     setPreviewImage(URL.createObjectURL(file));
   };
 
