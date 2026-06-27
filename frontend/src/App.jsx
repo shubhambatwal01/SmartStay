@@ -24,10 +24,10 @@ function App() {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/addContact" element={<AddContact />} />
         <Route path="/addContact" element={<ContactAdded />} />
-        <Route path="/add-home" element={<AddHome />} />
-        <Route path="/edit-home" element={<AddHome />} />
-        <Route path="/edit-home/:id" element={<AddHome />} />
-        <Route path="/host-home" element={<HostHome />} />
+        <Route path="/host/add-home" element={<AddHome />} />
+        <Route path="/host/edit-home" element={<AddHome />} />
+        <Route path="/host/edit-home/:id" element={<AddHome />} />
+        <Route path="/host/host-home" element={<HostHome />} />
       </Routes>
     </BrowserRouter>
   );

@@ -99,7 +99,7 @@ function Navbar() {
           {isLoggedIn && user?.userType === "admin" && (
             <>
               <li>
-                <NavLink to="/host/homes" className={navClass}>
+                <NavLink to="/host/host-home" className={navClass}>
                   HOST HOME
                 </NavLink>
               </li>

@@ -14,7 +14,9 @@ function HostHome() {
 
   const fetchHomes = async () => {
     try {
-      const response = await axios.get("http://localhost:1101/host/host-home");
+      const response = await axios.get("http://localhost:1101/host/host-home", {
+        withCredentials: true,
+      });
 
       setHomes(response.data.homes || response.data);
     } catch (error) {
@@ -65,7 +67,6 @@ function HostHome() {
                 key={home._id}
                 className="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center"
               >
-
                 <div className="text-5xl text-[#ff5a5f] m-2">
                   <img
                     src={home.houseImg}

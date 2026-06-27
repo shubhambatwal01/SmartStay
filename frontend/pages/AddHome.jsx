@@ -32,7 +32,10 @@ function AddHome() {
   const fetchHome = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:1101/host/host-home/${id}`,
+        `http://localhost:1101/host/edit-home/${id}`,
+        {
+          withCredentials: true,
+        },
       );
 
       const home = response.data.home || response.data;
@@ -82,25 +85,31 @@ function AddHome() {
       data.append("housePrice", formData.housePrice);
       data.append("houseDesc", formData.houseDesc);
 
+      if (editing) {
+        data.append("id", id);
+      }
+
       if (houseImg) {
         data.append("houseImg", houseImg);
       }
 
       if (editing) {
-        await axios.put(`http://localhost:1101/host/edit-home/${id}`, data, {
+        await axios.post("http://localhost:1101/host/edit-home", data, {
+          withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
       } else {
         await axios.post("http://localhost:1101/host/add-home", data, {
+          withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
       }
 
-      navigate("/host-home");
+      navigate("/host/host-home");
     } catch (error) {
       console.log(error);
 

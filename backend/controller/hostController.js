@@ -100,6 +100,14 @@ exports.postEditHome = async (req, res) => {
     _id: id,
     owner: req.session.user._id,
   });
+
+  if (!home) {
+    return res.status(404).json({
+      success: false,
+      message: "Home not found or unauthorized",
+    });
+  }
+
   home.houseName = houseName;
   home.houseAddr = houseAddr;
   home.houseDesc = houseDesc;
