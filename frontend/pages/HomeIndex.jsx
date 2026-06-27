@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { TailSpin } from "react-loader-spinner";
+import Loader from "../components/loader";
 
 function Home() {
   const [homes, setHomes] = useState([]);
@@ -34,13 +36,12 @@ function Home() {
       <Navbar />
 
       <main className="min-h-screen mt-32">
-        {/* Title */}
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
           Welcome to SmartStay Homes
         </h1>
 
         {loading ? (
-          <h2 className="text-center text-lg">Loading homes...</h2>
+          <Loader />
         ) : homes.length === 0 ? (
           <h2 className="text-center text-lg">No homes available.</h2>
         ) : (
@@ -50,7 +51,6 @@ function Home() {
                 key={home._id}
                 className="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center"
               >
-                {/* img */}
                 <div className="text-5xl text-[#ff5a5f] m-2">
                   <img
                     src={home.houseImg}
@@ -59,23 +59,19 @@ function Home() {
                   />
                 </div>
 
-                {/* name */}
                 <h2 className="text-2xl font-bold text-[#ff5a5f] mb-2 text-center">
                   {home.houseName} House
                 </h2>
 
-                {/* home address */}
                 <p className="text-[#ff5a5f] mb-2 text-center">
                   <i className="fas fa-map-marker-alt mr-1"></i>
                   {home.houseAddr}
                 </p>
 
-                {/* price */}
                 <p className="text-lg font-semibold text-[#ff5a5f] mb-2 text-center">
                   ₹{home.housePrice} /night
                 </p>
 
-                {/* details btn */}
                 <div className="flex justify-center items-center gap-2">
                   <Link
                     to={isLoggedIn ? `/homes/${home._id}` : "/login"}

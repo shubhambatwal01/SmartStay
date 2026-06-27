@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Loader from "../components/loader";
 
 function HostHome() {
   const [homes, setHomes] = useState([]);
@@ -59,9 +60,7 @@ function HostHome() {
         </h1>
 
         {loading ? (
-          <div className="flex justify-center items-center">
-            <p className="text-xl">Loading...</p>
-          </div>
+          <Loader />
         ) : homes.length === 0 ? (
           <div className="flex justify-center items-center">
             <p className="text-2xl font-bold text-red-500">No home found.</p>

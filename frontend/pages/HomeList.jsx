@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FavBtn from "../components/FavBtn";
 import { AuthContext } from "../src/AuthContext";
+import Loader from "../components/loader";
 
 function HomeList() {
   const [homes, setHomes] = useState([]);
@@ -38,7 +39,7 @@ function HomeList() {
         </h1>
 
         {loading ? (
-          <h2 className="text-center text-lg">Loading homes...</h2>
+          <Loader/>
         ) : homes.length === 0 ? (
           <h2 className="text-center text-lg">No homes available.</h2>
         ) : (

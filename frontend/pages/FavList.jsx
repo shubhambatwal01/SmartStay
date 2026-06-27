@@ -3,6 +3,7 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Loader from "../components/loader";
 
 function FavList() {
   const [favouriteHomes, setFavouriteHomes] = useState([]);
@@ -52,9 +53,7 @@ function FavList() {
         </h1>
 
         {loading ? (
-          <div className="flex justify-center items-center">
-            <p className="text-xl">Loading...</p>
-          </div>
+          <Loader />
         ) : favouriteHomes.length === 0 ? (
           <div className="flex justify-center items-center">
             <p className="text-2xl font-bold text-red-500">
