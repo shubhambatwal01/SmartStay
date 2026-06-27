@@ -34,7 +34,13 @@ function HostHome() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:1101/host/delete-home/${homeId}`);
+      await axios.post(
+        `http://localhost:1101/host/delete-home/${homeId}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
 
       setHomes((prevHomes) => prevHomes.filter((home) => home._id !== homeId));
     } catch (error) {
