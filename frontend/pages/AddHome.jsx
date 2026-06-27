@@ -4,6 +4,8 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
+import { TailSpin } from "react-loader-spinner";
+import Loader from "../components/loader";
 
 function AddHome() {
   const { id } = useParams();
@@ -12,6 +14,7 @@ function AddHome() {
   const editing = Boolean(id);
 
   const [errors, setErrors] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     houseName: "",
@@ -81,6 +84,7 @@ function AddHome() {
     e.preventDefault();
 
     setErrors([]);
+    setSubmitting(true);
 
     try {
       const data = new FormData();
@@ -123,6 +127,8 @@ function AddHome() {
       } else {
         setErrors(["Something went wrong"]);
       }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -247,9 +253,17 @@ function AddHome() {
 
             <button
               type="submit"
-              className="w-full bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-bold py-2 px-4 rounded transition-colors"
+              disabled={submitting}
+              className="w-full bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {editing ? "Update Home" : "Add Home"}
+              {submitting ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader fullscreen={false} />
+                  {editing ? "Updating..." : "Adding..."}
+                </span>
+              ) : (
+                <>{editing ? "Update Home" : "Add Home"}</>
+              )}
             </button>
           </form>
         </div>

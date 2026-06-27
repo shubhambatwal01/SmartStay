@@ -58,7 +58,7 @@ function AddContact() {
     <>
       <Navbar />
 
-      <main className="min-h-screen mt-16">
+      <main className="min-h-screen mt-32">
         <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
           Contact Us
         </h1>

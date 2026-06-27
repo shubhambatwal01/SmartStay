@@ -6,7 +6,7 @@ function Bookings() {
     <>
       <Navbar />
 
-      <main className="min-h-screen mt-16">
+      <main className="min-h-screen mt-32">
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
           My Bookings :
         </h1>

@@ -8,6 +8,7 @@ import Loader from "../components/loader";
 function HostHome() {
   const [homes, setHomes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchHomes();
@@ -31,6 +32,7 @@ function HostHome() {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this home?",
     );
+    setDeleting(true);
 
     if (!confirmDelete) return;
 
@@ -54,7 +56,7 @@ function HostHome() {
     <>
       <Navbar />
 
-      <main className="min-h-screen mt-16">
+      <main className="min-h-screen mt-32">
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
           Hey Host! Here are your homes :
         </h1>
@@ -101,11 +103,20 @@ function HostHome() {
                     Edit
                   </Link>
 
+                  {/* delete in maintenance */}
                   <button
                     onClick={() => handleDelete(home._id)}
-                    className="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition"
+                    disabled={deleting}
+                    className="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Delete
+                    {deleting ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <Loader fullscreen={false} />
+                        {"Deleting..."}
+                      </span>
+                    ) : (
+                      <>{"Delete"}</>
+                    )}
                   </button>
                 </div>
               </li>

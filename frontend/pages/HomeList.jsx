@@ -32,14 +32,14 @@ function HomeList() {
     <>
       <Navbar currentPage="homeList" />
 
-      <main className="min-h-screen mt-16">
+      <main className="min-h-screen mt-32">
         {/* Title */}
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
           Explore Our Registered Houses :
         </h1>
 
         {loading ? (
-          <Loader/>
+          <Loader />
         ) : homes.length === 0 ? (
           <h2 className="text-center text-lg">No homes available.</h2>
         ) : (

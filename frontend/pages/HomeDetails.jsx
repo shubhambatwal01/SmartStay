@@ -4,6 +4,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FavBtn from "../components/FavBtn";
+import Loader from "../components/loader";
 
 function HomeDetails() {
   const { id } = useParams();
@@ -33,8 +34,8 @@ function HomeDetails() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen mt-16 flex justify-center items-center">
-          <h1 className="text-2xl">Loading...</h1>
+        <main className="min-h-screen mt-32 flex justify-center items-center">
+          <Loader />
         </main>
         <Footer />
       </>
@@ -45,7 +46,7 @@ function HomeDetails() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen mt-16 flex justify-center items-center">
+        <main className="min-h-screen mt-32 flex justify-center items-center">
           <h1 className="text-2xl text-red-500">Home not found.</h1>
         </main>
         <Footer />
@@ -57,15 +58,13 @@ function HomeDetails() {
     <>
       <Navbar />
 
-      <main className="min-h-screen mt-16">
-
+      <main className="min-h-screen mt-32">
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
           Your Home Detail :
         </h1>
 
         <div className="mt-10 max-w-full mx-auto p-4 bg-gray-100 rounded">
           <div className="flex flex-col md:flex-row md:items-start gap-8">
-
             <img
               src={home.houseImg}
               alt={home.houseName}

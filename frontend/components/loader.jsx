@@ -1,13 +1,20 @@
 import { TailSpin } from "react-loader-spinner";
-import {useState} from 'react'
+import { useState } from "react";
 
-function Loader() {
-  const [loading, setLoading] = useState(true);
+function Loader({ fullscreen = true }) {
+  const [loading] = useState(true);
+
   return (
-    <div className="min-h-[60vh] flex items-center justify-center">
+    <div
+      className={
+        fullscreen
+          ? "min-h-screen w-full flex items-center justify-center"
+          : "flex items-center justify-center"
+      }
+    >
       <TailSpin
-        height="100"
-        width="60"
+        height={fullscreen ? "100" : "20"}
+        width={fullscreen ? "80" : "20"}
         color="#ff5a5f"
         ariaLabel="tail-spin-loading"
         visible={loading}
