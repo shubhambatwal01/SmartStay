@@ -19,7 +19,7 @@ function HomeDetails() {
 
   const fetchHomeDetails = async () => {
     try {
-      const response = await axios.get(`/homes/${id}`);
+      const response = await axios.get(`http://localhost:1101/homes/${id}`);
 
       setHome(response.data.home);
     } catch (error) {
