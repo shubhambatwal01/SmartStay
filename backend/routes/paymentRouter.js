@@ -1,6 +1,6 @@
 const express = require("express");
 const PaymentRouter = express.Router();
-const razorpay = require("../utils/razorpay");
+const paymentController = require("../controller/paymentController");
 
 router.post("/create-order", paymentController.createOrder);
 
