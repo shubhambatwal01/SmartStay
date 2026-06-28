@@ -110,7 +110,7 @@ function HomeDetails() {
                     <FavBtn homeId={home._id} />
 
                     <Link
-                      to={`/bookings/${home._id}`}
+                      to={`/payment`}
                       className="mt-8 bg-[#ff5a5f] text-white px-4 py-2 rounded hover:bg-[#ff4b51]"
                     >
                       Book Now
