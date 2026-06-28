@@ -1,5 +1,5 @@
 const Home = require("../models/home");
-const cloudinary = require("../utils/cloudinaryConfig");
+const cloudinary = require("../config/cloudinaryConfig");
 
 const streamUpload = (buffer, folder = "SmartStayHomes") => {
   return new Promise((resolve, reject) => {

@@ -1,6 +1,5 @@
 const hostRouter = require("express").Router();
 const path = require("path");
-const rootDir = require("../utils/pathUtil"); // Local Module
 const homeController = require("../controller/homeController");
 const hostController = require("../controller/hostController");
 

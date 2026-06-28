@@ -1,6 +1,5 @@
 const path = require("path"); // Core Module
 const userRouter = require("express").Router(); // External Module
-const rootDir = require("../utils/pathUtil"); // Local Module
 const { RegisteredHomes } = require("./hostRouter");
 const homeController = require("../controller/homeController");
 

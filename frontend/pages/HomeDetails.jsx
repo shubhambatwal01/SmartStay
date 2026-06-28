@@ -30,6 +30,49 @@ function HomeDetails() {
     }
   };
 
+  const handlePayment = async () => {
+    try {
+      const { data: order } = await axios.post(
+        "http://localhost:1101/payment/create-order",
+        {
+          amount: home.housePrice,
+        },
+      );
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+        amount: order.amount,
+        currency: order.currency,
+
+        name: "SmartStay",
+        description: "Home Booking",
+
+        order_id: order.id,
+
+        handler: function (response) {
+          alert("Payment Successful");
+
+          console.log(response);
+        },
+
+        prefill: {
+          name: user.fullName,
+          email: user.email,
+        },
+
+        theme: {
+          color: "#ff5a5f",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+
+      razorpay.open();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -109,12 +152,12 @@ function HomeDetails() {
                   <>
                     <FavBtn homeId={home._id} />
 
-                    <Link
-                      to={`/payment`}
+                    <button
+                      onClick={handlePayment}
                       className="mt-8 bg-[#ff5a5f] text-white px-4 py-2 rounded hover:bg-[#ff4b51]"
                     >
                       Book Now
-                    </Link>
+                    </button>
                   </>
                 )}
               </div>

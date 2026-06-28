@@ -1,4 +1,5 @@
 const razorpay = require("../config/razorpay");
+const crypto = require("crypto");
 
 exports.createOrder = async (req, res) => {
   try {
@@ -18,4 +19,26 @@ exports.createOrder = async (req, res) => {
       message: "Unable to create order",
     });
   }
+};
+
+exports.verifyPayment = (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    req.body;
+
+  const generatedSignature = crypto
+    .createHmac("shubz1101", process.env.RAZORPAY_KEY_SECRET)
+    .update(razorpay_order_id + "|" + razorpay_payment_id)
+    .digest("hex");
+
+  if (generatedSignature === razorpay_signature) {
+    return res.status(200).json({
+      success: true,
+      message: "Payment Verified",
+    });
+  }
+
+  res.status(400).json({
+    success: false,
+    message: "Invalid Payment",
+  });
 };

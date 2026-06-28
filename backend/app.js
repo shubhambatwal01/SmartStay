@@ -8,7 +8,6 @@ const app = express();
 const connectDB = require("./config/dbConfig");
 const cors = require("cors");
 
-const rootDir = require("./utils/pathUtil");
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const hostRouter = require("./routes/hostRouter");
