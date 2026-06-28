@@ -19,7 +19,6 @@ exports.getLogin = (req, res, next) => {
 
 exports.postLogin = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log("Login attempt with:", { email, password });
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(422).json({
@@ -36,7 +35,6 @@ exports.postLogin = async (req, res, next) => {
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
-  console.log("Password match result:", password, user.password, passwordMatch);
   if (!passwordMatch) {
     return res.status(422).json({
       message: "Password Match API",

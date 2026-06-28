@@ -17,7 +17,6 @@ exports.getIndexHomes = (req, res, next) => {
 };
 
 exports.getHomes = (req, res, next) => {
-  console.log("Sesion Object :", req.session);
   Home.find().then((RegisteredHomes) => {
     res.status(200).json({
       success: true,
