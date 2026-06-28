@@ -12,7 +12,7 @@ function HomeDetails() {
   const [home, setHome] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
     fetchHomeDetails();

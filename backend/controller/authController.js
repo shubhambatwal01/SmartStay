@@ -82,6 +82,7 @@ exports.postLogout = (req, res, next) => {
       message: "User LoggedOut Successfully",
     });
   });
+  res.clearCookie("connect.sid");
 };
 
 exports.getSignup = (req, res, next) => {
