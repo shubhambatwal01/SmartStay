@@ -115,7 +115,7 @@ function HostHome() {
                     {deleting === home._id ? (
                       <span className="flex items-center justify-center gap-2">
                         <Loader fullscreen={false} />
-                        {`Deleting...`}
+                        {`Deleting`}
                       </span>
                     ) : (
                       <>{"Delete"}</>

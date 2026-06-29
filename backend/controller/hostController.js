@@ -62,7 +62,22 @@ exports.getHostHome = async (req, res, next) => {
 };
 
 exports.postAddHome = async (req, res) => {
-  const { houseName, houseAddr, houseDesc, housePrice } = req.body;
+  console.log(req.body);
+  const {
+    houseName,
+    houseAddr,
+    houseDesc,
+    housePrice,
+    bhk,
+    wifi,
+    washingMachine,
+    caretaker,
+    kitchen,
+    parking,
+    ac,
+    smartTv,
+    attachedBathroom,
+  } = req.body;
 
   // console.log(req.file);
 
@@ -80,6 +95,15 @@ exports.postAddHome = async (req, res) => {
       // houseImgId: result.public_id,
       houseDesc: houseDesc,
       housePrice: housePrice,
+      bhk: bhk,
+      wifi: wifi,
+      washingMachine: washingMachine,
+      caretaker: caretaker,
+      kitchen: kitchen,
+      parking: parking,
+      ac: ac,
+      smartTv: smartTv,
+      attachedBathroom: attachedBathroom,
       owner: req.session.user._id,
     });
 
@@ -95,7 +119,22 @@ exports.postAddHome = async (req, res) => {
 };
 
 exports.postEditHome = async (req, res) => {
-  const { id, houseName, houseAddr, houseDesc, housePrice } = req.body;
+  const {
+    id,
+    houseName,
+    houseAddr,
+    houseDesc,
+    housePrice,
+    bhk,
+    wifi,
+    washingMachine,
+    caretaker,
+    kitchen,
+    parking,
+    ac,
+    smartTv,
+    attachedBathroom,
+  } = req.body;
   const home = await Home.findOne({
     _id: id,
     owner: req.session.user._id,
@@ -112,6 +151,15 @@ exports.postEditHome = async (req, res) => {
   home.houseAddr = houseAddr;
   home.houseDesc = houseDesc;
   home.housePrice = housePrice;
+  home.bhk = bhk;
+  home.wifi = wifi;
+  home.washingMachine = washingMachine;
+  home.caretaker = caretaker;
+  home.kitchen = kitchen;
+  home.parking = parking;
+  home.ac = ac;
+  home.smartTv = smartTv;
+  home.attachedBathroom = attachedBathroom;
 
   if (req.file) {
     if (home.houseImg) {

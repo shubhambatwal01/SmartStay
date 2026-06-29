@@ -1,101 +1,59 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import FavBtn from "../components/FavBtn";
 import Loader from "../components/loader";
 
-function HomeDetails() {
-  const { id } = useParams();
-
-  const [home, setHome] = useState(null);
+function HostHome() {
+  const [homes, setHomes] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const [deleting, setDeleting] = useState(null);
 
   useEffect(() => {
-    fetchHomeDetails();
+    fetchHomes();
   }, []);
 
-  const fetchHomeDetails = async () => {
+  const fetchHomes = async () => {
     try {
-      const response = await axios.get(`http://localhost:1101/homes/${id}`);
+      const response = await axios.get("http://localhost:1101/host/host-home", {
+        withCredentials: true,
+      });
 
-      setHome(response.data.home);
+      setHomes(response.data.homes || response.data);
     } catch (error) {
-      console.error("Error fetching home details:", error);
+      console.log("Error fetching homes:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handlePayment = async () => {
+  const handleDelete = async (homeId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this home?",
+    );
+
+    if (!confirmDelete) return;
+
+    setDeleting(homeId);
+
     try {
-      const { data: order } = await axios.post(
-        "http://localhost:1101/payment/create-order",
+      await axios.post(
+        `http://localhost:1101/host/delete-home/${homeId}`,
+        {},
         {
-          amount: home.housePrice,
+          withCredentials: true,
         },
       );
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
 
-        amount: order.amount,
-        currency: order.currency,
-
-        name: "SmartStay",
-        description: "Home Booking",
-
-        order_id: order.id,
-
-        handler: function (response) {
-          alert("Payment Successful");
-
-          console.log(response);
-        },
-
-        prefill: {
-          name: user.fullName,
-          email: user.email,
-        },
-
-        theme: {
-          color: "#ff5a5f",
-        },
-      };
-
-      const razorpay = new window.Razorpay(options);
-
-      razorpay.open();
-    } catch (err) {
-      console.log(err);
+      setHomes((prevHomes) => prevHomes.filter((home) => home._id !== homeId));
+    } catch (error) {
+      console.log("Error deleting home:", error);
+      alert("Failed to delete home");
+    } finally {
+      setDeleting(null);
     }
   };
-
-  if (loading) {
-    return (
-      <>
-        <Navbar />
-        <main className="min-h-screen mt-32 flex justify-center items-center">
-          <Loader />
-        </main>
-        <Footer />
-      </>
-    );
-  }
-
-  if (!home) {
-    return (
-      <>
-        <Navbar />
-        <main className="min-h-screen mt-32 flex justify-center items-center">
-          <h1 className="text-2xl text-red-500">Home not found.</h1>
-        </main>
-        <Footer />
-      </>
-    );
-  }
 
   return (
     <>
@@ -103,67 +61,71 @@ function HomeDetails() {
 
       <main className="min-h-screen mt-32">
         <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
-          Your Home Detail :
+          Hey Host! Here are your homes :
         </h1>
 
-        <div className="mt-10 max-w-full mx-auto p-4 bg-gray-100 rounded">
-          <div className="flex flex-col md:flex-row md:items-start gap-8">
-            <img
-              src={home.houseImg}
-              alt={home.houseName}
-              className="w-full md:w-2/4 h-auto object-cover rounded"
-            />
-
-            <div className="md:w-2/3">
-              <label className="text-xl font-bold">Name:</label>
-
-              <h4 className="text-xl font-bold text-[#ff5a5f] mb-2">
-                {home.houseName}
-              </h4>
-
-              <hr />
-
-              <label className="text-xl font-bold">Address :</label>
-
-              <h3 className="text-xl font-bold text-[#ff5a5f] mb-2">
-                {home.houseAddr}
-              </h3>
-
-              <hr />
-
-              <label className="text-xl font-bold">Price :</label>
-
-              <h2 className="text-xl font-bold text-[#ff5a5f] mb-2">
-                Rs.{home.housePrice}/night
-              </h2>
-
-              <hr />
-
-              <label className="text-xl font-bold">Description :</label>
-
-              <h3 className="text-xl font-bold text-[#ff5a5f] mb-2">
-                {home.houseDesc}
-              </h3>
-
-              <hr />
-
-              <div className="flex justify-center items-center gap-2">
-                {user && user.userType === "user" && (
-                  <>
-                    <FavBtn homeId={home._id} />
-
-                    <button
-                      onClick={handlePayment}
-                      className="mt-8 bg-[#ff5a5f] text-white px-4 py-2 rounded hover:bg-[#ff4b51]"
-                    >
-                      Book Now
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
+        {loading ? (
+          <Loader />
+        ) : homes.length === 0 ? (
+          <div className="flex justify-center items-center">
+            <p className="text-2xl font-bold text-red-500">No home found.</p>
           </div>
-        </div>
+        ) : (
+          <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
+            {homes.map((home) => (
+              <li
+                key={home._id}
+                className="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center"
+              >
+                <div className="text-5xl text-[#ff5a5f] m-2">
+                  <img
+                    src={home.houseImg}
+                    alt={home.houseName}
+                    className="h-50 w-auto object-cover rounded-lg"
+                  />
+                </div>
+
+                <h2 className="text-2xl font-bold text-[#ff5a5f] mb-2 text-center">
+                  {home.houseName} House
+                </h2>
+
+                <p className="text-[#ff5a5f] mb-2 text-center">
+                  <i className="fas fa-map-marker-alt mr-1"></i>
+                  {home.houseAddr}
+                </p>
+
+                <p className="text-lg font-semibold text-[#ff5a5f] mb-2 text-center">
+                  ₹{home.housePrice} / night
+                </p>
+
+                <div className="flex gap-2">
+                  <Link
+                    to={`/host/edit-home/${home._id}`}
+                    className="mt-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition"
+                  >
+                    Edit
+                  </Link>
+
+                  {/* delete in maintenance */}
+                  <button
+                    onClick={() => handleDelete(home._id)}
+                    disabled={deleting === home._id}
+                    className="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {deleting === home._id ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <Loader fullscreen={false} />
+                        {`Deleting`}
+                      </span>
+                    ) : (
+                      <>{"Delete"}</>
+                    )}
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
       </main>
 
       <Footer />
@@ -171,4 +133,4 @@ function HomeDetails() {
   );
 }
 
-export default HomeDetails;
+export default HostHome;
