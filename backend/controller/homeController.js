@@ -72,7 +72,7 @@ exports.getAddContact = (req, res, next) => {
 
 exports.getDetails = (req, res, next) => {
   const homeId = req.params.id;
-  Home.findById(homeId).then((home) => {
+  Home.findById(homeId).populate("owner", "fullName").then((home) => {
     console.log("Home Details Are Founded :", home);
     if (!home) {
       console.log("Home is not found");

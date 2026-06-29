@@ -74,7 +74,7 @@ function Home() {
 
                 <div className="flex justify-center items-center gap-2">
                   <Link
-                    to={isLoggedIn ? `/homes/${home._id}` : "/login"}
+                    to={`/homes/${home._id}`}
                     className="mt-auto bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-semibold py-2 px-4 rounded transition"
                   >
                     Details
