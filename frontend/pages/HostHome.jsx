@@ -8,7 +8,7 @@ import Loader from "../components/loader";
 function HostHome() {
   const [homes, setHomes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState(false);
+  const [deleting, setDeleting] = useState(null);
 
   useEffect(() => {
     fetchHomes();
@@ -32,9 +32,10 @@ function HostHome() {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this home?",
     );
-    setDeleting(true);
 
     if (!confirmDelete) return;
+
+    setDeleting(homeId);
 
     try {
       await axios.post(
@@ -49,6 +50,8 @@ function HostHome() {
     } catch (error) {
       console.log("Error deleting home:", error);
       alert("Failed to delete home");
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -106,13 +109,13 @@ function HostHome() {
                   {/* delete in maintenance */}
                   <button
                     onClick={() => handleDelete(home._id)}
-                    disabled={deleting}
+                    disabled={deleting === home._id}
                     className="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {deleting ? (
+                    {deleting === home._id ? (
                       <span className="flex items-center justify-center gap-2">
                         <Loader fullscreen={false} />
-                        {"Deleting..."}
+                        {`Deleting...`}
                       </span>
                     ) : (
                       <>{"Delete"}</>
