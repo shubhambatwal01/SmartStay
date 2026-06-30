@@ -18,6 +18,7 @@ function HomeDetails() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
+  console.log(user);
 
   useEffect(() => {
     if (checkIn && checkOut && home) {

@@ -10,6 +10,8 @@ function FavList() {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
+  const isLoggedIn = JSON.parse(sessionStorage.getItem("isLoggedIn"));
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
     const fetchFavourites = async () => {
@@ -25,6 +27,12 @@ function FavList() {
         setLoading(false);
       }
     };
+
+    if (!isLoggedIn || user.userType !== "user") {
+      sessionStorage.removeItem("isLoggedIn");
+      navigate("/login");
+    }
+
     fetchFavourites();
   }, []);
 

@@ -3,10 +3,14 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
+import { useNavigate } from "react-router-dom";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const isLoggedIn = JSON.parse(sessionStorage.getItem("isLoggedIn"));
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -22,6 +26,11 @@ function Bookings() {
         setLoading(false);
       }
     };
+
+    if (!isLoggedIn || user.userType !== "user") {
+      sessionStorage.removeItem("isLoggedIn");
+      navigate("/login");
+    }
 
     fetchBookings();
   }, []);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -9,6 +9,9 @@ function HostHome() {
   const [homes, setHomes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
+  const navigate = useNavigate();
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
     const fetchHomes = async () => {
@@ -27,6 +30,10 @@ function HostHome() {
         setLoading(false);
       }
     };
+    if (!isLoggedIn || user.userType !== "admin") {
+      sessionStorage.removeItem("isLoggedIn");
+      navigate("/login");
+    }
     fetchHomes();
   }, []);
 

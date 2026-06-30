@@ -9,6 +9,8 @@ import Loader from "../components/loader";
 function AddHome() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const isLoggedIn = JSON.parse(sessionStorage.getItem("isLoggedIn"));
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   const editing = Boolean(id);
 
@@ -68,6 +70,10 @@ function AddHome() {
         setErrors(["Unable to fetch home details"]);
       }
     };
+    if (!isLoggedIn || user.userType !== "admin") {
+      sessionStorage.removeItem("isLoggedIn");
+      navigate("/login");
+    }
     if (editing) {
       fetchHome();
     }
