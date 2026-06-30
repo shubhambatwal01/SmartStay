@@ -72,25 +72,28 @@ exports.getAddContact = (req, res, next) => {
 
 exports.getDetails = (req, res, next) => {
   const homeId = req.params.id;
-  Home.findById(homeId).populate("owner", "fullName").then((home) => {
-    console.log("Home Details Are Founded :", home);
-    if (!home) {
-      console.log("Home is not found");
-      res.redirect("/homes");
-    } else {
-      res.status(200).json({
-        home,
-        pageTitle: "Home Detail",
-        currentPage: "home-detail",
-        isLoggedIn: req.session.isLoggedIn,
-        user: req.session.user,
-      });
-    }
-  });
+  Home.findById(homeId)
+    .populate("owner", "fullName")
+    .then((home) => {
+      console.log("Home Details Are Founded :", home);
+      if (!home) {
+        console.log("Home is not found");
+        res.redirect("/homes");
+      } else {
+        res.status(200).json({
+          home,
+          pageTitle: "Home Detail",
+          currentPage: "home-detail",
+          isLoggedIn: req.session.isLoggedIn,
+          user: req.session.user,
+        });
+      }
+    });
 };
 
 exports.postAddContact = (req, res, next) => {
   res.status(200).json({
+    success: true,
     message: "Post AddContact API",
     pageTitle: "Thank You",
     currentPage: "contactAdded",

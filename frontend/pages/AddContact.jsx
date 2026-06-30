@@ -3,8 +3,10 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 function AddContact() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -32,6 +34,7 @@ function AddContact() {
         "http://localhost:1101/host/addContact",
         formData,
       );
+      navigate("/ContactAdded");
 
       setSuccessMessage(
         response.data.message ||

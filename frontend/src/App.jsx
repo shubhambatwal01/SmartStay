@@ -23,7 +23,7 @@ function App() {
         <Route path="/favourites" element={<FavList />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/addContact" element={<AddContact />} />
-        <Route path="/addContact" element={<ContactAdded />} />
+        <Route path="/ContactAdded" element={<ContactAdded />} />
         <Route path="/host/add-home" element={<AddHome />} />
         <Route path="/host/edit-home" element={<AddHome />} />
         <Route path="/host/edit-home/:id" element={<AddHome />} />
