@@ -163,11 +163,10 @@ function AddHome() {
   return (
     <>
       <Navbar />
-
-      <main className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 mt-32 py-12">
+      <main className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 mt-20 py-12">
         <div className="container mx-auto px-4 max-w-3xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-3">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-3">
               {editing ? "Edit" : "Register"} Your Home
             </h1>
             <p className="text-gray-600 text-lg">
@@ -239,6 +238,12 @@ function AddHome() {
                       value={formData.housePrice}
                       onChange={handleChange}
                       placeholder="5000"
+                      min="1"
+                      onKeyDown={(e) => {
+                        if (["-", "+", "e", "E"].includes(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
                       required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition"
                     />
@@ -275,6 +280,18 @@ function AddHome() {
                 <div className="mb-6">
                   <label className="flex flex-col items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#ff5a5f] hover:bg-red-50 transition">
                     <div className="flex flex-col items-center justify-center pt-2 pb-2">
+                      {previewImage && (
+                        <div className="relative">
+                          <img
+                            src={previewImage}
+                            alt="Preview"
+                            className="w-full h-64 object-cover rounded-lg shadow-md"
+                          />
+                          <p className="text-sm text-gray-500 mt-2 text-center">
+                            Preview
+                          </p>
+                        </div>
+                      )}
                       <svg
                         className="w-12 h-12 text-gray-400 mb-2"
                         fill="none"
@@ -301,19 +318,6 @@ function AddHome() {
                     />
                   </label>
                 </div>
-
-                {previewImage && (
-                  <div className="relative">
-                    <img
-                      src={previewImage}
-                      alt="Preview"
-                      className="w-full h-64 object-cover rounded-lg shadow-md"
-                    />
-                    <p className="text-sm text-gray-500 mt-2 text-center">
-                      Preview
-                    </p>
-                  </div>
-                )}
               </div>
 
               <div className="mb-8 pb-8 border-b border-gray-200">
