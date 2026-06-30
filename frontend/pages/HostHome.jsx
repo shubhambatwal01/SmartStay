@@ -11,22 +11,24 @@ function HostHome() {
   const [deleting, setDeleting] = useState(null);
 
   useEffect(() => {
+    const fetchHomes = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:1101/host/host-home",
+          {
+            withCredentials: true,
+          },
+        );
+
+        setHomes(response.data.homes || response.data);
+      } catch (error) {
+        console.log("Error fetching homes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchHomes();
   }, []);
-
-  const fetchHomes = async () => {
-    try {
-      const response = await axios.get("http://localhost:1101/host/host-home", {
-        withCredentials: true,
-      });
-
-      setHomes(response.data.homes || response.data);
-    } catch (error) {
-      console.log("Error fetching homes:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (homeId) => {
     const confirmDelete = window.confirm(
@@ -60,9 +62,11 @@ function HostHome() {
       <Navbar />
 
       <main className="min-h-screen mt-32">
-        <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
-          Hey Host! Here are your homes :
-        </h1>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
+            Your Registered Homes
+          </h1>
+        </div>
 
         {loading ? (
           <Loader />
@@ -85,17 +89,17 @@ function HostHome() {
                   />
                 </div>
 
-                <h2 className="text-2xl font-bold text-[#ff5a5f] mb-2 text-center">
-                  {home.houseName} House
+                <h2 className="text-2xl font-bold text-[#ff5a5f] mb-0.5 text-center">
+                  {home.houseName}
                 </h2>
 
-                <p className="text-[#ff5a5f] mb-2 text-center">
+                <p className="text-[#ff5a5f] mb-0.5 text-center">
                   <i className="fas fa-map-marker-alt mr-1"></i>
                   {home.houseAddr}
                 </p>
 
                 <p className="text-lg font-semibold text-[#ff5a5f] mb-2 text-center">
-                  ₹{home.housePrice} / night
+                  ₹{home.housePrice}/night
                 </p>
 
                 <div className="flex gap-2">

@@ -2,70 +2,93 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await axios.get("http://localhost:1101/bookings", {
+          withCredentials: true,
+        });
+
+        setBookings(response.data.bookings || []);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchBookings();
   }, []);
-
-  const fetchBookings = async () => {
-    try {
-      const response = await axios.get("http://localhost:1101/bookings", {
-        withCredentials: true,
-      });
-
-      setBookings(response.data.bookings);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
       <Navbar />
 
       <main className="min-h-screen mt-32 max-w-6xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-8">My Bookings</h1>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
+            Your Bookings
+          </h1>
+        </div>
 
-        {bookings.length === 0 ? (
-          <p className="text-center text-gray-600">No bookings found.</p>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-6">
-            {bookings.map((booking) => (
-              <div
-                key={booking._id}
-                className="bg-white shadow-lg rounded-xl overflow-hidden"
-              >
-                <img
-                  src={booking.home.houseImg}
-                  alt={booking.home.houseName}
-                  className="h-56 w-full object-cover"
-                />
-
-                <div className="p-5">
-                  <h2 className="text-xl font-semibold">
-                    {booking.home.houseName}
-                  </h2>
-
-                  <p>
-                    Check-In:
-                    {new Date(booking.checkIn).toLocaleDateString()}
-                  </p>
-
-                  <p>
-                    Check-Out:
-                    {new Date(booking.checkOut).toLocaleDateString()}
-                  </p>
-
-                  <p>Guests: {booking.guests}</p>
-
-                  <p className="font-bold text-blue-600">₹{booking.amount}</p>
-                </div>
-              </div>
-            ))}
+        {loading ? (
+          <Loader />
+        ) : bookings.length === 0 ? (
+          <div className="flex justify-center items-center">
+            <p className="text-2xl font-bold text-red-500">
+              No bookings found.
+            </p>
           </div>
+        ) : (
+          <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
+            {bookings.map((booking) => (
+              <li
+                key={bookings._id}
+                className="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center"
+              >
+                <div className="text-5xl text-[#ff5a5f] m-2">
+                  <img
+                    src={booking.home.houseImg}
+                    alt={booking.home.houseName}
+                    className="h-50 w-auto object-cover rounded-lg"
+                  />
+                </div>
+
+                <h2 className="text-2xl font-bold text-[#ff5a5f] text-center">
+                  {booking.home.houseName} House
+                </h2>
+
+                <p className="text-[#ff5a5f] text-center">
+                  <i className="fas fa-map-marker-alt mr-1"></i>
+                  {booking.home.houseAddr}
+                </p>
+
+                <p className="text-[#ff5a5f] mb-2">
+                  Charge: ₹{booking.home.housePrice}/night
+                </p>
+
+                <p>
+                  Check-In: {new Date(booking.checkIn).toLocaleDateString()}
+                </p>
+
+                <p>
+                  Check-Out: {new Date(booking.checkOut).toLocaleDateString()}
+                </p>
+
+                <p>No. of Guests: {booking.guests}</p>
+
+                <p className="text-2xl font-bold text-blue-600 mt-3">
+                  Paid ₹{booking.amount}
+                </p>
+              </li>
+            ))}
+          </ol>
         )}
       </main>
 

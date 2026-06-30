@@ -20,10 +20,6 @@ function HomeDetails() {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
-    fetchHomeDetails();
-  }, [id]);
-
-  useEffect(() => {
     if (checkIn && checkOut && home) {
       const start = new Date(checkIn);
       const end = new Date(checkOut);
@@ -39,17 +35,21 @@ function HomeDetails() {
     }
   }, [checkIn, checkOut, home]);
 
-  const fetchHomeDetails = async () => {
-    try {
-      const response = await axios.get(`http://localhost:1101/homes/${id}`);
+  useEffect(() => {
+    const fetchHomeDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:1101/homes/${id}`);
 
-      setHome(response.data.home);
-    } catch (error) {
-      console.error("Error fetching home details:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setHome(response.data.home);
+      } catch (error) {
+        console.error("Error fetching home details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeDetails();
+  }, [id]);
 
   const handlePayment = async () => {
     if (!checkIn || !checkOut) {
@@ -136,6 +136,11 @@ function HomeDetails() {
       <>
         <Navbar />
         <main className="min-h-screen flex justify-center items-center">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
+              Home Details
+            </h1>
+          </div>
           <h1 className="text-2xl text-red-500">Home not found.</h1>
         </main>
         <Footer />
@@ -149,9 +154,9 @@ function HomeDetails() {
 
       <main className="min-h-screen mt-32">
         <div className="container mx-auto px-4 max-w-7xl">
-          <div>
-            <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
-              Your home detail :
+          <div className="text-center mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
+              Home Details
             </h1>
           </div>
 

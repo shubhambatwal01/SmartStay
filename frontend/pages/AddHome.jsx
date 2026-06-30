@@ -35,44 +35,43 @@ function AddHome() {
   const [previewImage, setPreviewImage] = useState("");
 
   useEffect(() => {
+    const fetchHome = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:1101/host/edit-home/${id}`,
+          {
+            withCredentials: true,
+          },
+        );
+
+        const home = response.data.home || response.data;
+
+        setFormData({
+          houseName: home.houseName || "",
+          houseAddr: home.houseAddr || "",
+          housePrice: home.housePrice || "",
+          houseDesc: home.houseDesc || "",
+          bhk: home.bhk || "",
+          wifi: home.wifi || false,
+          washingMachine: home.washingMachine || false,
+          caretaker: home.caretaker || false,
+          kitchen: home.kitchen || false,
+          parking: home.parking || false,
+          ac: home.ac || false,
+          smartTv: home.smartTv || false,
+          attachedBathroom: home.attachedBathroom || false,
+        });
+
+        setPreviewImage(home.houseImg || "");
+      } catch (error) {
+        console.log(error);
+        setErrors(["Unable to fetch home details"]);
+      }
+    };
     if (editing) {
       fetchHome();
     }
   }, [id]);
-
-  const fetchHome = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:1101/host/edit-home/${id}`,
-        {
-          withCredentials: true,
-        },
-      );
-
-      const home = response.data.home || response.data;
-
-      setFormData({
-        houseName: home.houseName || "",
-        houseAddr: home.houseAddr || "",
-        housePrice: home.housePrice || "",
-        houseDesc: home.houseDesc || "",
-        bhk: home.bhk || "",
-        wifi: home.wifi || false,
-        washingMachine: home.washingMachine || false,
-        caretaker: home.caretaker || false,
-        kitchen: home.kitchen || false,
-        parking: home.parking || false,
-        ac: home.ac || false,
-        smartTv: home.smartTv || false,
-        attachedBathroom: home.attachedBathroom || false,
-      });
-
-      setPreviewImage(home.houseImg || "");
-    } catch (error) {
-      console.log(error);
-      setErrors(["Unable to fetch home details"]);
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -166,7 +165,7 @@ function AddHome() {
       <main className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 mt-20 py-12">
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="text-center mb-6">
-            <h1 className="text-3xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-3">
+            <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
               {editing ? "Edit" : "Register"} Your Home
             </h1>
             <p className="text-gray-600 text-lg">

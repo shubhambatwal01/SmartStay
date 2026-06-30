@@ -75,9 +75,11 @@ function Signup() {
 
       <main className="min-h-screen mt-32">
         {/* Heading */}
-        <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
-          Sign Up for a New Account
-        </h1>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
+            Create New Account
+          </h1>
+        </div>
 
         <div className="flex justify-center">
           <form

@@ -12,22 +12,21 @@ function FavList() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchFavourites = async () => {
+      try {
+        const response = await axios.get("http://localhost:1101/favourites", {
+          withCredentials: true,
+        });
+
+        setFavouriteHomes(response.data.favouriteHomes || []);
+      } catch (error) {
+        console.error("Error fetching favourites:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchFavourites();
   }, []);
-
-  const fetchFavourites = async () => {
-    try {
-      const response = await axios.get("http://localhost:1101/favourites", {
-        withCredentials: true,
-      });
-
-      setFavouriteHomes(response.data.favouriteHomes || []);
-    } catch (error) {
-      console.error("Error fetching favourites:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (homeId) => {
     try {
@@ -48,9 +47,11 @@ function FavList() {
       <Navbar />
 
       <main className="min-h-screen mt-32">
-        <h1 className="text-2xl font-bold text-center text-blue-600 mb-6">
-          My Favourites:
-        </h1>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
+            Your Favourites
+          </h1>
+        </div>
 
         {loading ? (
           <Loader />
@@ -75,33 +76,33 @@ function FavList() {
                   />
                 </div>
 
-                <h2 className="text-2xl font-bold text-[#ff5a5f] mb-2 text-center">
-                  {home.houseName} House
+                <h2 className="text-2xl font-bold text-[#ff5a5f] mb-0.5 text-center">
+                  {home.houseName}
                 </h2>
 
-                <p className="text-[#ff5a5f] mb-2 text-center">
+                <p className="text-[#ff5a5f] mb-0.5 text-center">
                   <i className="fas fa-map-marker-alt mr-1"></i>
                   {home.houseAddr}
                 </p>
 
                 <p className="text-lg font-semibold text-[#ff5a5f] mb-2 text-center">
-                  ₹{home.housePrice} / night
+                  ₹{home.housePrice}/night
                 </p>
 
                 <div className="flex gap-2">
-                  <Link
-                    to={`/homes/${home._id}`}
-                    className="mt-auto bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-semibold py-2 px-4 rounded transition"
-                  >
-                    Book Now
-                  </Link>
-
                   <button
                     onClick={() => handleDelete(home._id)}
                     className="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition"
                   >
                     Delete
                   </button>
+
+                  <Link
+                    to={`/homes/${home._id}`}
+                    className="mt-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition"
+                  >
+                    Book Now
+                  </Link>
                 </div>
               </li>
             ))}
