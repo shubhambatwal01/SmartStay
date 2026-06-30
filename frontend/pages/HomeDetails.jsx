@@ -76,10 +76,29 @@ function HomeDetails() {
 
         order_id: order.id,
 
-        handler: function (response) {
-          alert("Payment Successful!");
+        handler: async function (response) {
+          console.log("Razorpay Success Response:", response);
+          try {
+            const { data } = await axios.post(
+              "http://localhost:1101/verify-payment",
+              {
+                ...response,
+                homeId: home._id,
+                checkIn,
+                checkOut,
+                guests,
+                amount: totalPrice || home.housePrice,
+              },
+              { withCredentials: true },
+            );
 
-          console.log(response);
+            if (data.success) {
+              alert("Booking Confirmed!");
+              window.location.href = "/bookings";
+            }
+          } catch (error) {
+            alert("Payment verification failed");
+          }
         },
 
         prefill: {

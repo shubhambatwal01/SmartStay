@@ -1,5 +1,6 @@
 const Home = require("../models/home");
 const User = require("../models/user");
+const Booking = require("../models/bookings");
 
 // const RegisteredHomes = [];
 
@@ -46,18 +47,26 @@ exports.getFavouriteList = async (req, res, next) => {
   });
 };
 
-exports.getBookings = (req, res, next) => {
-  Home.find().then((RegisteredHomes) => {
+exports.getBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find({
+      user: req.session.user._id,
+    }).populate("home", "houseName houseImg houseAddr housePrice");
+
     res.status(200).json({
       success: true,
-      homes: RegisteredHomes,
       bookings,
-      pageTitle: "Bookings",
-      currentPage: "bookings",
+      pageTitle: "Your Bookings",
+      currentPage: "Bookings",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
     });
-  });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch bookings",
+    });
+  }
 };
 
 exports.getAddContact = (req, res, next) => {
