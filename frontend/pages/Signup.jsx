@@ -22,7 +22,6 @@ function Signup() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(e.target);
 
     setFormData((prev) => ({
       ...prev,
@@ -52,7 +51,6 @@ function Signup() {
         formData,
       );
 
-      console.log(response.data);
 
       // Redirect after successful signup
       navigate("/login");

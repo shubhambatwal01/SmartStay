@@ -102,7 +102,7 @@ function FavList() {
                     onClick={() => handleDelete(home._id)}
                     className="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition"
                   >
-                    Delete
+                    Remove
                   </button>
 
                   <Link

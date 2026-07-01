@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 
-function FavBtn({ homeId }) {
+function FavBtn({ homeId, className }) {
   const navigate = useNavigate();
   const { isLoggedIn } = useContext(AuthContext);
 
@@ -30,7 +30,7 @@ function FavBtn({ homeId }) {
   return (
     <button
       onClick={handleFavourite}
-      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      className={className || "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"}
     >
       Add to Favourite
     </button>

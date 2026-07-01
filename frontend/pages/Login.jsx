@@ -38,7 +38,6 @@ function Login() {
         { withCredentials: true },
       );
 
-      console.log(response.data);
       login(response.data.user);
 
       // Redirect after successful login

@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import FavBtn from "../components/FavBtn";
 import Loader from "../components/Loader";
 import AboutProperty from "../components/AboutProperty";
+import PaymentCard from "../components/PaymentCard";
 
 function HomeDetails() {
   const { id } = useParams();
@@ -13,6 +14,7 @@ function HomeDetails() {
   const [home, setHome] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
   const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000)
@@ -24,7 +26,7 @@ function HomeDetails() {
   const [totalPrice, setTotalPrice] = useState(1);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
-  console.log(user);
+  const isUser = user?.userType === "user";
 
   useEffect(() => {
     if (checkIn && checkOut && home) {
@@ -85,7 +87,6 @@ function HomeDetails() {
         order_id: order.id,
 
         handler: async function (response) {
-          console.log("Razorpay Success Response:", response);
           try {
             const { data } = await axios.post(
               "http://localhost:1101/payment/verify-payment",
@@ -187,29 +188,25 @@ function HomeDetails() {
                   </p>
                 </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                    AboutProperty this property
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed text-base">
-                    {home.houseDesc.slice(0, 180)}...
-                    <button
-                      onClick={() => setIsAboutOpen(true)}
-                      className="ml-2 font-semibold underline"
-                    >
-                      See More
-                    </button>
-                    <AboutProperty
-                      isOpen={isAboutOpen}
-                      onClose={() => setIsAboutOpen(false)}
-                      title="AboutProperty this property"
-                    >
-                      <p className=" leading-8 text-gray-700 whitespace-pre-line">
-                        {home.houseDesc}
-                      </p>
-                    </AboutProperty>
-                  </p>
+                <div className="text-gray-700 leading-relaxed text-base">
+                  <p>{home.houseDesc.slice(0, 180)}...</p>
+                  <button
+                    onClick={() => setIsAboutOpen(true)}
+                    className="mt-1 text-[#ff5a5f] font-semibold hover:text-[#ff8a8f] transition"
+                  >
+                    See more
+                  </button>
                 </div>
+
+                <AboutProperty
+                  isOpen={isAboutOpen}
+                  onClose={() => setIsAboutOpen(false)}
+                  title="About this property"
+                >
+                  <p className="leading-8 whitespace-pre-line text-gray-700">
+                    {home.houseDesc}
+                  </p>
+                </AboutProperty>
               </div>
 
               <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -290,7 +287,7 @@ function HomeDetails() {
               </div>
             </div>
 
-            <div className="sticky top-32">
+            <div className="lg:col-span-1 space-y-6">
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
                 <div className="mb-6 pb-6 border-b border-gray-200">
                   <p className="text-gray-600 text-sm font-semibold">
@@ -360,26 +357,47 @@ function HomeDetails() {
                   </div>
                 )}
 
-                {user && user.userType === "user" && (
-                  <div className="space-y-3">
+                <div className="space-y-3">
+                  {isUser ? (
+                    <FavBtn
+                      className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition transform hover:scale-105"
+                      homeId={home._id}
+                    />
+                  ) : (
                     <button
-                      onClick={handlePayment}
-                      disabled={!checkIn || !checkOut}
-                      className="w-full bg-linear-to-r from-[#ff5a5f] to-[#ff4b51] hover:from-[#ff4b51] hover:to-[#ff3a41] text-white font-bold py-3 rounded-lg transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                      disabled
+                      className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-lg opacity-50 cursor-not-allowed"
                     >
-                      Reserve
+                      Login as User to Add to Favorites
                     </button>
-                  </div>
-                )}
-
-                {!user && (
+                  )}
                   <button
-                    className="w-full bg-gray-400 text-white font-bold py-3 rounded-lg cursor-not-allowed"
-                    disabled
+                    onClick={() => setIsPaymentOpen(true)}
+                    disabled={!checkIn || !checkOut}
+                    className="w-full bg-linear-to-r from-[#ff5a5f] to-[#ff4b51] hover:from-[#ff4b51] hover:to-[#ff3a41] text-white font-bold py-3 rounded-lg transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
                   >
-                    Login to Book
+                    Reserve
                   </button>
-                )}
+                  <PaymentCard
+                    isOpen={isPaymentOpen}
+                    onClose={() => setIsPaymentOpen(false)}
+                    title="Payment Now"
+                    id={home._id}
+                    name={home.houseName}
+                    img={home.houseImg}
+                    price={home.housePrice}
+                    address={home.houseAddr}
+                    checkIn={checkIn}
+                    checkOut={checkOut}
+                    guests={guests}
+                    totalPrice={totalPrice}
+                    paymentHandler={handlePayment}
+                  >
+                    <p className=" leading-8 text-gray-700 whitespace-pre-line">
+                      {home.houseDesc}
+                    </p>
+                  </PaymentCard>
+                </div>
               </div>
             </div>
           </div>

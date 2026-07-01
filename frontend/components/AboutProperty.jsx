@@ -7,12 +7,14 @@ function AboutProperty({ isOpen, onClose, title, children }) {
       <div className="relative bg-white rounded-3xl shadow-2xl w-[90%] max-w-4xl max-h-[85vh] overflow-y-auto p-8">
         <button
           onClick={onClose}
-          className="absolute top-5 left-5 text-3xl hover:text-red-500"
+          className="absolute top-5 right-5 text-3xl hover:text-red-500"
         >
           ×
         </button>
 
-        <h2 className="text-3xl font-bold mb-4 mt-8">{title}</h2>
+        <h2 className=" text-center text-3xl bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent font-bold mb-4">
+          {title}
+        </h2>
 
         <div className="w-full h-px bg-gray-300 mb-8"></div>
 
