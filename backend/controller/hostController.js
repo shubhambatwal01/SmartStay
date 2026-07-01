@@ -26,73 +26,117 @@ exports.getAddHome = (req, res, next) => {
 };
 
 exports.getEditHome = async (req, res, next) => {
-  const home = await Home.findOne({
-    _id: req.params.id,
-    owner: req.session.user._id,
-  });
+  try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
 
-  if (!home) {
-    return res.status(403).send("Unauthorized");
+    const home = await Home.findOne({
+      _id: req.params.id,
+      owner: req.session.user._id,
+    });
+
+    if (!home) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized - Home not found or does not belong to you",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Edit Home Page",
+      pageTitle: "Edit Home",
+      currentPage: "editHome",
+      editing: true,
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
+      home,
+    });
+  } catch (error) {
+    console.error("Error fetching home for edit:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch home details",
+      error: error.message,
+    });
   }
-  res.json({
-    message: "Edit Home Page",
-    pageTitle: "Edit Home",
-    currentPage: "editHome",
-    editing: true,
-    isLoggedIn: req.session.isLoggedIn,
-    user: req.session.user,
-    home,
-  });
-  const homeId = req.params.id;
 };
 
 exports.getHostHome = async (req, res, next) => {
-  const homes = await Home.find({
-    owner: req.session.user._id,
-  });
+  try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
 
-  res.json({
-    message: "Host Home Page",
-    pageTitle: "My Homes",
-    currentPage: "hostHome",
-    isLoggedIn: req.session.isLoggedIn,
-    homes,
-    user: req.session.user,
-  });
+    const homes = await Home.find({
+      owner: req.session.user._id,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Host Home Page",
+      pageTitle: "My Homes",
+      currentPage: "hostHome",
+      isLoggedIn: req.session.isLoggedIn,
+      homes: homes || [],
+      user: req.session.user,
+    });
+  } catch (error) {
+    console.error("Error fetching host homes:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch homes",
+      error: error.message,
+    });
+  }
 };
 
 exports.postAddHome = async (req, res) => {
-  console.log(req.body);
-  const {
-    houseName,
-    houseAddr,
-    houseDesc,
-    housePrice,
-    bhk,
-    wifi,
-    washingMachine,
-    caretaker,
-    kitchen,
-    parking,
-    ac,
-    smartTv,
-    attachedBathroom,
-  } = req.body;
-
-  // console.log(req.file);
-
-  if (!req.file) {
-    return res.status(422).send("No image uploaded");
-    res.redirect("/host/add-home");
-  }
   try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    console.log(req.body);
+    const {
+      houseName,
+      houseAddr,
+      houseDesc,
+      housePrice,
+      bhk,
+      wifi,
+      washingMachine,
+      caretaker,
+      kitchen,
+      parking,
+      ac,
+      smartTv,
+      attachedBathroom,
+    } = req.body;
+
+    if (!req.file) {
+      return res.status(422).json({
+        success: false,
+        message: "No image uploaded",
+      });
+    }
+
     const result = await streamUpload(req.file.buffer, "SmartStayHomes");
 
     const home = new Home({
       houseName: houseName,
       houseAddr: houseAddr,
       houseImg: result.secure_url,
-      // houseImgId: result.public_id,
       houseDesc: houseDesc,
       housePrice: housePrice,
       bhk: bhk,
@@ -113,87 +157,125 @@ exports.postAddHome = async (req, res) => {
       message: "Home Added Successfully",
     });
   } catch (err) {
-    console.error("Error Adding Home", err);
-    return res.status(500).send("Server error");
+    console.error("Error Adding Home:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while adding home",
+      error: err.message,
+    });
   }
 };
 
 exports.postEditHome = async (req, res) => {
-  const {
-    id,
-    houseName,
-    houseAddr,
-    houseDesc,
-    housePrice,
-    bhk,
-    wifi,
-    washingMachine,
-    caretaker,
-    kitchen,
-    parking,
-    ac,
-    smartTv,
-    attachedBathroom,
-  } = req.body;
-  const home = await Home.findOne({
-    _id: id,
-    owner: req.session.user._id,
-  });
+  try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
 
-  if (!home) {
-    return res.status(404).json({
-      success: false,
-      message: "Home not found or unauthorized",
+    const {
+      id,
+      houseName,
+      houseAddr,
+      houseDesc,
+      housePrice,
+      bhk,
+      wifi,
+      washingMachine,
+      caretaker,
+      kitchen,
+      parking,
+      ac,
+      smartTv,
+      attachedBathroom,
+    } = req.body;
+
+    const home = await Home.findOne({
+      _id: id,
+      owner: req.session.user._id,
     });
-  }
 
-  home.houseName = houseName;
-  home.houseAddr = houseAddr;
-  home.houseDesc = houseDesc;
-  home.housePrice = housePrice;
-  home.bhk = bhk;
-  home.wifi = wifi;
-  home.washingMachine = washingMachine;
-  home.caretaker = caretaker;
-  home.kitchen = kitchen;
-  home.parking = parking;
-  home.ac = ac;
-  home.smartTv = smartTv;
-  home.attachedBathroom = attachedBathroom;
+    if (!home) {
+      return res.status(404).json({
+        success: false,
+        message: "Home not found or unauthorized",
+      });
+    }
 
-  if (req.file) {
-    if (home.houseImg) {
+    home.houseName = houseName;
+    home.houseAddr = houseAddr;
+    home.houseDesc = houseDesc;
+    home.housePrice = housePrice;
+    home.bhk = bhk;
+    home.wifi = wifi;
+    home.washingMachine = washingMachine;
+    home.caretaker = caretaker;
+    home.kitchen = kitchen;
+    home.parking = parking;
+    home.ac = ac;
+    home.smartTv = smartTv;
+    home.attachedBathroom = attachedBathroom;
+
+    if (req.file) {
+      if (home.houseImg) {
+        try {
+          await cloudinary.uploader.destroy(home.houseImg);
+        } catch (err) {
+          console.error("Error deleting old cloud image", err);
+        }
+      }
+
       try {
-        await cloudinary.uploader.destroy(home.houseImg);
+        const result = await streamUpload(req.file.buffer, "SmartStayHomes");
+        home.houseImg = result.secure_url;
       } catch (err) {
-        console.error("Error deleting old cloud image", err);
+        console.error("Error uploading new image", err);
+        return res.status(500).json({
+          success: false,
+          message: "Error uploading image",
+          error: err.message,
+        });
       }
     }
 
-    try {
-      const result = await streamUpload(req.file.buffer, "SmartStayHomes");
-      home.houseImg = result.secure_url;
-      // home.houseImgId = result.public_id;
-    } catch (err) {
-      console.error("Error uploading new image", err);
-    }
+    await home.save();
+    res.status(201).json({
+      success: true,
+      message: "Home Edited Successfully",
+    });
+  } catch (err) {
+    console.error("Error editing home:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error while editing home",
+      error: err.message,
+    });
   }
-
-  await home.save();
-  res.status(201).json({
-    success: true,
-    message: "Home Edited Successfully",
-  });
 };
 
 exports.postDeleteHome = async (req, res, next) => {
   try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
     const home = await Home.findOne({
       _id: req.params.id,
       owner: req.session.user._id,
     });
 
-    if (!home) return res.redirect("/host/host-home");
+    if (!home) {
+      return res.status(403).json({
+        success: false,
+        message: "Home not found or unauthorized",
+      });
+    }
+
     if (home.houseImg) {
       try {
         await cloudinary.uploader.destroy(home.houseImg);
@@ -206,12 +288,17 @@ exports.postDeleteHome = async (req, res, next) => {
       _id: req.params.id,
       owner: req.session.user._id,
     });
-    return res.status(201).json({
+
+    return res.status(200).json({
       success: true,
       message: "Home Deleted Successfully",
     });
   } catch (err) {
-    console.log("Error while deleting", err);
-    return res.status(500).send("Server error");
+    console.error("Error while deleting home:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while deleting home",
+      error: err.message,
+    });
   }
 };

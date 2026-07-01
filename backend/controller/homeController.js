@@ -33,18 +33,41 @@ exports.getHomes = (req, res, next) => {
 };
 
 exports.getFavouriteList = async (req, res, next) => {
-  const userId = req.session.user._id;
-  console.log(userId);
-  console.log(req.session.user._id);
-  const user = await User.findById(userId).populate("favourites");
-  const favouriteHomes = user.favourites;
-  res.status(200).json({
-    favouriteHomes,
-    pageTitle: "My Favourites",
-    currentPage: "favourites",
-    isLoggedIn: req.session.isLoggedIn,
-    user: req.session.user,
-  });
+  try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    const userId = req.session.user._id;
+    const user = await User.findById(userId).populate("favourites");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const favouriteHomes = user.favourites || [];
+    res.status(200).json({
+      success: true,
+      favouriteHomes,
+      pageTitle: "My Favourites",
+      currentPage: "favourites",
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
+    });
+  } catch (error) {
+    console.error("Error fetching favourites:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch favourites",
+      error: error.message,
+    });
+  }
 };
 
 exports.getBookings = async (req, res) => {
@@ -112,28 +135,83 @@ exports.postAddContact = (req, res, next) => {
 };
 
 exports.postAddToFavourite = async (req, res) => {
-  const homeId = req.body.id;
-  const userId = req.session.user._id;
-  const user = await User.findById(userId);
-  if (!user.favourites.includes(homeId)) {
-    user.favourites.push(homeId);
-    await user.save();
+  try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    const homeId = req.body.id;
+    const userId = req.session.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (!user.favourites.includes(homeId)) {
+      user.favourites.push(homeId);
+      await user.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Added to favourites",
+      favourites: user.favourites,
+    });
+  } catch (error) {
+    console.error("Error adding to favourites:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to add to favourites",
+      error: error.message,
+    });
   }
-  res.redirect("/favourites");
 };
 
 exports.postDeleteFavourite = async (req, res, next) => {
-  const homeId = req.params.id;
-  const userId = req.session.user._id;
-  const user = await User.findById(userId);
-  if (user.favourites.includes(homeId)) {
-    user.favourites.pull(homeId);
-    await user.save();
+  try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    const homeId = req.params.id;
+    const userId = req.session.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.favourites.includes(homeId)) {
+      user.favourites.pull(homeId);
+      await user.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Favourite removed",
+      favourites: user.favourites,
+    });
+  } catch (error) {
+    console.error("Error deleting favourite:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to delete favourite",
+      error: error.message,
+    });
   }
-  res.status(200).json({
-    success: true,
-    message: "Favourite removed",
-  });
 };
 
 // exports.RegisteredHomes = RegisteredHomes;

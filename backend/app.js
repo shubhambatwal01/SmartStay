@@ -40,9 +40,21 @@ const multerOptions = {
   },
 };
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  process.env.FRONTEND_URL || "",
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
@@ -65,5 +77,22 @@ app.use("/host", hostRouter);
 app.use("/payment", paymentRouter);
 app.locals.razorpayKey = process.env.RAZORPAY_KEY_ID;
 app.use(homeController.get404);
+
+app.use((err, req, res, next) => {
+  console.error("Global error handler:", err);
+
+  if (err.message === "Not allowed by CORS") {
+    return res.status(403).json({
+      success: false,
+      message: "CORS error: Your domain is not allowed",
+    });
+  }
+
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    error: process.env.NODE_ENV === "development" ? err : {},
+  });
+});
 
 connectDB(app);

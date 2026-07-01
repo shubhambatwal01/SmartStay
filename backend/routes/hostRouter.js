@@ -2,18 +2,48 @@ const hostRouter = require("express").Router();
 const path = require("path");
 const homeController = require("../controller/homeController");
 const hostController = require("../controller/hostController");
+const {
+  isLoggedIn,
+  handleAsyncErrors,
+} = require("../middleware/authMiddleware");
 
-hostRouter.get("/add-home", hostController.getAddHome);
-hostRouter.get("/addContact", homeController.getAddContact);
-hostRouter.get("/host-home", hostController.getHostHome);
-hostRouter.get("/edit-home/:id", hostController.getEditHome);
+hostRouter.get("/add-home", isLoggedIn, hostController.getAddHome);
+hostRouter.get("/addContact", isLoggedIn, homeController.getAddContact);
+hostRouter.get(
+  "/host-home",
+  isLoggedIn,
+  handleAsyncErrors(hostController.getHostHome),
+);
+hostRouter.get(
+  "/edit-home/:id",
+  isLoggedIn,
+  handleAsyncErrors(hostController.getEditHome),
+);
 
-// const RegisteredHomes = [];
-
-hostRouter.post("/add-home", hostController.postAddHome);
-hostRouter.post("/addContact", homeController.postAddContact);
-hostRouter.post("/edit-home", hostController.postEditHome);
-hostRouter.post("/delete-home/:id", hostController.postDeleteHome);
-hostRouter.delete("/delete-home/:id", hostController.postDeleteHome);
+hostRouter.post(
+  "/add-home",
+  isLoggedIn,
+  handleAsyncErrors(hostController.postAddHome),
+);
+hostRouter.post(
+  "/addContact",
+  isLoggedIn,
+  handleAsyncErrors(homeController.postAddContact),
+);
+hostRouter.post(
+  "/edit-home",
+  isLoggedIn,
+  handleAsyncErrors(hostController.postEditHome),
+);
+hostRouter.post(
+  "/delete-home/:id",
+  isLoggedIn,
+  handleAsyncErrors(hostController.postDeleteHome),
+);
+hostRouter.delete(
+  "/delete-home/:id",
+  isLoggedIn,
+  handleAsyncErrors(hostController.postDeleteHome),
+);
 
 module.exports = hostRouter;
