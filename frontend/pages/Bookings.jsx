@@ -58,7 +58,7 @@ function Bookings() {
           <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
             {bookings.map((booking) => (
               <li
-                key={bookings._id}
+                key={booking._id}
                 className="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center"
               >
                 <div className="text-5xl text-[#ff5a5f] m-2">
@@ -70,7 +70,7 @@ function Bookings() {
                 </div>
 
                 <h2 className="text-2xl font-bold text-[#ff5a5f] text-center">
-                  {booking.home.houseName} House
+                  {booking.home.houseName}
                 </h2>
 
                 <p className="text-[#ff5a5f] text-center">
@@ -92,7 +92,9 @@ function Bookings() {
 
                 <p>No. of Guests: {booking.guests}</p>
 
-                <p className="text-2xl font-bold text-blue-600 mt-3">
+                <div className="w-full h-px bg-[#ff5a5f] m-2"></div>
+
+                <p className="text-2xl font-bold text-blue-600">
                   Paid ₹{booking.amount}
                 </p>
               </li>

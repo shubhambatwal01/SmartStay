@@ -24,6 +24,9 @@ exports.createOrder = async (req, res) => {
 
 exports.verifyPayment = async (req, res) => {
   try {
+    console.log("Request Body:", req.body);
+    console.log("Session:", req.session);
+
     const {
       razorpay_order_id,
       razorpay_payment_id,
@@ -35,21 +38,22 @@ exports.verifyPayment = async (req, res) => {
       amount,
     } = req.body;
 
-    console.log("Booking Saved:", booking);
-
     const generatedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest("hex");
 
+    console.log("Generated:", generatedSignature);
+    console.log("Received :", razorpay_signature);
+
     if (generatedSignature !== razorpay_signature) {
       return res.status(400).json({
         success: false,
-        message: "Invalid Payment",
+        message: "Invalid Payment Signature",
       });
     }
-    console.log("Generated:", generatedSignature);
-    console.log("Received:", razorpay_signature);
+
+    console.log("User in session:", req.session.user);
 
     const booking = await Booking.create({
       user: req.session.user._id,
@@ -63,15 +67,18 @@ exports.verifyPayment = async (req, res) => {
       razorpaySignature: razorpay_signature,
     });
 
-    res.status(200).json({
+    console.log("Booking Saved:", booking);
+
+    res.json({
       success: true,
-      message: "Booking confirmed",
       booking,
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
-      message: "Something went wrong",
+      message: error.message,
     });
   }
 };

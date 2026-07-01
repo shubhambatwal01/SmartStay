@@ -5,17 +5,23 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FavBtn from "../components/FavBtn";
 import Loader from "../components/Loader";
+import AboutProperty from "../components/AboutProperty";
 
 function HomeDetails() {
   const { id } = useParams();
 
   const [home, setHome] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const today = new Date().toISOString().split("T")[0];
+  const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0];
+  const [checkIn, setCheckIn] = useState(today);
+  const [checkOut, setCheckOut] = useState(tomorrow);
   const [guests, setGuests] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(1);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   console.log(user);
@@ -64,6 +70,7 @@ function HomeDetails() {
         {
           amount: totalPrice || home.housePrice,
         },
+        { withCredentials: true },
       );
 
       const options = {
@@ -81,7 +88,7 @@ function HomeDetails() {
           console.log("Razorpay Success Response:", response);
           try {
             const { data } = await axios.post(
-              "http://localhost:1101/verify-payment",
+              "http://localhost:1101/payment/verify-payment",
               {
                 ...response,
                 homeId: home._id,
@@ -160,34 +167,47 @@ function HomeDetails() {
               Home Details
             </h1>
           </div>
-
+          <div className="rounded-2xl overflow-hidden w-full h-96 border border-gray-200 bg-gray-100 flex items-center justify-center mb-5">
+            <img
+              src={home.houseImg}
+              alt={home.houseName}
+              className="max-w-full max-h-full object-contain hover:scale-105 transition duration-300"
+            />
+          </div>
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <div className="rounded-2xl overflow-hidden shadow-xl">
-                <img
-                  src={home.houseImg}
-                  alt={home.houseName}
-                  className="w-full h-96 object-cover hover:scale-105 transition duration-300"
-                />
-              </div>
-
               <div className="bg-white rounded-2xl shadow-lg p-8">
                 <div className="mb-6 pb-6 border-b border-gray-200">
                   <h2 className="text-3xl font-bold text-gray-800 mb-2">
                     {home.houseName}
                   </h2>
                   <p className="text-2xl font-bold text-[#ff5a5f]">
-                    ₹{home.housePrice}{" "}
-                    <span className="text-lg text-gray-500">/ night</span>
+                    ₹{home.housePrice}
+                    <span className="text-lg text-gray-500">/night</span>
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                    About this property
+                    AboutProperty this property
                   </h3>
                   <p className="text-gray-700 leading-relaxed text-base">
-                    {home.houseDesc}
+                    {home.houseDesc.slice(0, 180)}...
+                    <button
+                      onClick={() => setIsAboutOpen(true)}
+                      className="ml-2 font-semibold underline"
+                    >
+                      See More
+                    </button>
+                    <AboutProperty
+                      isOpen={isAboutOpen}
+                      onClose={() => setIsAboutOpen(false)}
+                      title="AboutProperty this property"
+                    >
+                      <p className=" leading-8 text-gray-700 whitespace-pre-line">
+                        {home.houseDesc}
+                      </p>
+                    </AboutProperty>
                   </p>
                 </div>
               </div>
@@ -282,46 +302,46 @@ function HomeDetails() {
                 </div>
 
                 <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700">
                     Check-In Date
+                    <input
+                      type="date"
+                      value={checkIn}
+                      min={new Date().toISOString().split("T")[0]}
+                      onChange={(e) => setCheckIn(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
+                    />
                   </label>
-                  <input
-                    type="date"
-                    value={checkIn}
-                    min={new Date().toISOString().split("T")[0]}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition"
-                  />
                 </div>
 
                 <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700">
                     Check-Out Date
+                    <input
+                      type="date"
+                      value={checkOut}
+                      min={checkIn}
+                      onChange={(e) => setCheckOut(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
+                    />
                   </label>
-                  <input
-                    type="date"
-                    value={checkOut}
-                    min={checkIn}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition"
-                  />
                 </div>
 
                 <div className="mb-6">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700">
                     Number of Guests
+                    <select
+                      value={guests}
+                      onChange={(e) => setGuests(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition bg-white cursor-pointer"
+                    >
+                      <option value="1">1 Guest</option>
+                      <option value="2">2 Guests</option>
+                      <option value="3">3 Guests</option>
+                      <option value="4">4 Guests</option>
+                      <option value="5">5+ Guests</option>
+                    </select>
                   </label>
-                  <select
-                    value={guests}
-                    onChange={(e) => setGuests(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition bg-white cursor-pointer"
-                  >
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                    <option value="5">5+ Guests</option>
-                  </select>
                 </div>
 
                 {totalPrice > 0 && (
@@ -347,7 +367,7 @@ function HomeDetails() {
                       disabled={!checkIn || !checkOut}
                       className="w-full bg-linear-to-r from-[#ff5a5f] to-[#ff4b51] hover:from-[#ff4b51] hover:to-[#ff3a41] text-white font-bold py-3 rounded-lg transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
                     >
-                      Reserve Now
+                      Reserve
                     </button>
                   </div>
                 )}
