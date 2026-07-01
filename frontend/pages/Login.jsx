@@ -7,6 +7,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { AuthContext } from "../src/AuthContext";
 
 function Login() {
+  document.title = "Login";
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -33,7 +34,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:1101/login",
+        "https://smartstay-d8sz.onrender.com/login",
         formData,
         { withCredentials: true },
       );

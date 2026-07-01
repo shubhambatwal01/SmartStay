@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 function NotFound() {
+  document.title = "404";
   return (
     <main className="min-h-screen flex items-center justify-center px-4 bg-white">
       <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl text-center space-y-3">

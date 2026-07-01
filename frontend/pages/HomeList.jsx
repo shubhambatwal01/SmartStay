@@ -16,8 +16,11 @@ function HomeList() {
 
   useEffect(() => {
     const fetchHomes = async () => {
+      document.title = "Homes";
       try {
-        const response = await axios.get("http://localhost:1101/homes");
+        const response = await axios.get(
+          "https://smartstay-d8sz.onrender.com/homes",
+        );
 
         setHomes(response.data.homes || []);
       } catch (error) {

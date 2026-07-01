@@ -15,9 +15,10 @@ function HostHome() {
 
   useEffect(() => {
     const fetchHomes = async () => {
+      document.title = "Your Registered Homes";
       try {
         const response = await axios.get(
-          "http://localhost:1101/host/host-home",
+          "https://smartstay-d8sz.onrender.com/host/host-home",
           {
             withCredentials: true,
           },
@@ -48,7 +49,7 @@ function HostHome() {
 
     try {
       await axios.post(
-        `http://localhost:1101/host/delete-home/${homeId}`,
+        `https://smartstay-d8sz.onrender.com/host/delete-home/${homeId}`,
         {},
         {
           withCredentials: true,

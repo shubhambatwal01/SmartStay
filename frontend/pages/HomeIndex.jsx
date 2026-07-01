@@ -14,10 +14,14 @@ function Home() {
 
   useEffect(() => {
     const fetchHomes = async () => {
+      document.title = "Index Homes";
       try {
-        const response = await axios.get("http://localhost:1101/", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "https://smartstay-d8sz.onrender.com/",
+          {
+            withCredentials: true,
+          },
+        );
 
         setHomes(response.data.homes || []);
         setIsLoggedIn(!!response.data.isLoggedIn);

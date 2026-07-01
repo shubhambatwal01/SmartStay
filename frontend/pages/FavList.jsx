@@ -15,10 +15,14 @@ function FavList() {
 
   useEffect(() => {
     const fetchFavourites = async () => {
+      document.title = "Your Favourites";
       try {
-        const response = await axios.get("http://localhost:1101/favourites", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "https://smartstay-d8sz.onrender.com/favourites",
+          {
+            withCredentials: true,
+          },
+        );
 
         setFavouriteHomes(response.data.favouriteHomes || []);
       } catch (error) {
@@ -38,9 +42,12 @@ function FavList() {
 
   const handleDelete = async (homeId) => {
     try {
-      await axios.delete(`http://localhost:1101/favourites/delete/${homeId}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `https://smartstay-d8sz.onrender.com/favourites/delete/${homeId}`,
+        {
+          withCredentials: true,
+        },
+      );
 
       setFavouriteHomes((prevHomes) =>
         prevHomes.filter((home) => home._id !== homeId),

@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
 
 function Signup() {
+  document.title = "Sign Up";
   const navigate = useNavigate();
 
   // Equivalent to oldInput in EJS
@@ -47,10 +48,9 @@ function Signup() {
 
     try {
       const response = await axios.post(
-        "http://localhost:1101/signup",
+        "https://smartstay-d8sz.onrender.com/signup",
         formData,
       );
-
 
       // Redirect after successful signup
       navigate("/login");

@@ -35,7 +35,11 @@ function Navbar() {
   // Logout handler
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:1101/logout", {}, { withCredentials: true });
+      await axios.post(
+        "https://smartstay-d8sz.onrender.com/logout",
+        {},
+        { withCredentials: true },
+      );
       logout();
       navigate("/login");
     } catch (error) {

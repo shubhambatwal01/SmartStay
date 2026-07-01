@@ -46,8 +46,11 @@ function HomeDetails() {
 
   useEffect(() => {
     const fetchHomeDetails = async () => {
+      document.title = "Home Details";
       try {
-        const response = await axios.get(`http://localhost:1101/homes/${id}`);
+        const response = await axios.get(
+          `https://smartstay-d8sz.onrender.com/homes/${id}`,
+        );
 
         setHome(response.data.home);
       } catch (error) {
@@ -68,7 +71,7 @@ function HomeDetails() {
 
     try {
       const { data: order } = await axios.post(
-        "http://localhost:1101/payment/create-order",
+        "https://smartstay-d8sz.onrender.com/payment/create-order",
         {
           amount: totalPrice || home.housePrice,
         },
@@ -89,7 +92,7 @@ function HomeDetails() {
         handler: async function (response) {
           try {
             const { data } = await axios.post(
-              "http://localhost:1101/payment/verify-payment",
+              "https://smartstay-d8sz.onrender.com/payment/verify-payment",
               {
                 ...response,
                 homeId: home._id,

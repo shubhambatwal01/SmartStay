@@ -38,9 +38,16 @@ function AddHome() {
 
   useEffect(() => {
     const fetchHome = async () => {
+      if (!editing) {
+        document.title = "Register Your Home";
+        return;
+      } else {
+        document.title = "Edit Your Home";
+      }
+
       try {
         const response = await axios.get(
-          `http://localhost:1101/host/edit-home/${id}`,
+          `https://smartstay-d8sz.onrender.com/host/edit-home/${id}`,
           {
             withCredentials: true,
           },
@@ -136,19 +143,27 @@ function AddHome() {
       }
 
       if (editing) {
-        await axios.post("http://localhost:1101/host/edit-home", data, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
+        await axios.post(
+          "https://smartstay-d8sz.onrender.com/host/edit-home",
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           },
-        });
+        );
       } else {
-        await axios.post("http://localhost:1101/host/add-home", data, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
+        await axios.post(
+          "https://smartstay-d8sz.onrender.com/host/add-home",
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           },
-        });
+        );
       }
 
       navigate("/host/host-home");
