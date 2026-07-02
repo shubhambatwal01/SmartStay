@@ -3,7 +3,7 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Loader from "../components/Loader";
+import Loader from "../components/loader";
 
 function FavList() {
   const [favouriteHomes, setFavouriteHomes] = useState([]);

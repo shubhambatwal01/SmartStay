@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FavBtn from "../components/FavBtn";
-import Loader from "../components/Loader";
+import Loader from "../components/loader";
 import AboutProperty from "../components/AboutProperty";
 import PaymentCard from "../components/PaymentCard";
 

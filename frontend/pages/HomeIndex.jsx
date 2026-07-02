@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { TailSpin } from "react-loader-spinner";
-import Loader from "../components/Loader";
+import Loader from "../components/loader";
 
 function Home() {
   const [homes, setHomes] = useState([]);
