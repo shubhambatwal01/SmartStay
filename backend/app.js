@@ -40,12 +40,19 @@ const multerOptions = {
   },
 };
 
-const allowedOrigins = [process.env.FRONTEND_URL].filter(Boolean);
+const normalizeOrigin = (value) => value?.replace(/\/+$/, "");
+const frontendUrl = normalizeOrigin(process.env.FRONTEND_URL);
+const allowedOrigins = [
+  frontendUrl,
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      const requestOrigin = normalizeOrigin(origin);
+      if (!requestOrigin || allowedOrigins.includes(requestOrigin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
