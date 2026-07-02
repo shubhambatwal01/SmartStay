@@ -24,7 +24,7 @@ function FavList() {
           },
         );
 
-        setFavouriteHomes(response.data.favouriteHomes || []);
+        setFavouriteHomes(response.data.favouriteHomes);
       } catch (error) {
         console.error("Error fetching favourites:", error);
       } finally {
@@ -32,13 +32,13 @@ function FavList() {
       }
     };
 
-    if (!isLoggedIn || user.userType !== "user") {
-      sessionStorage.removeItem("isLoggedIn");
+    if (!isLoggedIn || user?.userType !== "user") {
       navigate("/login");
+      return;
     }
 
     fetchFavourites();
-  }, []);
+  }, [isLoggedIn, user, navigate]);
 
   const handleDelete = async (homeId) => {
     try {

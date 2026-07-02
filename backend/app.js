@@ -62,12 +62,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(multer(multerOptions).single("houseImg"));
 app.use(express.json());
 
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: store,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    },
   }),
 );
 
