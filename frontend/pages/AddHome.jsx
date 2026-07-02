@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 
 function AddHome() {
   const { id } = useParams();

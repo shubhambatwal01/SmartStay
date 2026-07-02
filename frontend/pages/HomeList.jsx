@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FavBtn from "../components/FavBtn";
 import { AuthContext } from "../src/AuthContext";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 
 function HomeList() {
   const [homes, setHomes] = useState([]);
