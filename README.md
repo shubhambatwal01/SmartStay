@@ -135,7 +135,3 @@ Make sure you have the following keys configured:
 - Portfolio: https://shubzportfolio.vercel.app
 
 ---
-
-## 📝 Note
-
-If you want this README to include **exact** `.env` variable names from your current codebase, I can generate that section precisely by reading the config files in `backend/config/`.
