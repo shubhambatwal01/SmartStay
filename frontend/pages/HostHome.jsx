@@ -4,6 +4,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Loader from "../components/loader";
+import toast from "react-hot-toast";
 
 function HostHome() {
   const [homes, setHomes] = useState([]);
@@ -59,7 +60,7 @@ function HostHome() {
       setHomes((prevHomes) => prevHomes.filter((home) => home._id !== homeId));
     } catch (error) {
       console.log("Error deleting home:", error);
-      alert("Failed to delete home");
+      toast.error("Failed to delete home");
     } finally {
       setDeleting(null);
     }

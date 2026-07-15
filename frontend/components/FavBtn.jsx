@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
+import toast from "react-hot-toast";
 
 function FavBtn({ homeId, className }) {
   const navigate = useNavigate();
@@ -20,10 +21,10 @@ function FavBtn({ homeId, className }) {
         { withCredentials: true },
       );
       navigate("/favourites");
-      alert(`Home is Added to favourites`);
+      toast.success(`Home is Added to favourites`);
     } catch (error) {
       console.error("Error adding favourite:", error);
-      alert("Unable to add favourite");
+      toast.error("Unable to add favourite");
     }
   };
 

@@ -7,6 +7,7 @@ import FavBtn from "../components/FavBtn";
 import Loader from "../components/loader";
 import AboutProperty from "../components/AboutProperty";
 import PaymentCard from "../components/PaymentCard";
+import toast from "react-hot-toast";
 
 function HomeDetails() {
   const { id } = useParams();
@@ -65,7 +66,7 @@ function HomeDetails() {
 
   const handlePayment = async () => {
     if (!checkIn || !checkOut) {
-      alert("Please select check-in and check-out dates");
+      toast("Please select check-in and check-out dates");
       return;
     }
 
@@ -105,11 +106,11 @@ function HomeDetails() {
             );
 
             if (data.success) {
-              alert("Booking Confirmed!");
+              toast.success("Booking Confirmed!");
               window.location.href = "/bookings";
             }
           } catch (error) {
-            alert("Payment verification failed");
+            toast.error("Payment verification failed");
           }
         },
 
@@ -127,7 +128,7 @@ function HomeDetails() {
       razorpay.open();
     } catch (error) {
       console.log(error);
-      alert("Payment failed");
+      toast.error("Payment failed");
     }
   };
 
