@@ -5,11 +5,14 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
 import { AuthContext } from "../src/AuthContext";
+import toast from "react-hot-toast";
+import Loader from "../components/loader";
 
 function Login() {
   document.title = "Login";
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [submitting, setSubmitting] = useState(false);
 
   // Equivalent to oldInput in EJS
   const [formData, setFormData] = useState({
@@ -31,6 +34,7 @@ function Login() {
     e.preventDefault();
 
     setErrors([]);
+    setSubmitting(true);
 
     try {
       const response = await axios.post(
@@ -40,6 +44,7 @@ function Login() {
       );
 
       login(response.data.user);
+      toast.success("Logged-In Successfully!");
 
       // Redirect after successful login
       navigate(response.data.redirect || "/homes");
@@ -51,6 +56,8 @@ function Login() {
       } else {
         setErrors(["Login failed. Please try again."]);
       }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -121,7 +128,13 @@ function Login() {
               type="submit"
               className="w-full bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-bold py-2 px-4 rounded transition-colors mb-3"
             >
-              Login
+              {submitting ? (
+                <>
+                  <Loader fullscreen={false} />
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
 
             <div className="text-center">

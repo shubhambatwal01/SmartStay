@@ -40,11 +40,36 @@ function HostHome() {
   }, []);
 
   const handleDelete = async (homeId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this home?",
-    );
+    const showDeleteConfirmation = (onConfirm) => {
+      toast((t) => (
+        <div className="flex flex-col gap-3">
+          <p className="font-medium">
+            Are you sure you want to delete this home?
+          </p>
 
-    if (!confirmDelete) return;
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-3 py-1 bg-gray-200 rounded"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={() => {
+                onConfirm();
+                toast.dismiss(t.id);
+              }}
+              className="px-3 py-1 bg-red-500 text-white rounded"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ));
+    };
+
+    if (!showDeleteConfirmation) return;
 
     setDeleting(homeId);
 
@@ -58,6 +83,7 @@ function HostHome() {
       );
 
       setHomes((prevHomes) => prevHomes.filter((home) => home._id !== homeId));
+      toast.success("Home Deleted Sucessfully!");
     } catch (error) {
       console.log("Error deleting home:", error);
       toast.error("Failed to delete home");

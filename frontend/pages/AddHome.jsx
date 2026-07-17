@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
 import Loader from "../components/loader";
+import toast from "react-hot-toast";
 
 function AddHome() {
   const { id } = useParams();
@@ -153,6 +154,7 @@ function AddHome() {
             },
           },
         );
+        toast.success("Home Updated Successfully!");
       } else {
         await axios.post(
           "https://smartstay-d8sz.onrender.com/host/add-home",
@@ -164,6 +166,7 @@ function AddHome() {
             },
           },
         );
+        toast.success("Home Added Successfully!");
       }
 
       navigate("/host/host-home");

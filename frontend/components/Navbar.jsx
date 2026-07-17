@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
+import toast from "react-hot-toast";
 
 function Navbar() {
   const { isLoggedIn, user, logout } = useContext(AuthContext);
@@ -41,6 +42,7 @@ function Navbar() {
         { withCredentials: true },
       );
       logout();
+      toast.success("Logged Out Successfully!");
       navigate("/login");
     } catch (error) {
       console.log(error);

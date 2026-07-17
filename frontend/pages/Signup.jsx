@@ -4,10 +4,13 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
+import Loader from "../components/loader";
+import toast from "react-hot-toast";
 
 function Signup() {
   document.title = "Sign Up";
   const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
 
   // Equivalent to oldInput in EJS
   const [formData, setFormData] = useState({
@@ -50,9 +53,11 @@ function Signup() {
       const response = await axios.post(
         "https://smartstay-d8sz.onrender.com/signup",
         formData,
+        { withCredentials: true },
       );
 
-      // Redirect after successful signup
+      setSubmitting(true);
+      toast.success("Signup Successfully!");
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -64,6 +69,8 @@ function Signup() {
       } else {
         setErrors(["Something went wrong. Please try again."]);
       }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -233,7 +240,13 @@ function Signup() {
                 type="submit"
                 className="w-full bg-[#ff5a5f] hover:bg-[#ff4b51] text-white font-bold py-2 px-4 rounded transition-colors"
               >
-                Sign Up
+                {submitting ? (
+                  <>
+                    <Loader fullscreen={false} />
+                  </>
+                ) : (
+                  "Signup"
+                )}
               </button>
             </div>
 
