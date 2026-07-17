@@ -1,8 +1,10 @@
-# 🏡 SmartStay — Full-Stack Vacation Rental & Home Booking Platform
+# 🏡 SmartStay – Smart Accommodation Booking Platform
 
-**SmartStay** is a full-stack web application to **browse rental homes**, manage **favorites**, enable **secure authentication**, and take **online payments using Razorpay**.
+## 📌 Overview
 
-> Built with a **React frontend** and a **Node.js/Express backend** (MongoDB + Mongoose).
+**SmartStay** is a full-stack accommodation booking platform inspired by Airbnb. The application enables users to browse properties, view details, make bookings, manage favorites, and complete secure online payments. Hosts can add and manage property listings, while administrators can monitor platform activities.
+
+Built using the **MERN Stack (MongoDB, Express.js, React.js, Node.js)**, SmartStay provides a modern, responsive, and scalable booking experience.
 
 ---
 
@@ -10,128 +12,212 @@
 
 ### 👤 User Features
 
-- User **Signup & Login**
-- Secure password hashing (**bcryptjs**)
-- Session-based authentication
-- Browse available homes
-- View home details
-- Add/remove homes from **Favorites**
+* User Registration & Authentication
+* Secure Login System
+* Browse Available Properties
+* Property Search & Exploration
+* View Detailed Property Information
+* Add Properties to Favorites
+* Book Accommodations
+* View Booking History
+* Responsive User Interface
 
 ### 🏠 Host Features
 
-- Add new property listings
-- Upload property images (Cloudinary/Multer)
-- Edit & delete listings
-- Host-only access to their listings
+* Add New Property Listings
+* Upload Property Images
+* Manage Existing Listings
+* View Hosted Properties
 
 ### 💳 Payment Features
 
-- **Razorpay** integration
-- Create orders dynamically
-- Payment verification and booking flow
+* Razorpay Payment Gateway Integration
+* Secure Online Transactions
+* Booking Confirmation After Payment
+
+### ☁️ Cloud Features
+
+* Cloudinary Image Storage
+* Image Upload & Optimization
 
 ---
 
-## 🧰 Tech Stack
+## 🛠️ Tech Stack
 
-- **Frontend:** React, React Router, Tailwind CSS (Vite)
-- **Backend:** Node.js, Express, Express-Session, Nodemon
-- **Database:** MongoDB Atlas + Mongoose
-- **Uploads:** Multer + Cloudinary (configured in backend)
-- **Payments:** Razorpay
+### Frontend
 
----
+* React.js
+* Vite
+* Axios
+* React Router DOM
+* Tailwind CSS
+* CSS3
 
-## 📁 Repository Structure
+### Backend
 
-```
-Fullstack-SmartStay/
-  backend/
-    app.js
-    routes/
-    controller/
-    middleware/
-    models/
-    config/
-    public/
-    views/
-  frontend/
-    src/
-    components/
-    pages/
-    services/
-    index.html
-```
+* Node.js
+* Express.js
+* JWT Authentication
+* bcrypt.js
+
+### Database
+
+* MongoDB
+* Mongoose
+
+### Third-Party Services
+
+* Razorpay
+* Cloudinary
 
 ---
 
-## 🚀 Getting Started
-
-### 1) Clone
+## 📂 Project Structure
 
 ```bash
-git clone https://github.com/shubhambatwal01/SmartStay.git
-cd SmartStay
+SmartStay/
+│
+├── frontend/
+│   ├── components/
+│   ├── pages/
+│   ├── src/
+│   └── vite.config.js
+│
+├── backend/
+│   ├── config/
+│   ├── controller/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   └── app.js
+│
+└── README.md
 ```
 
-### 2) Backend Setup
+---
+
+## 🚀 Installation
+
+### Clone Repository
 
 ```bash
-cd Fullstack-SmartStay/backend
+git clone https://github.com/your-username/smartstay.git
+cd smartstay
+```
+
+### Backend Setup
+
+```bash
+cd backend
 npm install
-```
-
-Create a **.env** file inside `backend/` (or root depending on your current config) with values like:
-
-- `PORT`
-- `MONGO_URL`
-- `RAZORPAY_KEY_ID`
-- `RAZORPAY_KEY_SECRET`
-- Session/Cloudinary variables (as required by your config files)
-
-Run backend:
-
-```bash
 npm start
 ```
 
-### 3) Frontend Setup
+### Frontend Setup
 
 ```bash
-cd ../frontend
+cd frontend
 npm install
 npm run dev
 ```
 
-Open the frontend URL shown in the terminal.
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file inside the backend folder.
+
+```env
+PORT=5000
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_jwt_secret
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+RAZORPAY_KEY_ID=your_key_id
+RAZORPAY_KEY_SECRET=your_key_secret
+```
 
 ---
 
-## 🔐 Environment Variables (Common)
+## 📸 Screenshots
 
-Make sure you have the following keys configured:
+Add screenshots here:
 
-- `MONGO_URL`
-- `RAZORPAY_KEY_ID`
-- `RAZORPAY_KEY_SECRET`
-- Session secret(s)
-- Cloudinary credentials (if enabled)
+### Home Page
+
+<img width="1920" height="1080" alt="Screenshot 2026-07-15 151055" src="https://github.com/user-attachments/assets/b8c47497-80f4-4cf1-ba1d-dbd690edac7a" />
+
+
+### Property Details
+
+<img width="1960" height="5142" alt="shubz-smart-stay vercel app_homes_6a428283d0fcf69c2d32f4e6" src="https://github.com/user-attachments/assets/1f571f13-5b93-42bb-ac2f-364fa69ef2ef" />
+
+
+### Booking Page
+
+<img width="1960" height="5142" alt="shubz-smart-stay vercel app_homes_6a428283d0fcf69c2d32f4e6" src="https://github.com/user-attachments/assets/6eba4e77-e296-4236-bba6-48399c73b024" />
 
 ---
 
-## 🖼️ Screenshots
+## 🔒 Authentication & Security
 
-(Example preview)
+* JWT-Based Authentication
+* Password Hashing using bcrypt
+* Protected Routes
+* Secure Payment Processing
+* Environment Variable Protection
 
-<img width="1920" height="1080" alt="SmartStay screenshot" src="https://github.com/user-attachments/assets/65e13d17-1859-475b-a474-5a7b7fa817cb" />
+---
+
+## 📈 Future Enhancements
+
+* Property Reviews & Ratings
+* Real-Time Chat System
+* Google Maps Integration
+* Email Notifications
+* Advanced Search Filters
+* Admin Analytics Dashboard
+
+---
+
+## 🎯 Learning Outcomes
+
+Through this project, I gained practical experience in:
+
+* Full Stack MERN Development
+* REST API Design
+* Authentication & Authorization
+* Cloud Storage Integration
+* Payment Gateway Integration
+* MongoDB Database Design
+* React State Management
+* Deployment & Production Practices
 
 ---
 
 ## 👨‍💻 Developer
 
-**Shubham Batwal** — Full Stack Developer
+### Shubham Batwal
 
-- LinkedIn: https://www.linkedin.com/in/shubhambatwal01
-- Portfolio: https://shubzportfolio.vercel.app
+Full Stack Developer | React | Node.js | MongoDB
+
+📧 Email: shubhambatwal14@gmail.com
+
+🔗 LinkedIn: https://linkedin.com/in/shubhambatwal01/
+
+🔗 GitHub: https://github.com/shubhambatwal01/
+
+🌐 Portfolio: https://shubz-portfolio.vercel.app/
 
 ---
+
+## ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
+
+Your support helps me continue building and sharing more projects.
