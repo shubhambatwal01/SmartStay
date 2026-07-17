@@ -104,20 +104,25 @@ exports.postSignup = [
   check("fullName")
     .trim()
     .isLength({ min: 2, max: 100 })
-    .withMessage("Full name must be between 2 and 100 characters long")
+    .withMessage("Full name must be between 2 and 100 characters")
     .matches(/^[a-zA-Z\s]+$/)
-    .withMessage("Full name must contain only letters and spaces"),
+    .withMessage("Full name can contain only letters and spaces"),
+
   check("email")
+    .trim()
     .isEmail()
     .withMessage("Please enter a valid email address")
     .normalizeEmail()
-    .custom(async (value) => {
-      const existingUser = await User.findOne({ email: value });
+    .custom(async (email) => {
+      const existingUser = await User.findOne({ email });
+
       if (existingUser) {
         throw new Error("User with this email already exists");
       }
+
       return true;
     }),
+
   check("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long")
@@ -126,86 +131,74 @@ exports.postSignup = [
     .matches(/[a-z]/)
     .withMessage("Password must contain at least one lowercase letter")
     .matches(/\d/)
-    .withMessage("Password must contain at least one digit")
+    .withMessage("Password must contain at least one number")
     .matches(/[@$!%*?&]/)
     .withMessage(
-      "Password must contain at least one special character (@, $, !, %, *, ?, &)",
+      "Password must contain at least one special character (@$!%*?&)"
     ),
-  check("confirmPassword")
-    .trim()
-    .custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error("Passwords do not match");
-      }
-      return true;
-    }),
+
+  check("confirmPassword").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("Passwords do not match");
+    }
+    return true;
+  }),
+
   check("userType")
     .notEmpty()
     .withMessage("Please select a user type")
     .isIn(["user", "admin"])
     .withMessage("Invalid user type"),
+
   check("terms")
-    .notEmpty()
+    .equals("true")
     .withMessage("You must accept the terms and conditions"),
 
-  (req, res, next) => {
-    const { fullName, email, password, userType } = req.body;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status().json({
-        message: "Post SignUp API",
-        pageTitle: "Signup",
-        currentPage: "Signup",
-        errors: errors.array().map((err) => err.msg),
-        oldInput: {
-          fullName,
-          email,
-          password,
-          userType,
-          terms: req.body.terms ? true : false,
-        },
-        isLoggedIn: false,
-        user: {},
-      });
-    }
+  async (req, res) => {
+    try {
+      const { fullName, email, password, userType } = req.body;
 
-    bcrypt.hash(password, 12).then((hashedPassword) => {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: errors.array().map((err) => ({
+            field: err.path,
+            message: err.msg,
+          })),
+        });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 12);
+
       const user = new User({
         fullName,
         email,
         password: hashedPassword,
         userType,
       });
-      user
-        .save()
-        .then(() => {
-          res.status(201).json({
-            success: true,
-            message: "User Registered Successfully",
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-          return res.status(422).json({
-            message: "Hashed SignUp API",
-            pageTitle: "Signup",
-            currentPage: "Signup",
-            errors: errors.array(),
-            errorMessage: errors
-              .array()
-              .map((err) => err.msg)
-              .join("\n"),
-            oldInput: {
-              fullName,
-              email,
-              password,
-              userType,
-              terms: req.body.terms ? true : false,
-            },
-            isLoggedIn: false,
-            user: {},
-          });
-        });
-    });
+
+      await user.save();
+
+      return res.status(201).json({
+        success: true,
+        message: "User registered successfully",
+        user: {
+          id: user._id,
+          fullName: user.fullName,
+          email: user.email,
+          userType: user.userType,
+        },
+      });
+    } catch (error) {
+      console.error("Signup Error:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong. Please try again later.",
+      });
+    }
   },
 ];
