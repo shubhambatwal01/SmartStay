@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="rounded-t-3xl bg-[#FF5A5F] text-white py-2 mt-10 shadow-inner bottom-0">
+    <footer className="bg-[#FF5A5F] text-white py-2 mt-10 shadow-inner bottom-0">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
         {/* Logo Section */}
         <div className="flex items-center">
