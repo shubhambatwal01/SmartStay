@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-[#FF5A5F] text-white py-2 mt-10 shadow-inner bottom-0">
+    <footer className="rounded-t-3xl bg-[#FF5A5F] text-white py-2 mt-10 shadow-inner bottom-0">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
         {/* Logo Section */}
-        <div className="flex items-center mb-4">
+        <div className="flex items-center">
           <Link to="/">
             <svg
               className="w-6 h-6 mr-0 fill-white shrink-0"
