@@ -101,8 +101,8 @@ SmartStay/
 ### Clone Repository
 
 ```bash
-git clone https://github.com/your-username/smartstay.git
-cd smartstay
+git clone https://github.com/shubhambatwal01/SmartStay.git
+cd SmartStay
 ```
 
 ### Backend Setup
@@ -128,7 +128,7 @@ npm run dev
 Create a `.env` file inside the backend folder.
 
 ```env
-PORT=5000
+PORT=1101
 
 MONGO_URI=your_mongodb_connection_string
 
@@ -145,8 +145,6 @@ RAZORPAY_KEY_SECRET=your_key_secret
 ---
 
 ## 📸 Screenshots
-
-Add screenshots here:
 
 ### Home Page
 
