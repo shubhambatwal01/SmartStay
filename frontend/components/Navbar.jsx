@@ -4,6 +4,15 @@ import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 import toast from "react-hot-toast";
 import Profile from "./Profile";
+import {
+  Home,
+  Heart,
+  CalendarDays,
+  LogOut,
+  LogIn,
+  UserPlus,
+} from "lucide-react";
+import { FaHome } from "react-icons/fa";
 
 function Navbar() {
   const { isLoggedIn, user, logout } = useContext(AuthContext);
@@ -57,11 +66,10 @@ function Navbar() {
      py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200
      ${isActive ? "bg-[#ff4b51]" : "bg-[#ff5a5f]"}`;
 
-  const mobileNavClass = ({ isActive }) =>
-    `flex items-center justify-center w-full text-center
-     text-white font-semibold hover:bg-[#ff4b51]
-     py-3 px-4 rounded-lg shadow-sm transition-all duration-200
-     ${isActive ? "bg-[#ff4b51]" : "bg-[#ff5a5f]"}`;
+  const mobileBottomNavClass = ({ isActive }) =>
+    `flex flex-col items-center justify-center gap-1 px-2 py-1 transition ${
+      isActive ? "text-white font-semibold" : "text-white/80 hover:text-white"
+    }`;
 
   return (
     <nav className="bg-[#FF5A5F] px-6 py-8 flex items-center fixed top-0 w-full z-50">
@@ -118,154 +126,59 @@ function Navbar() {
               </li>
             </>
           )}
-
-          {!isLoggedIn ? (
-            <>
-              <li>
-                <NavLink to="/signup" className={navClass}>
-                  SIGN UP
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink to="/login" className={navClass}>
-                  LOGIN
-                </NavLink>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Profile />
-            </li>
-          )}
+          <li>
+            <Profile />
+          </li>
         </ul>
       </div>
 
-      {/* Mobile Hamburger */}
-      <div className="md:hidden ml-auto">
-        <button
-          ref={buttonRef}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="focus:outline-none"
-        >
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div
-          ref={menuRef}
-          className="absolute top-20 left-0 w-full md:hidden px-3 py-3 bg-[#FF5A5F]"
-        >
-          <ul className="flex flex-col gap-3">
-            {isLoggedIn && user?.userType === "user" && (
-              <>
-                <li>
-                  <NavLink
-                    to="/homes"
-                    className={mobileNavClass}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    HOME
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    to="/favourites"
-                    className={mobileNavClass}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    FAVOURITES
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    to="/bookings"
-                    className={mobileNavClass}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    BOOKINGS
-                  </NavLink>
-                </li>
-              </>
-            )}
-
-            {isLoggedIn && user?.userType === "admin" && (
-              <>
-                <li>
-                  <NavLink
-                    to="/host/homes"
-                    className={mobileNavClass}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    HOST HOME
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    to="/host/add-home"
-                    className={mobileNavClass}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    ADD HOME
-                  </NavLink>
-                </li>
-              </>
-            )}
-
-            {!isLoggedIn ? (
-              <>
-                <li>
-                  <NavLink
-                    to="/signup"
-                    className={mobileNavClass}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    SIGN UP
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    to="/login"
-                    className={mobileNavClass}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    LOGIN
-                  </NavLink>
-                </li>
-              </>
-            ) : (
+      {/* Mobile Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 w-full md:hidden bg-[#FF5A5F] border-t border-white/20 z-50 shadow-lg mt-16">
+        <ul className="flex justify-around items-center h-16">
+          {isLoggedIn && user?.userType === "user" && (
+            <>
               <li>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center justify-center w-full
-                  text-center text-white font-semibold hover:bg-[#ff4b51]
-                  py-3 px-4 rounded-lg shadow-sm transition-all duration-200"
-                >
-                  LOGOUT
-                </button>
+                <NavLink to="/homes" className={mobileBottomNavClass}>
+                  <Home size={22} />
+                  <span className="text-xs">Home</span>
+                </NavLink>
               </li>
-            )}
-          </ul>
-        </div>
-      )}
+
+              <li>
+                <NavLink to="/favourites" className={mobileBottomNavClass}>
+                  <Heart size={22} />
+                  <span className="text-xs">Favorites</span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/bookings" className={mobileBottomNavClass}>
+                  <CalendarDays size={22} />
+                  <span className="text-xs">Bookings</span>
+                </NavLink>
+              </li>
+
+              <li>
+                <Profile />
+              </li>
+            </>
+          )}
+
+          {!isLoggedIn && (
+            <>
+              <li>
+                <NavLink to="/" className={mobileBottomNavClass}>
+                  <FaHome size={22} />
+                  <span className="text-xs">Home</span>
+                </NavLink>
+              </li>
+              <li>
+                <Profile />
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
     </nav>
   );
 }

@@ -9,16 +9,17 @@ import {
   FaSignOutAlt,
   FaChevronDown,
 } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
+import { CiLogin } from "react-icons/ci";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 import toast from "react-hot-toast";
 
-function Profile() {
-  const user = JSON.parse(sessionStorage.getItem("user"));
-
+function Profile({ mobileBottomNavClass }) {
   const [open, setOpen] = useState(false);
-  const { logout } = useContext(AuthContext);
+  const { isLoggedIn, user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  console.log(user);
 
   const dropdownRef = useRef(null);
 
@@ -53,20 +54,13 @@ function Profile() {
         onClick={() => setOpen(!open)}
         className="flex flex-col items-center"
       >
-        <img
-          src={
-            user?.profileImage ||
-            "https://i.8upload.com/image/d8d55a55cfe0d45f/profile.png"
-          }
-          alt=""
-          className="w-10 h-10 rounded-full border object-cover"
-        />
+        <CgProfile size={22} />
+        <span className="text-xs text-white">Profile</span>
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl z-50">
-          {/* Profile Header */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 bg-gray-50">
+        <div className="absolute right-0 bottom-full mb-2 md:bottom-auto md:top-full md:mt-2 md:mb-0 w-64 rounded-xl border border-gray-200 bg-white shadow-xl z-50">
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl border-b border-gray-100 bg-gray-50">
             <img
               src={
                 user?.profileImage ||
@@ -86,21 +80,43 @@ function Profile() {
           </div>
 
           <div className="py-1">
-            <Link
-              to="/profile"
-              className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-            >
-              <FaUserCircle className="text-gray-500 text-base" />
-              <span>View Profile</span>
-            </Link>
+            {user && (
+              <Link
+                to="/profile"
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <FaUserCircle className="text-gray-500 text-base" />
+                <span>View Profile</span>
+              </Link>
+            )}
 
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-            >
-              <FaSignOutAlt className="text-base" />
-              <span>Logout</span>
-            </button>
+            {!isLoggedIn ? (
+              <>
+                <Link
+                  to="/signup"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  <FaUserCircle className="text-gray-500 text-base" />
+                  <span>Signup</span>
+                </Link>
+
+                <Link
+                  to="/login"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  <CiLogin className="text-gray-500 text-base" />
+                  <span>Login</span>
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+              >
+                <FaSignOutAlt className="text-base" />
+                <span>Logout</span>
+              </button>
+            )}
           </div>
         </div>
       )}
