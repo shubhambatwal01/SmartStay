@@ -65,7 +65,7 @@ function Login() {
     <>
       <Navbar />
 
-      <main className="min-h-screen mt-32">
+      <main className="min-h-screen mt-32 pb-20 md:pb-0 mb-16">
         {/* Heading */}
         <div className="text-center mb-6">
           <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">

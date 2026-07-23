@@ -186,7 +186,7 @@ function AddHome() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 mt-20 py-12">
+      <main className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 mt-20 py-12 mb-16">
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="text-center mb-6">
             <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
