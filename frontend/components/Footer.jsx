@@ -28,23 +28,15 @@ function Footer() {
           &copy; {new Date().getFullYear()} SmartStay. All rights reserved.
         </p>
 
-        {/* Footer Links */}
-        <div className="flex space-x-4 mt-4 md:mt-0">
-          <Link
-            to="/privacy-policy"
-            className="hover:text-orange-900 transition"
+        <p className="text-sm">
+          Designed & Developed by{" "}
+          <a
+            href="https://shubz-portfolio.vercel.app/"
+            className="font-bold text-blue-300"
           >
-            Privacy Policy
-          </Link>
-
-          <Link to="/terms" className="hover:text-orange-900 transition">
-            Terms
-          </Link>
-
-          <Link to="/addContact" className="hover:text-orange-900 transition">
-            Contact
-          </Link>
-        </div>
+            👉🏻 ゛Shubham Batwal ˎˊ˗
+          </a>
+        </p>
       </div>
     </footer>
   );
