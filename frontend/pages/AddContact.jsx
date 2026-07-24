@@ -6,6 +6,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 
 function AddContact() {
+  document.title = "Contact Us";
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",

@@ -8,6 +8,7 @@ import Loader from "../components/loader";
 import toast from "react-hot-toast";
 
 function AddHome() {
+  document.title = "Add Home";
   const { id } = useParams();
   const navigate = useNavigate();
   const isLoggedIn = JSON.parse(sessionStorage.getItem("isLoggedIn"));
