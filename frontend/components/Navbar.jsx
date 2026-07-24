@@ -11,6 +11,9 @@ import {
   LogOut,
   LogIn,
   UserPlus,
+  User,
+  Building2,
+  CirclePlus,
 } from "lucide-react";
 import { FaHome } from "react-icons/fa";
 
@@ -115,7 +118,7 @@ function Navbar() {
             <>
               <li>
                 <NavLink to="/host/host-home" className={navClass}>
-                  HOST HOME
+                  MY HOMES
                 </NavLink>
               </li>
 
@@ -130,6 +133,17 @@ function Navbar() {
             <Profile />
           </li>
         </ul>
+      </div>
+
+      {/* Profile section for mobile screen */}
+      <div className="md:hidden flex ml-auto items-center">
+        <div className="md:flex ml-auto items-end">
+          <ul className="flex items-center gap-4">
+            <li>
+              <Profile />
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* Mobile Bottom Navigation */}
@@ -157,10 +171,6 @@ function Navbar() {
                   <span className="text-xs">Bookings</span>
                 </NavLink>
               </li>
-
-              <li>
-                <Profile />
-              </li>
             </>
           )}
 
@@ -172,8 +182,23 @@ function Navbar() {
                   <span className="text-xs">Home</span>
                 </NavLink>
               </li>
+            </>
+          )}
+
+          {isLoggedIn && user?.userType === "admin" && (
+            <>
               <li>
-                <Profile />
+                <NavLink to="/host/host-home" className={mobileBottomNavClass}>
+                  <Building2 size={22} />
+                  <span className="text-xs">My Homes</span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/host/add-home" className={mobileBottomNavClass}>
+                  <CirclePlus size={22} />
+                  <span className="text-xs">Add Home</span>
+                </NavLink>
               </li>
             </>
           )}

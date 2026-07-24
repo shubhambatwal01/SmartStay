@@ -54,30 +54,38 @@ function Profile({ mobileBottomNavClass }) {
         onClick={() => setOpen(!open)}
         className="flex flex-col items-center"
       >
-        <CgProfile size={22} />
-        <span className="text-xs text-white">Profile</span>
+        <img
+          src={
+            user?.profileImage ||
+            "https://i.8upload.com/image/8edeb1d1d961bd2a/user-3.png"
+          }
+          alt="Profile"
+          className="w-10 h-10 rounded-full object-cover border border-gray-300"
+        />
       </button>
 
       {open && (
-        <div className="absolute right-0 bottom-full mb-2 md:bottom-auto md:top-full md:mt-2 md:mb-0 w-64 rounded-xl border border-gray-200 bg-white shadow-xl z-50">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl border-b border-gray-100 bg-gray-50">
-            <img
-              src={
-                user?.profileImage ||
-                "https://i.8upload.com/image/d8d55a55cfe0d45f/profile.png"
-              }
-              alt="Profile"
-              className="w-11 h-11 rounded-full object-cover border border-gray-300"
-            />
+        <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-gray-200 bg-white shadow-xl z-50">
+          {user && (
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl border-b border-gray-100 bg-gray-50">
+              <img
+                src={
+                  user?.profileImage ||
+                  "https://i.8upload.com/image/8edeb1d1d961bd2a/user-3.png"
+                }
+                alt="Profile"
+                className="w-11 h-11 rounded-full object-cover border border-gray-300"
+              />
 
-            <div className="min-w-0">
-              <h3 className="text-sm font-semibold text-gray-800 truncate">
-                {user?.fullName}
-              </h3>
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold text-gray-800 truncate">
+                  {user?.fullName}
+                </h3>
 
-              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="py-1">
             {user && (
