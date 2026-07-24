@@ -69,10 +69,7 @@ function Profile({ mobileBottomNavClass }) {
           {user && (
             <div className="flex items-center gap-3 px-4 py-3 rounded-xl border-b border-gray-100 bg-gray-50">
               <img
-                src={
-                  user?.profileImage ||
-                  "https://i.8upload.com/image/8edeb1d1d961bd2a/user-3.png"
-                }
+                src={user?.profileImage || "https://i.pravatar.cc/100"}
                 alt="Profile"
                 className="w-11 h-11 rounded-full object-cover border border-gray-300"
               />
