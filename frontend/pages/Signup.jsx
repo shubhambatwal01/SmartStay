@@ -37,6 +37,7 @@ function Signup() {
     e.preventDefault();
 
     setErrors([]);
+    setSubmitting(true);
 
     // Frontend validation
     if (formData.password !== formData.confirmPassword) {
@@ -56,7 +57,6 @@ function Signup() {
         { withCredentials: true },
       );
 
-      setSubmitting(true);
       toast.success("Signup Successfully!");
       navigate("/login");
     } catch (error) {
