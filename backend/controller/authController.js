@@ -151,7 +151,7 @@ exports.postSignup = [
     .withMessage("Invalid user type"),
 
   check("terms")
-    .equals("true")
+    .custom((value) => value === true || value === "true")
     .withMessage("You must accept the terms and conditions"),
 
   async (req, res) => {

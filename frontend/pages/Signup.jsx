@@ -60,10 +60,10 @@ function Signup() {
       toast.success("Signup Successfully!");
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data);
 
       if (error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
+        setErrors(error.response.data.errors.map((err) => err.message));
       } else if (error.response?.data?.message) {
         setErrors([error.response.data.message]);
       } else {
