@@ -14,7 +14,7 @@ function Home() {
 
   useEffect(() => {
     const fetchHomes = async () => {
-      document.title = "Index Homes";
+      document.title = "Homes | SmartStay";
       try {
         const response = await axios.get(
           "https://smartstay-d8sz.onrender.com/",
