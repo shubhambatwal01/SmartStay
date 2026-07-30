@@ -113,8 +113,9 @@ exports.getDetails = (req, res, next) => {
         res.redirect("/homes");
       } else {
         res.status(200).json({
+          success: true,
           home,
-          pageTitle: "Home Detail",
+          pageTitle: "Home Details",
           currentPage: "home-detail",
           isLoggedIn: req.session.isLoggedIn,
           user: req.session.user,
