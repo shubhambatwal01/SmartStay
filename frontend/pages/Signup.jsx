@@ -228,7 +228,7 @@ function Signup() {
                 <span>
                   I agree to the{" "}
                   <a
-                    href="https://drive.google.com/file/d/1Gbxh8mhid-lgDuZqjoalBIZSLtWLm3AY/view?usp=drive_link"
+                    href="/SmartStay_Terms_and_Conditions.pdf"
                     className="text-blue-600 underline"
                   >
                     terms and conditions
