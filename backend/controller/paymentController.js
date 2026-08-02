@@ -55,6 +55,31 @@ exports.verifyPayment = async (req, res) => {
 
     console.log("User in session:", req.session.user);
 
+    // Validate check-in and check-out dates before creating the booking
+    if (!checkIn || !checkOut) {
+      return res.status(400).json({
+        success: false,
+        message: "Check-in and check-out dates are required.",
+      });
+    }
+
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+
+    if (isNaN(checkInDate) || isNaN(checkOutDate)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid check-in or check-out date.",
+      });
+    }
+
+    if (checkOutDate <= checkInDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Check-out date must be after check-in date.",
+      });
+    }
+
     const booking = await Booking.create({
       user: req.session.user._id,
       home: homeId,

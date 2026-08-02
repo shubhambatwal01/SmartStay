@@ -102,26 +102,35 @@ exports.getAddContact = (req, res, next) => {
   });
 };
 
-exports.getDetails = (req, res, next) => {
-  const homeId = req.params.id;
-  Home.findById(homeId)
-    .populate("owner", "fullName")
-    .then((home) => {
-      console.log("Home Details Are Founded :", home);
-      if (!home) {
-        console.log("Home is not found");
-        res.redirect("/homes");
-      } else {
-        res.status(200).json({
-          success: true,
-          home,
-          pageTitle: "Home Details",
-          currentPage: "home-detail",
-          isLoggedIn: req.session.isLoggedIn,
-          user: req.session.user,
-        });
-      }
+exports.getDetails = async (req, res) => {
+  try {
+    const home = await Home.findById(req.params.id).populate(
+      "owner",
+      "fullName",
+    );
+
+    const bookings = await Booking.find({
+      home: home._id,
+    }).select("checkIn checkOut");
+
+    console.log("Home ID:", req.params.id);
+    console.log("Bookings:", bookings);
+
+    res.status(200).json({
+      success: true,
+      home,
+      bookings,
+      pageTitle: "Home Details",
+      currentPage: "home-details",
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
     });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
 };
 
 exports.postAddContact = (req, res, next) => {
