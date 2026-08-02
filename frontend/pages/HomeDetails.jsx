@@ -8,6 +8,8 @@ import Loader from "../components/loader";
 import AboutProperty from "../components/AboutProperty";
 import PaymentCard from "../components/PaymentCard";
 import toast from "react-hot-toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function HomeDetails() {
   const { id } = useParams();
@@ -21,10 +23,29 @@ function HomeDetails() {
   const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000)
     .toISOString()
     .split("T")[0];
-  const [checkIn, setCheckIn] = useState(today);
-  const [checkOut, setCheckOut] = useState(tomorrow);
+  const [checkIn, setCheckIn] = useState();
+  const [checkOut, setCheckOut] = useState();
   const [guests, setGuests] = useState(1);
   const [totalPrice, setTotalPrice] = useState(1);
+  const [bookedDates, setBookedDates] = useState([]);
+
+  // When user changes the check-in date, ensure the check-out remains valid.
+  const handleCheckInChange = (date) => {
+    if (!date) return;
+    const nextCheckIn = date.toISOString().split("T")[0];
+    setCheckIn(nextCheckIn);
+
+    // If checkOut is missing or on/before the new check-in, reset it to the next day
+    if (!checkOut || new Date(checkOut) <= new Date(nextCheckIn)) {
+      const nextDay = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+      setCheckOut(nextDay.toISOString().split("T")[0]);
+    }
+  };
+
+  const handleCheckOutChange = (date) => {
+    if (!date) return;
+    setCheckOut(date.toISOString().split("T")[0]);
+  };
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const isUser = user?.userType === "user";
@@ -45,6 +66,24 @@ function HomeDetails() {
     }
   }, [checkIn, checkOut, home]);
 
+  const getBookedDates = (bookings = []) => {
+    const dates = [];
+
+    bookings.forEach((booking) => {
+      let current = new Date(booking.checkIn);
+      const end = new Date(booking.checkOut);
+
+      while (current <= end) {
+        dates.push(current.toISOString().split("T")[0]);
+
+        current = new Date(current);
+        current.setDate(current.getDate() + 1);
+      }
+    });
+
+    return dates;
+  };
+
   useEffect(() => {
     const fetchHomeDetails = async () => {
       document.title = "Home Details";
@@ -54,6 +93,7 @@ function HomeDetails() {
         );
 
         setHome(response.data.home);
+        setBookedDates(getBookedDates(response.data.bookings));
       } catch (error) {
         console.error("Error fetching home details:", error);
       } finally {
@@ -301,34 +341,46 @@ function HomeDetails() {
                   </h2>
                 </div>
 
-                <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Check-In Date
-                    <input
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="mb-5">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">
+                      Check-In
+                    </label>
+                    <DatePicker
                       type="date"
                       value={checkIn}
-                      min={new Date().toISOString().split("T")[0]}
-                      onChange={(e) => setCheckIn(e.target.value)}
+                      minDate={new Date()}
+                      onChange={handleCheckInChange}
+                      excludeDates={bookedDates.map((date) => new Date(date))}
+                      dateFormat="dd/MM/yyyy"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
+                      required
                     />
-                  </label>
-                </div>
+                  </div>
 
-                <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Check-Out Date
-                    <input
+                  <div className="mb-5">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">
+                      Check-Out
+                    </label>
+                    <DatePicker
                       type="date"
                       value={checkOut}
-                      min={checkIn}
-                      onChange={(e) => setCheckOut(e.target.value)}
+                      minDate={
+                        new Date(
+                          new Date(checkIn).getTime() + 24 * 60 * 60 * 1000,
+                        )
+                      }
+                      onChange={handleCheckOutChange}
+                      excludeDates={bookedDates.map((date) => new Date(date))}
+                      dateFormat="dd/MM/yyyy"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
+                      required
                     />
-                  </label>
+                  </div>
                 </div>
 
                 <div className="mb-6">
-                  <label className="block text-sm font-semibold text-gray-700">
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Number of Guests
                     <select
                       value={guests}

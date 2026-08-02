@@ -19,7 +19,7 @@ function Profile({ mobileBottomNavClass }) {
   const [open, setOpen] = useState(false);
   const { isLoggedIn, user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  console.log(user);
+  // console.log(user);
 
   const dropdownRef = useRef(null);
 
