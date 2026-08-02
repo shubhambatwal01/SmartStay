@@ -111,11 +111,6 @@ function Navbar() {
                   BOOKINGS
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/addContact" className={navClass}>
-                  CONTACT
-                </NavLink>
-              </li>
             </>
           )}
 
