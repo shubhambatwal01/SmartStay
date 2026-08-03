@@ -10,6 +10,7 @@ import AddContact from "../pages/AddContact";
 import ContactAdded from "../pages/ContactAdded";
 import AddHome from "../pages/AddHome";
 import HostHome from "../pages/HostHome";
+import HostBookings from "../pages/HostBookings";
 import PageNotFound from "../pages/PageNotFound";
 import ProfilePage from "../pages/ProfilePage";
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/host/edit-home" element={<AddHome />} />
         <Route path="/host/edit-home/:id" element={<AddHome />} />
         <Route path="/host/host-home" element={<HostHome />} />
+        <Route path="/host/bookings" element={<HostBookings />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
