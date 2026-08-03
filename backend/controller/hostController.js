@@ -1,4 +1,5 @@
 const Home = require("../models/home");
+const Booking = require("../models/bookings");
 const cloudinary = require("../config/cloudinaryConfig");
 
 const streamUpload = (buffer, folder = "SmartStayHomes") => {
@@ -93,6 +94,49 @@ exports.getHostHome = async (req, res, next) => {
     res.status(500).json({
       success: false,
       message: "Unable to fetch homes",
+      error: error.message,
+    });
+  }
+};
+
+exports.getHostBookings = async (req, res, next) => {
+  try {
+    if (!req.session.user || !req.session.user._id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    if (req.session.user.userType !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized - host access only",
+      });
+    }
+
+    const homes = await Home.find({ owner: req.session.user._id }).select("_id");
+    const homeIds = homes.map((home) => home._id);
+
+    const bookings = await Booking.find({ home: { $in: homeIds } })
+      .populate("home", "houseName houseImg houseAddr housePrice")
+      .populate("user", "fullName email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Host bookings retrieved successfully",
+      bookings,
+      pageTitle: "Host Bookings",
+      currentPage: "hostBookings",
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
+    });
+  } catch (error) {
+    console.error("Error fetching host bookings:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch bookings",
       error: error.message,
     });
   }
