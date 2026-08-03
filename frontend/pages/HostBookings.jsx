@@ -135,9 +135,8 @@ function HostBookings() {
                 : "Pending";
               const userName = booking.user?.fullName || "User";
               const userEmail = booking.user?.email || "No email provided";
-              const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                userName,
-              )}&background=ff5a5f&color=ffffff&rounded=true`;
+              const avatarUrl =
+                booking.user?.profileImage || "https://i.pravatar.cc/100";
 
               return (
                 <article
