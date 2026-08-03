@@ -49,11 +49,9 @@ function Navbar() {
   // Logout handler
   const handleLogout = async () => {
     try {
-      await axios.post(
-        "https://smartstay-d8sz.onrender.com/logout",
-        {},
-        { withCredentials: true },
-      );
+      await axios.post("http://localhost:1101/logout", {
+        withCredentials: true,
+      });
       logout();
       toast.success("Logged Out Successfully!");
       navigate("/login");
@@ -127,6 +125,12 @@ function Navbar() {
                   ADD HOME
                 </NavLink>
               </li>
+
+              <li>
+                <NavLink to="/host/bookings" className={navClass}>
+                  MANAGE BOOKINGS
+                </NavLink>
+              </li>
             </>
           )}
           <li>
@@ -198,6 +202,13 @@ function Navbar() {
                 <NavLink to="/host/add-home" className={mobileBottomNavClass}>
                   <CirclePlus size={22} />
                   <span className="text-xs">Add Home</span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/host/bookings" className={mobileBottomNavClass}>
+                  <CalendarDays size={22} />
+                  <span className="text-xs">Bookings</span>
                 </NavLink>
               </li>
             </>
