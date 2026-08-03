@@ -15,6 +15,11 @@ hostRouter.get(
   handleAsyncErrors(hostController.getHostHome),
 );
 hostRouter.get(
+  "/bookings",
+  isLoggedIn,
+  handleAsyncErrors(hostController.getHostBookings),
+);
+hostRouter.get(
   "/edit-home/:id",
   isLoggedIn,
   handleAsyncErrors(hostController.getEditHome),
