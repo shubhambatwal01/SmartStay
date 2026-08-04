@@ -5,7 +5,7 @@ import Signup from "../pages/Signup";
 import HomeList from "../pages/HomeList";
 import FavList from "../pages/FavList";
 import HomeDetails from "../pages/HomeDetails";
-import Bookings from "../pages/Bookings";
+import UserBookings from "../pages/UserBookings";
 import AddContact from "../pages/AddContact";
 import ContactAdded from "../pages/ContactAdded";
 import AddHome from "../pages/AddHome";
@@ -24,7 +24,7 @@ function App() {
         <Route path="/homes" element={<HomeList />} />
         <Route path="/homes/:id" element={<HomeDetails />} />
         <Route path="/favourites" element={<FavList />} />
-        <Route path="/bookings" element={<Bookings />} />
+        <Route path="/bookings" element={<UserBookings />} />
         <Route path="/addContact" element={<AddContact />} />
         <Route path="/ContactAdded" element={<ContactAdded />} />
         <Route path="/host/add-home" element={<AddHome />} />
