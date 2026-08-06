@@ -43,24 +43,37 @@ const multerOptions = {
 const normalizeOrigin = (value) => value?.replace(/\/+$/, "");
 const frontendUrl = normalizeOrigin(process.env.FRONTEND_URL);
 const allowedOrigins = [
-  frontendUrl,
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-].filter(Boolean);
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      const requestOrigin = normalizeOrigin(origin);
-      if (!requestOrigin || allowedOrigins.includes(requestOrigin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  }),
-);
+if (frontendUrl) {
+  allowedOrigins.push(frontendUrl);
+}
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const requestOrigin = normalizeOrigin(origin);
+
+    if (allowedOrigins.includes(requestOrigin)) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS rejected origin: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(multer(multerOptions).single("houseImg"));
 app.use(express.json());
