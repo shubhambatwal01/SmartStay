@@ -1,9 +1,20 @@
 const razorpay = require("../config/razorpay");
 const crypto = require("crypto");
 const Booking = require("../models/bookings");
+const User = require("../models/user");
+const Home = require("../models/home");
+const { sendBookingEmails } = require("../config/emailService");
 
 exports.createOrder = async (req, res) => {
   try {
+    if (!razorpay) {
+      return res.status(503).json({
+        success: false,
+        message:
+          "Razorpay is not configured yet. Please set the Razorpay keys.",
+      });
+    }
+
     const options = {
       amount: req.body.amount * 100,
       currency: "INR",
@@ -92,11 +103,21 @@ exports.verifyPayment = async (req, res) => {
       razorpaySignature: razorpay_signature,
     });
 
+    const populatedBooking = await Booking.findById(booking._id)
+      .populate("user", "fullName email")
+      .populate({
+        path: "home",
+        select: "houseName houseAddr owner",
+        populate: { path: "owner", select: "fullName email" },
+      });
+
+    await sendBookingEmails(populatedBooking);
+
     console.log("Booking Saved:", booking);
 
     res.json({
       success: true,
-      booking,
+      booking: populatedBooking,
     });
   } catch (error) {
     console.error(error);
