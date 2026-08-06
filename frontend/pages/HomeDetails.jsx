@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -18,6 +18,7 @@ function HomeDetails() {
   const [loading, setLoading] = useState(true);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const navigate = useNavigate();
 
   const today = new Date().toISOString().split("T")[0];
   const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000)
@@ -146,8 +147,8 @@ function HomeDetails() {
             );
 
             if (data.success) {
+              navigate("/bookings");
               toast.success("Booking Confirmed!");
-              window.location.href = "/bookings";
             }
           } catch (error) {
             toast.error("Payment verification failed");
