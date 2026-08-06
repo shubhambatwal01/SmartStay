@@ -74,7 +74,16 @@ exports.getBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({
       user: req.session.user._id,
-    }).populate("home", "houseName houseImg houseAddr housePrice");
+    })
+      .populate({
+        path: "home",
+        select: "houseName houseImg houseAddr housePrice owner",
+        populate: {
+          path: "owner",
+          select: "fullName email",
+        },
+      })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
