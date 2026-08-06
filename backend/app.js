@@ -43,15 +43,12 @@ const multerOptions = {
 const normalizeOrigin = (value) => value?.replace(/\/+$/, "");
 const frontendUrl = normalizeOrigin(process.env.FRONTEND_URL);
 const allowedOrigins = [
+  frontendUrl,
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
 ];
-
-if (frontendUrl) {
-  allowedOrigins.push(frontendUrl);
-}
 
 const corsOptions = {
   origin: (origin, callback) => {
