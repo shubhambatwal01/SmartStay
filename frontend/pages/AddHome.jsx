@@ -49,7 +49,7 @@ function AddHome() {
 
       try {
         const response = await axios.get(
-          `https://smartstay-d8sz.onrender.com/host/edit-home/${id}`,
+          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/host/edit-home/${id}`,
           {
             withCredentials: true,
           },
@@ -146,7 +146,7 @@ function AddHome() {
 
       if (editing) {
         await axios.post(
-          "https://smartstay-d8sz.onrender.com/host/edit-home",
+          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/host/edit-home`,
           data,
           {
             withCredentials: true,
@@ -158,7 +158,7 @@ function AddHome() {
         toast.success("Home Updated Successfully!");
       } else {
         await axios.post(
-          "https://smartstay-d8sz.onrender.com/host/add-home",
+          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/host/add-home`,
           data,
           {
             withCredentials: true,

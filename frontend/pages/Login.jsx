@@ -38,7 +38,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "https://smartstay-d8sz.onrender.com/login",
+        `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/login`,
         formData,
         { withCredentials: true },
       );

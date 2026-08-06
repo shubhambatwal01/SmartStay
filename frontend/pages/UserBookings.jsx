@@ -19,9 +19,12 @@ function UserBookings() {
       document.title = "Your Bookings";
 
       try {
-        const response = await axios.get("https://smartstay-d8sz.onrender.com/bookings", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/bookings`,
+          {
+            withCredentials: true,
+          },
+        );
 
         setBookings(response.data.bookings || []);
       } catch (error) {

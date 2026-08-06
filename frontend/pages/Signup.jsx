@@ -52,7 +52,7 @@ function Signup() {
 
     try {
       const response = await axios.post(
-        "https://smartstay-d8sz.onrender.com/signup",
+        `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/signup`,
         formData,
         { withCredentials: true },
       );

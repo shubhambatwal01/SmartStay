@@ -95,6 +95,56 @@ app.use(userRouter);
 app.use("/host", hostRouter);
 app.use("/payment", paymentRouter);
 app.locals.razorpayKey = process.env.RAZORPAY_KEY_ID;
+
+// ============================================
+// 🔧 STARTUP CONFIGURATION CHECK
+// ============================================
+const checkConfiguration = () => {
+  console.log("\n" + "=".repeat(60));
+  console.log("🚀 SMARTSTAY STARTUP CONFIGURATION");
+  console.log("=".repeat(60));
+
+  const configs = {
+    "Environment": process.env.NODE_ENV || "development",
+    "Port": process.env.PORT || 3000,
+    "MongoDB": process.env.MONGO_URL ? "✓ Connected" : "✗ Missing",
+    "Razorpay": process.env.RAZORPAY_KEY_ID ? "✓ Configured" : "✗ Missing",
+    "Frontend URL": process.env.FRONTEND_URL || "localhost",
+  };
+
+  Object.entries(configs).forEach(([key, value]) => {
+    console.log(`  ${key}: ${value}`);
+  });
+
+  console.log("\n📧 EMAIL CONFIGURATION:");
+  const emailConfigs = {
+    "SMTP_HOST": process.env.SMTP_HOST,
+    "SMTP_PORT": process.env.SMTP_PORT,
+    "SMTP_SECURE": process.env.SMTP_SECURE,
+    "SMTP_USER": process.env.SMTP_USER,
+    "SMTP_PASS": process.env.SMTP_PASS ? `[SET - ${process.env.SMTP_PASS.length} chars]` : "[NOT SET]",
+    "SMTP_FROM": process.env.SMTP_FROM,
+    "HOST_NOTIFICATION_EMAIL": process.env.HOST_NOTIFICATION_EMAIL,
+  };
+
+  const emailReady = process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS;
+  console.log(`  Status: ${emailReady ? "✓ READY" : "✗ NOT CONFIGURED"}`);
+
+  Object.entries(emailConfigs).forEach(([key, value]) => {
+    const status = value ? "✓" : "✗";
+    console.log(`  ${status} ${key}: ${value || "NOT SET"}`);
+  });
+
+  console.log("=".repeat(60) + "\n");
+
+  if (!emailReady && process.env.NODE_ENV === "production") {
+    console.warn("⚠️  WARNING: Email is not configured on Render!");
+    console.warn("   Booking confirmation emails will NOT be sent.");
+    console.warn("   See RENDER_EMAIL_SETUP.md for setup instructions.\n");
+  }
+};
+
+checkConfiguration();
 app.use(homeController.get404);
 
 app.use((err, req, res, next) => {

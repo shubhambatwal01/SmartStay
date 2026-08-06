@@ -19,7 +19,7 @@ function HostHome() {
       document.title = "Your Registered Homes";
       try {
         const response = await axios.get(
-          "https://smartstay-d8sz.onrender.com/host/host-home",
+          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/host/host-home`,
           {
             withCredentials: true,
           },
@@ -75,7 +75,7 @@ function HostHome() {
 
     try {
       await axios.post(
-        `https://smartstay-d8sz.onrender.com/host/delete-home/${homeId}`,
+        `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/host/delete-home/${homeId}`,
         {},
         {
           withCredentials: true,

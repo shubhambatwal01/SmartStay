@@ -1,38 +1,73 @@
 const nodemailer = require("nodemailer");
 
+let cachedTransporter = null;
+
+const verifyTransporter = (transporter) => {
+  return new Promise((resolve) => {
+    transporter.verify((error, success) => {
+      if (error) {
+        console.error("❌ SMTP Connection Failed:", {
+          message: error.message,
+          code: error.code,
+        });
+        resolve(false);
+      } else {
+        console.log("✓ SMTP Server is ready to send emails");
+        resolve(true);
+      }
+    });
+  });
+};
+
 const createTransporter = () => {
   const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM } =
     process.env;
 
+  console.log("🔧 Checking SMTP Configuration:", {
+    SMTP_HOST: SMTP_HOST ? "✓ Set" : "✗ Missing",
+    SMTP_PORT: SMTP_PORT ? "✓ Set" : "✗ Missing",
+    SMTP_SECURE: SMTP_SECURE ? "✓ Set" : "✗ Missing",
+    SMTP_USER: SMTP_USER ? "✓ Set" : "✗ Missing",
+    SMTP_PASS: SMTP_PASS ? "✓ Set (length: " + SMTP_PASS?.length + ")" : "✗ Missing",
+    SMTP_FROM: SMTP_FROM ? "✓ Set" : "✗ Missing",
+    NODE_ENV: process.env.NODE_ENV,
+  });
+
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    console.error("❌ SMTP Configuration Error:", {
-      SMTP_HOST: SMTP_HOST ? "✓ Set" : "✗ Missing",
-      SMTP_USER: SMTP_USER ? "✓ Set" : "✗ Missing",
-      SMTP_PASS: SMTP_PASS ? "✓ Set" : "✗ Missing",
-    });
+    console.error("❌ SMTP Configuration Error - Missing required variables!");
     return null;
   }
 
-  const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT || 587),
-    secure: SMTP_SECURE === "true",
-    auth: {
-      user: SMTP_USER,
-      pass: SMTP_PASS,
-    },
-    connectionUrl: undefined,
-  });
+  if (!SMTP_FROM) {
+    console.warn("⚠️ SMTP_FROM not set, will use SMTP_USER as sender");
+  }
 
-  transporter.verify((error, success) => {
-    if (error) {
-      console.error("❌ SMTP Connection Failed:", error.message);
-    } else {
-      console.log("✓ SMTP Server is ready to send emails");
-    }
-  });
+  try {
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT || 587),
+      secure: SMTP_SECURE === "true",
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS,
+      },
+      connectionUrl: undefined,
+      pool: {
+        maxConnections: 5,
+        maxMessages: 100,
+        rateDelta: 4000,
+        rateLimit: 14,
+      },
+    });
 
-  return transporter;
+    // Verify async but don't block
+    verifyTransporter(transporter);
+
+    return transporter;
+  } catch (error) {
+    console.error("❌ Failed to create transporter:", error.message);
+    return null;
+  }
 };
 
 const buildBookingEmailHtml = ({
@@ -87,15 +122,26 @@ const sendBookingEmails = async (booking) => {
   const transporter = createTransporter();
   const fromAddress = process.env.SMTP_FROM || process.env.SMTP_USER;
 
-  console.log("📧 Starting email send process...");
+  console.log("📧 Starting email send process for booking:", booking._id);
 
-  if (!transporter || !fromAddress) {
+  if (!transporter) {
     const errorMsg =
-      "Email transport is not configured. Booking emails were not sent.";
-    console.error("❌", errorMsg);
+      "❌ Email transport could not be created. Check SMTP environment variables on Render.";
+    console.error(errorMsg);
     return {
       success: false,
-      reason: "SMTP configuration missing",
+      reason: "SMTP transporter creation failed",
+      details: errorMsg,
+    };
+  }
+
+  if (!fromAddress) {
+    const errorMsg =
+      "❌ SMTP_FROM email address not configured. Set SMTP_FROM in Render environment.";
+    console.error(errorMsg);
+    return {
+      success: false,
+      reason: "SMTP_FROM missing",
       details: errorMsg,
     };
   }
@@ -110,14 +156,20 @@ const sendBookingEmails = async (booking) => {
   const hostEmail =
     owner?.email || process.env.HOST_NOTIFICATION_EMAIL || fromAddress;
   const homeName = home?.houseName || "your booked property";
-  const homeAddress = home?.houseAddr || "Please check your booking details";
+  const homeAddress = home?.houseAddr || "Check your booking details";
+
+  console.log("📋 Email Recipients Check:", {
+    guestEmail: guestEmail ? "✓ Available" : "✗ Missing",
+    hostEmail: hostEmail ? "✓ Available" : "✗ Missing",
+  });
 
   if (!guestEmail) {
-    const errorMsg = "Guest email not available in booking data";
-    console.error("❌", errorMsg, { booking });
+    const errorMsg =
+      "❌ Guest email not available. User data not properly populated.";
+    console.error(errorMsg, { user });
     return {
       success: false,
-      reason: "Guest email not available",
+      reason: "Guest email missing",
       details: errorMsg,
     };
   }
@@ -164,15 +216,28 @@ const sendBookingEmails = async (booking) => {
     },
   ];
 
-  console.log("📧 Sending emails to:", {
+  console.log("📤 Sending emails to:", {
     guest: guestEmail,
     host: hostEmail,
   });
 
+  // Send emails with timeout protection
+  const sendWithTimeout = (mailOptions, timeoutMs = 30000) => {
+    return Promise.race([
+      transporter.sendMail(mailOptions),
+      new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error(`Email send timeout after ${timeoutMs}ms`)),
+          timeoutMs,
+        ),
+      ),
+    ]);
+  };
+
   const results = await Promise.allSettled(
     emailPayloads.map((payload) => {
-      console.log(`📤 Queuing ${payload.type} email to ${payload.to}...`);
-      return transporter.sendMail({
+      console.log(`📤 Sending ${payload.type} email to ${payload.to}...`);
+      return sendWithTimeout({
         from: fromAddress,
         to: payload.to,
         subject: payload.subject,
@@ -190,13 +255,17 @@ const sendBookingEmails = async (booking) => {
     `📊 Email Results: ${successfulSends.length} succeeded, ${failedSends.length} failed`,
   );
 
-  failedSends.forEach((failed, index) => {
-    console.error(`❌ Email ${index + 1} failed:`, {
-      error: failed.reason?.message,
-      code: failed.reason?.code,
-      response: failed.reason?.response,
+  if (failedSends.length > 0) {
+    failedSends.forEach((failed, index) => {
+      const error = failed.reason;
+      console.error(`❌ Email ${index + 1} failed:`, {
+        error: error?.message,
+        code: error?.code,
+        command: error?.command,
+        response: error?.response,
+      });
     });
-  });
+  }
 
   if (successfulSends.length === 0) {
     const firstError = failedSends[0]?.reason;
@@ -205,20 +274,27 @@ const sendBookingEmails = async (booking) => {
     const errorDetails = {
       message: errorMessage,
       code: errorCode,
+      command: firstError?.command,
       response: firstError?.response,
     };
 
-    console.error("❌ All emails failed:", errorDetails);
+    console.error("❌ All emails failed. Render Environment Variables:", {
+      SMTP_HOST: process.env.SMTP_HOST ? "Set" : "MISSING",
+      SMTP_PORT: process.env.SMTP_PORT ? "Set" : "MISSING",
+      SMTP_USER: process.env.SMTP_USER ? "Set" : "MISSING",
+      SMTP_PASS: process.env.SMTP_PASS ? "Set" : "MISSING",
+    });
 
     return {
       success: false,
       reason: errorMessage,
+      code: errorCode,
       details: errorDetails,
       allFailed: true,
     };
   }
 
-  console.log(`✓ ${successfulSends.length} booking email(s) sent successfully`);
+  console.log(`✓ ${successfulSends.length} of ${emailPayloads.length} booking emails sent`);
 
   return {
     success: true,

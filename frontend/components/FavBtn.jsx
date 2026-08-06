@@ -16,7 +16,7 @@ function FavBtn({ homeId, className }) {
 
     try {
       await axios.post(
-        "https://smartstay-d8sz.onrender.com/favourites",
+        `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/favourites`,
         { id: homeId },
         { withCredentials: true },
       );

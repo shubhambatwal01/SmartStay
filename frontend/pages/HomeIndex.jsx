@@ -17,7 +17,7 @@ function Home() {
       document.title = "Homes | SmartStay";
       try {
         const response = await axios.get(
-          "https://smartstay-d8sz.onrender.com/",
+          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/`,
           {
             withCredentials: true,
           },
