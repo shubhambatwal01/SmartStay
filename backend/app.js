@@ -105,10 +105,10 @@ const checkConfiguration = () => {
   console.log("=".repeat(60));
 
   const configs = {
-    "Environment": process.env.NODE_ENV || "development",
-    "Port": process.env.PORT || 3000,
-    "MongoDB": process.env.MONGO_URL ? "✓ Connected" : "✗ Missing",
-    "Razorpay": process.env.RAZORPAY_KEY_ID ? "✓ Configured" : "✗ Missing",
+    Environment: process.env.NODE_ENV || "development",
+    Port: process.env.PORT || 3000,
+    MongoDB: process.env.MONGO_URL ? "✓ Connected" : "✗ Missing",
+    Razorpay: process.env.RAZORPAY_KEY_ID ? "✓ Configured" : "✗ Missing",
     "Frontend URL": process.env.FRONTEND_URL || "localhost",
   };
 
@@ -118,16 +118,19 @@ const checkConfiguration = () => {
 
   console.log("\n📧 EMAIL CONFIGURATION:");
   const emailConfigs = {
-    "SMTP_HOST": process.env.SMTP_HOST,
-    "SMTP_PORT": process.env.SMTP_PORT,
-    "SMTP_SECURE": process.env.SMTP_SECURE,
-    "SMTP_USER": process.env.SMTP_USER,
-    "SMTP_PASS": process.env.SMTP_PASS ? `[SET - ${process.env.SMTP_PASS.length} chars]` : "[NOT SET]",
-    "SMTP_FROM": process.env.SMTP_FROM,
-    "HOST_NOTIFICATION_EMAIL": process.env.HOST_NOTIFICATION_EMAIL,
+    SMTP_HOST: process.env.SMTP_HOST,
+    SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_SECURE: process.env.SMTP_SECURE,
+    SMTP_USER: process.env.SMTP_USER,
+    SMTP_PASS: process.env.SMTP_PASS
+      ? `[SET - ${process.env.SMTP_PASS.length} chars]`
+      : "[NOT SET]",
+    SMTP_FROM: process.env.SMTP_FROM,
+    HOST_NOTIFICATION_EMAIL: process.env.HOST_NOTIFICATION_EMAIL,
   };
 
-  const emailReady = process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS;
+  const emailReady =
+    process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS;
   console.log(`  Status: ${emailReady ? "✓ READY" : "✗ NOT CONFIGURED"}`);
 
   Object.entries(emailConfigs).forEach(([key, value]) => {

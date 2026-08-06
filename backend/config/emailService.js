@@ -28,7 +28,9 @@ const createTransporter = () => {
     SMTP_PORT: SMTP_PORT ? "✓ Set" : "✗ Missing",
     SMTP_SECURE: SMTP_SECURE ? "✓ Set" : "✗ Missing",
     SMTP_USER: SMTP_USER ? "✓ Set" : "✗ Missing",
-    SMTP_PASS: SMTP_PASS ? "✓ Set (length: " + SMTP_PASS?.length + ")" : "✗ Missing",
+    SMTP_PASS: SMTP_PASS
+      ? "✓ Set (length: " + SMTP_PASS?.length + ")"
+      : "✗ Missing",
     SMTP_FROM: SMTP_FROM ? "✓ Set" : "✗ Missing",
     NODE_ENV: process.env.NODE_ENV,
   });
@@ -294,7 +296,9 @@ const sendBookingEmails = async (booking) => {
     };
   }
 
-  console.log(`✓ ${successfulSends.length} of ${emailPayloads.length} booking emails sent`);
+  console.log(
+    `✓ ${successfulSends.length} of ${emailPayloads.length} booking emails sent`,
+  );
 
   return {
     success: true,
