@@ -32,7 +32,7 @@ function AddContact() {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/host/addContact`,
+        `https://smartstay-d8sz.onrender.com/host/addContact`,
         formData,
       );
       navigate("/ContactAdded");

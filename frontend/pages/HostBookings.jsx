@@ -20,7 +20,7 @@ function HostBookings() {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/host/bookings`,
+          `https://smartstay-d8sz.onrender.com/host/bookings`,
           { withCredentials: true },
         );
 

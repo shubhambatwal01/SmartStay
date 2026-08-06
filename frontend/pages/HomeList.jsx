@@ -19,7 +19,7 @@ function HomeList() {
       document.title = "Homes";
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/homes`,
+          `https://smartstay-d8sz.onrender.com/homes`,
         );
 
         setHomes(response.data.homes || []);

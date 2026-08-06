@@ -49,12 +49,9 @@ function Navbar() {
   // Logout handler
   const handleLogout = async () => {
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/logout`,
-        {
-          withCredentials: true,
-        },
-      );
+      await axios.post(`https://smartstay-d8sz.onrender.com/logout`, {
+        withCredentials: true,
+      });
       logout();
       toast.success("Logged Out Successfully!");
       navigate("/login");

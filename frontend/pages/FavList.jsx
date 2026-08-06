@@ -18,7 +18,7 @@ function FavList() {
       document.title = "Your Favourites";
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/favourites`,
+          `https://smartstay-d8sz.onrender.com/favourites`,
           {
             withCredentials: true,
           },
@@ -43,7 +43,7 @@ function FavList() {
   const handleDelete = async (homeId) => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BackendUrl || "http://localhost:1101"}/favourites/delete/${homeId}`,
+        `https://smartstay-d8sz.onrender.com/favourites/delete/${homeId}`,
         {
           withCredentials: true,
         },
