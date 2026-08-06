@@ -5,10 +5,15 @@ const createTransporter = () => {
     process.env;
 
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+    console.error("❌ SMTP Configuration Error:", {
+      SMTP_HOST: SMTP_HOST ? "✓ Set" : "✗ Missing",
+      SMTP_USER: SMTP_USER ? "✓ Set" : "✗ Missing",
+      SMTP_PASS: SMTP_PASS ? "✓ Set" : "✗ Missing",
+    });
     return null;
   }
 
-  return nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
     port: Number(SMTP_PORT || 587),
     secure: SMTP_SECURE === "true",
@@ -16,7 +21,18 @@ const createTransporter = () => {
       user: SMTP_USER,
       pass: SMTP_PASS,
     },
+    connectionUrl: undefined,
   });
+
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error("❌ SMTP Connection Failed:", error.message);
+    } else {
+      console.log("✓ SMTP Server is ready to send emails");
+    }
+  });
+
+  return transporter;
 };
 
 const buildBookingEmailHtml = ({
@@ -105,13 +121,16 @@ const sendBookingEmails = async (booking) => {
   const transporter = createTransporter();
   const fromAddress = process.env.SMTP_FROM || process.env.SMTP_USER;
 
+  console.log("📧 Starting email send process...");
+
   if (!transporter || !fromAddress) {
-    console.warn(
-      "Email transport is not configured. Booking emails were not sent.",
-    );
+    const errorMsg =
+      "Email transport is not configured. Booking emails were not sent.";
+    console.error("❌", errorMsg);
     return {
       success: false,
       reason: "SMTP configuration missing",
+      details: errorMsg,
     };
   }
 
@@ -128,9 +147,12 @@ const sendBookingEmails = async (booking) => {
   const homeAddress = home?.houseAddr || "Please check your booking details";
 
   if (!guestEmail) {
+    const errorMsg = "Guest email not available in booking data";
+    console.error("❌", errorMsg, { booking });
     return {
       success: false,
       reason: "Guest email not available",
+      details: errorMsg,
     };
   }
 
@@ -145,6 +167,7 @@ const sendBookingEmails = async (booking) => {
     {
       to: guestEmail,
       subject: `Booking confirmed: ${homeName}`,
+      type: "guest",
       html: buildBookingEmailHtml({
         recipientName: guestName,
         recipientType: "guest",
@@ -160,6 +183,7 @@ const sendBookingEmails = async (booking) => {
     {
       to: hostEmail,
       subject: `New booking received for ${homeName}`,
+      type: "host",
       html: buildBookingEmailHtml({
         recipientName: hostName,
         recipientType: "host",
@@ -174,33 +198,67 @@ const sendBookingEmails = async (booking) => {
     },
   ];
 
+  console.log("📧 Sending emails to:", {
+    guest: guestEmail,
+    host: hostEmail,
+  });
+
   const results = await Promise.allSettled(
-    emailPayloads.map((payload) =>
-      transporter.sendMail({
+    emailPayloads.map((payload) => {
+      console.log(`📤 Queuing ${payload.type} email to ${payload.to}...`);
+      return transporter.sendMail({
         from: fromAddress,
         to: payload.to,
         subject: payload.subject,
         html: payload.html,
-      }),
-    ),
+      });
+    }),
   );
 
   const successfulSends = results.filter(
     (result) => result.status === "fulfilled",
   );
+  const failedSends = results.filter((result) => result.status === "rejected");
+
+  console.log(
+    `📊 Email Results: ${successfulSends.length} succeeded, ${failedSends.length} failed`,
+  );
+
+  failedSends.forEach((failed, index) => {
+    console.error(`❌ Email ${index + 1} failed:`, {
+      error: failed.reason?.message,
+      code: failed.reason?.code,
+      response: failed.reason?.response,
+    });
+  });
 
   if (successfulSends.length === 0) {
-    const firstError = results[0]?.reason?.message || "Unknown email error";
-    console.error("Booking emails could not be sent:", firstError);
+    const firstError = failedSends[0]?.reason;
+    const errorMessage = firstError?.message || "Unknown email error";
+    const errorCode = firstError?.code || "UNKNOWN_ERROR";
+    const errorDetails = {
+      message: errorMessage,
+      code: errorCode,
+      response: firstError?.response,
+    };
+
+    console.error("❌ All emails failed:", errorDetails);
+
     return {
       success: false,
-      reason: firstError,
+      reason: errorMessage,
+      details: errorDetails,
+      allFailed: true,
     };
   }
+
+  console.log(`✓ ${successfulSends.length} booking email(s) sent successfully`);
 
   return {
     success: true,
     sentCount: successfulSends.length,
+    totalCount: emailPayloads.length,
+    failedCount: failedSends.length,
   };
 };
 

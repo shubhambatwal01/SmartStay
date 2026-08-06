@@ -14,6 +14,10 @@ dist-ssr
 .env
 **/*.env
 DEPLOYMENT_FIX.md
+EMAIL_TESTING_GUIDE.md
+NODEMAILER_FIX_SUMMARY.md
+NODEMAILER_FIX_SUMMARY.md
+RENDER_EMAIL_SETUP.md
 
 # Editor directories and files
 .vscode/*

@@ -35,8 +35,9 @@ exports.createOrder = async (req, res) => {
 
 exports.verifyPayment = async (req, res) => {
   try {
+    console.log("🔄 Payment Verification Started");
     console.log("Request Body:", req.body);
-    console.log("Session:", req.session);
+    console.log("Session User:", req.session.user?._id);
 
     const {
       razorpay_order_id,
@@ -49,13 +50,17 @@ exports.verifyPayment = async (req, res) => {
       amount,
     } = req.body;
 
+    // Step 1: Verify Payment Signature
     const generatedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest("hex");
 
-    console.log("Generated:", generatedSignature);
-    console.log("Received :", razorpay_signature);
+    console.log("💳 Payment Signature Verification:", {
+      generated: generatedSignature,
+      received: razorpay_signature,
+      match: generatedSignature === razorpay_signature,
+    });
 
     if (generatedSignature !== razorpay_signature) {
       return res.status(400).json({
@@ -64,9 +69,15 @@ exports.verifyPayment = async (req, res) => {
       });
     }
 
-    console.log("User in session:", req.session.user);
+    // Step 2: Validate user in session
+    if (!req.session.user) {
+      return res.status(401).json({
+        success: false,
+        message: "User session not found. Please login again.",
+      });
+    }
 
-    // Validate check-in and check-out dates before creating the booking
+    // Step 3: Validate booking dates
     if (!checkIn || !checkOut) {
       return res.status(400).json({
         success: false,
@@ -91,6 +102,8 @@ exports.verifyPayment = async (req, res) => {
       });
     }
 
+    // Step 4: Create booking
+    console.log("📝 Creating Booking...");
     const booking = await Booking.create({
       user: req.session.user._id,
       home: homeId,
@@ -103,6 +116,9 @@ exports.verifyPayment = async (req, res) => {
       razorpaySignature: razorpay_signature,
     });
 
+    console.log("✓ Booking Created:", booking._id);
+
+    // Step 5: Populate booking with user and home details
     const populatedBooking = await Booking.findById(booking._id)
       .populate("user", "fullName email")
       .populate({
@@ -111,20 +127,37 @@ exports.verifyPayment = async (req, res) => {
         populate: { path: "owner", select: "fullName email" },
       });
 
-    await sendBookingEmails(populatedBooking);
+    console.log("✓ Booking Populated with user and home details");
 
-    console.log("Booking Saved:", booking);
+    // Step 6: Send emails asynchronously (don't block response)
+    let emailResult = { success: false, reason: "Emails not sent" };
+    try {
+      emailResult = await sendBookingEmails(populatedBooking);
+      console.log("✓ Email Result:", emailResult);
+    } catch (emailError) {
+      console.error("❌ Email Error:", {
+        message: emailError.message,
+        stack: emailError.stack,
+      });
+      // Continue even if email fails - booking was successful
+    }
 
+    // Step 7: Return response with booking + email status
     res.json({
       success: true,
       booking: populatedBooking,
+      emailStatus: emailResult,
     });
   } catch (error) {
-    console.error(error);
+    console.error("❌ Payment Verification Error:", {
+      message: error.message,
+      stack: error.stack,
+    });
 
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: error.message || "Payment verification failed",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 };
