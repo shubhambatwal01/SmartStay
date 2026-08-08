@@ -19,95 +19,51 @@ const verifyTransporter = (transporter) => {
   });
 };
 
-// const createTransporter = () => {
-//   const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM } =
-//     process.env;
-
-//   console.log("🔧 Checking SMTP Configuration:", {
-//     SMTP_HOST: SMTP_HOST ? "✓ Set" : "✗ Missing",
-//     SMTP_PORT: SMTP_PORT ? "✓ Set" : "✗ Missing",
-//     SMTP_SECURE: SMTP_SECURE ? "✓ Set" : "✗ Missing",
-//     SMTP_USER: SMTP_USER ? "✓ Set" : "✗ Missing",
-//     SMTP_PASS: SMTP_PASS
-//       ? "✓ Set (length: " + SMTP_PASS?.length + ")"
-//       : "✗ Missing",
-//     SMTP_FROM: SMTP_FROM ? "✓ Set" : "✗ Missing",
-//     NODE_ENV: process.env.NODE_ENV,
-//   });
-
-//   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-//     console.error("❌ SMTP Configuration Error - Missing required variables!");
-//     return null;
-//   }
-
-//   if (!SMTP_FROM) {
-//     console.warn("⚠️ SMTP_FROM not set, will use SMTP_USER as sender");
-//   }
-
-//   try {
-//     const transporter = nodemailer.createTransport({
-//       host: SMTP_HOST,
-//       port: Number(SMTP_PORT || 587),
-//       secure: SMTP_SECURE === "true",
-//       auth: {
-//         user: SMTP_USER,
-//         pass: SMTP_PASS,
-//       },
-//       connectionUrl: undefined,
-//       pool: {
-//         maxConnections: 5,
-//         maxMessages: 100,
-//         rateDelta: 4000,
-//         rateLimit: 14,
-//       },
-//     });
-
-//     // Verify async but don't block
-//     verifyTransporter(transporter);
-
-//     return transporter;
-//   } catch (error) {
-//     console.error("❌ Failed to create transporter:", error.message);
-//     return null;
-//   }
-// };
-
 const createTransporter = () => {
-  const { SMTP_USER, SMTP_PASS, SMTP_FROM } = process.env;
+  const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM } =
+    process.env;
 
-  if (!SMTP_USER || !SMTP_PASS) {
-    console.error("❌ SMTP credentials missing");
+  console.log("🔧 Checking SMTP Configuration:", {
+    SMTP_HOST: SMTP_HOST ? "✓ Set" : "✗ Missing",
+    SMTP_PORT: SMTP_PORT ? "✓ Set" : "✗ Missing",
+    SMTP_SECURE: SMTP_SECURE ? "✓ Set" : "✗ Missing",
+    SMTP_USER: SMTP_USER ? "✓ Set" : "✗ Missing",
+    SMTP_PASS: SMTP_PASS
+      ? "✓ Set (length: " + SMTP_PASS?.length + ")"
+      : "✗ Missing",
+    SMTP_FROM: SMTP_FROM ? "✓ Set" : "✗ Missing",
+    NODE_ENV: process.env.NODE_ENV,
+  });
+
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+    console.error("❌ SMTP Configuration Error - Missing required variables!");
     return null;
   }
 
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+  if (!SMTP_FROM) {
+    console.warn("⚠️ SMTP_FROM not set, will use SMTP_USER as sender");
+  }
 
-    auth: {
-      user: SMTP_USER,
-      pass: SMTP_PASS,
-    },
+  try {
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT || 587),
+      secure: SMTP_SECURE === "true",
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS,
+      },
+      connectionUrl: undefined,
+    });
 
-    connectionTimeout: 15000,
-    greetingTimeout: 15000,
-    socketTimeout: 15000,
-  });
+    // Verify async but don't block
+    verifyTransporter(transporter);
 
-  transporter.verify((error) => {
-    if (error) {
-      console.error("❌ SMTP connection failed:", {
-        message: error.message,
-        code: error.code,
-        command: error.command,
-      });
-    } else {
-      console.log("✅ SMTP connection successful");
-    }
-  });
-
-  return transporter;
+    return transporter;
+  } catch (error) {
+    console.error("❌ Failed to create transporter:", error.message);
+    return null;
+  }
 };
 
 const buildBookingEmailHtml = ({

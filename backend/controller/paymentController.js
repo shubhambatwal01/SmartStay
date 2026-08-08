@@ -1,3 +1,4 @@
+require("dotenv").config();
 const razorpay = require("../config/razorpay");
 const crypto = require("crypto");
 const Booking = require("../models/bookings");
