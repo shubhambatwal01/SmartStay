@@ -86,31 +86,121 @@ const buildBookingEmailHtml = ({
     : `Hello ${recipientName}, your booking has been confirmed.`;
 
   return `
-    <div style="font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #111827; max-width: 680px; margin: 0 auto; padding: 24px; background: #FF5A5F;">
-      <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 16px 16px 0 0; padding: 24px 30px; color: #ffffff;">
-        <h2 style="margin: 0 0 8px; font-size: 24px;">${title}</h2>
-        <p style="margin: 0; font-size: 15px; opacity: 0.95;">${intro}</p>
+    <div style="margin:0;padding:30px;background:#f5f7fb;font-family:'Segoe UI',Arial,sans-serif;color:#374151;">
+
+  <div
+    style="max-width:680px;margin:auto;background:#ffffff;border-radius:18px;overflow:hidden;box-shadow:0 12px 35px rgba(0,0,0,.08);">
+
+    <div style="background:linear-gradient(135deg,#ff5a5f,#ff7b80);padding:35px 40px;text-align:center;color:#fff;">
+      <h1 style="margin:0;font-size:32px;font-weight:700;">🏡 SmartStay</h1>
+
+      <h2 style="margin:18px 0 8px;font-size:24px;">
+        ${title}
+      </h2>
+
+      <p style="margin:0;font-size:16px;opacity:.95;">
+        ${intro}
+      </p>
+    </div>
+
+    <div style="padding:35px 40px;">
+      <div style="background:#fff8f8;border:1px solid #ffd9da;border-radius:14px;padding:22px;margin-bottom:30px;">
+
+        <h3 style="margin:0 0 18px;color:#ff5a5f;font-size:20px;">
+          Booking Summary
+        </h3>
+
+        <table width="100%" cellpadding="8" cellspacing="0" style="font-size:15px;border-collapse:collapse;">
+
+          <tr>
+            <td style="color:#6b7280;"><strong>🏠 Property</strong></td>
+            <td>${homeName}</td>
+          </tr>
+
+          <tr>
+            <td style="color:#6b7280;"><strong>📍 Address</strong></td>
+            <td>${homeAddress}</td>
+          </tr>
+
+          <tr>
+            <td style="color:#6b7280;"><strong>📅 Check-In</strong></td>
+            <td>${checkIn}</td>
+          </tr>
+
+          <tr>
+            <td style="color:#6b7280;"><strong>📅 Check-Out</strong></td>
+            <td>${checkOut}</td>
+          </tr>
+
+          <tr>
+            <td style="color:#6b7280;"><strong>👥 Guests</strong></td>
+            <td>${guests}</td>
+          </tr>
+
+          <tr>
+            <td style="color:#6b7280;"><strong>💳 Total Paid</strong></td>
+            <td style="font-size:18px;font-weight:bold;color:#16a34a;">
+              ₹${amount}
+            </td>
+          </tr>
+
+        </table>
+
       </div>
 
-      <div style="background: #ffffff; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 16px 16px; padding: 28px 30px;">
-        <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; margin-bottom: 18px;">
-          <p style="margin: 0 0 8px; font-size: 14px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em;">Booking Summary</p>
-          <p style="margin: 0 0 8px;"><strong style="color: #111827;">Property:</strong> ${homeName}</p>
-          <p style="margin: 0 0 8px;"><strong style="color: #111827;">Address:</strong> ${homeAddress}</p>
-          <p style="margin: 0 0 8px;"><strong style="color: #111827;">Check-in:</strong> ${checkIn}</p>
-          <p style="margin: 0 0 8px;"><strong style="color: #111827;">Check-out:</strong> ${checkOut}</p>
-          <p style="margin: 0 0 8px;"><strong style="color: #111827;">Guests:</strong> ${guests}</p>
-          <p style="margin: 0;"><strong style="color: #111827;">Total Paid:</strong> ₹${amount}</p>
-        </div>
+      ${
+        isHost
+          ? `
+      <div
+        style="background:#eff6ff;border-left:5px solid #3b82f6;padding:18px 20px;border-radius:10px;margin-bottom:25px;">
+        <strong style="font-size:17px;">🎉 Congratulations!</strong>
+        <p style="margin:10px 0 0;color:#4b5563;">
+          You have received a new booking for your property.
+          Please review the booking details and ensure everything is ready before the guest arrives.
+        </p>
+      </div>
+      `
+          : `
+      <div
+        style="background:#f0fdf4;border-left:5px solid #22c55e;padding:18px 20px;border-radius:10px;margin-bottom:25px;">
+        <strong style="font-size:17px;">🎉 Your booking is confirmed!</strong>
+        <p style="margin:10px 0 0;color:#4b5563;">
+          We're excited to host you.
+          We hope you have a wonderful stay with SmartStay.
+          If you have any questions, simply reply to this email.
+        </p>
+      </div>
+      `
+      }
 
-            ${
-              isHost
-                ? "<p style='margin: 0 0 12px; color: #374151;'>Please review the booking details and prepare the property for the guest.</p>"
-                : "<p style='margin: 0 0 12px; color: #374151;'>We look forward to welcoming you. If you need any help, reply to this email.</p>"
-            }
-        <p style="margin: 20px 0 0; color: #6b7280; font-size: 14px;">Thanks,<br/><strong>SmartStay Team</strong></p>
-        </div>
+      <div style="text-align:center;margin:35px 0;">
+        <a href="https://shubz-smart-stay.vercel.app"
+          style="display:inline-block;padding:14px 34px;background:#ff5a5f;color:#fff;text-decoration:none;border-radius:999px;font-size:16px;font-weight:600;">
+          View Booking
+        </a>
+      </div>
+
+      <hr style="border:none;border-top:1px solid #ececec;margin:30px 0;">
+
+      <p style="margin:0;color:#6b7280;font-size:15px;line-height:1.8;">
+        Thank you for choosing <strong style="color:#ff5a5f;">SmartStay</strong>.
+        We're committed to making every stay comfortable, secure, and memorable.
+      </p>
+      <p style="margin-top:25px;color:#6b7280;">
+        Warm regards,<br>
+        <strong style="color:#111827;">The SmartStay Team ❤️</strong>
+      </p>
     </div>
+    <div
+      style="background:#fafafa;border-top:1px solid #ececec;padding:20px;text-align:center;font-size:13px;color:#9ca3af;">
+
+      © ${new Date().getFullYear()} SmartStay. All rights reserved.
+
+      <br><br>
+      This email was sent automatically. Please do not reply directly to this message.
+    </div>
+  </div>
+</div>
   `;
 };
 
