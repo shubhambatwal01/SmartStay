@@ -17,7 +17,7 @@ function Home() {
       document.title = "Homes | SmartStay";
       try {
         const response = await axios.get(
-          `https://smartstay-d8sz.onrender.com/`,
+          "https://smartstay-d8sz.onrender.com/",
           {
             withCredentials: true,
           },

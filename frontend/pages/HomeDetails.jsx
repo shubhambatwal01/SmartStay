@@ -32,20 +32,42 @@ function HomeDetails() {
 
   // When user changes the check-in date, ensure the check-out remains valid.
   const handleCheckInChange = (date) => {
-    if (!date) return;
-    const nextCheckIn = date.toISOString().split("T")[0];
-    setCheckIn(nextCheckIn);
+    if (!date) {
+      setCheckIn("");
+      setCheckOut("");
+      return;
+    }
 
-    // If checkOut is missing or on/before the new check-in, reset it to the next day
-    if (!checkOut || new Date(checkOut) <= new Date(nextCheckIn)) {
-      const nextDay = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-      setCheckOut(nextDay.toISOString().split("T")[0]);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    const newCheckIn = `${year}-${month}-${day}`;
+
+    setCheckIn(newCheckIn);
+
+    if (!checkOut || checkOut <= newCheckIn) {
+      const nextDay = new Date(date);
+      nextDay.setDate(nextDay.getDate() + 1);
+
+      const nextYear = nextDay.getFullYear();
+      const nextMonth = String(nextDay.getMonth() + 1).padStart(2, "0");
+      const nextDayNumber = String(nextDay.getDate()).padStart(2, "0");
+
+      setCheckOut(`${nextYear}-${nextMonth}-${nextDayNumber}`);
     }
   };
 
   const handleCheckOutChange = (date) => {
-    if (!date) return;
-    setCheckOut(date.toISOString().split("T")[0]);
+    if (date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      setCheckOut(`${year}-${month}-${day}`);
+    } else {
+      setCheckOut("");
+    }
   };
 
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -348,11 +370,14 @@ function HomeDetails() {
                       Check-In
                     </label>
                     <DatePicker
-                      type="date"
-                      value={checkIn}
+                      selected={
+                        checkIn ? new Date(checkIn + "T00:00:00") : null
+                      }
                       minDate={new Date()}
                       onChange={handleCheckInChange}
-                      excludeDates={bookedDates.map((date) => new Date(date))}
+                      excludeDates={bookedDates.map(
+                        (date) => new Date(date + "T00:00:00"),
+                      )}
                       dateFormat="dd/MM/yyyy"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
                       required
@@ -364,15 +389,22 @@ function HomeDetails() {
                       Check-Out
                     </label>
                     <DatePicker
-                      type="date"
-                      value={checkOut}
+                      selected={
+                        checkOut ? new Date(checkOut + "T00:00:00") : null
+                      }
                       minDate={
-                        new Date(
-                          new Date(checkIn).getTime() + 24 * 60 * 60 * 1000,
-                        )
+                        checkIn
+                          ? (() => {
+                              const date = new Date(checkIn + "T00:00:00");
+                              date.setDate(date.getDate() + 1);
+                              return date;
+                            })()
+                          : new Date()
                       }
                       onChange={handleCheckOutChange}
-                      excludeDates={bookedDates.map((date) => new Date(date))}
+                      excludeDates={bookedDates.map(
+                        (date) => new Date(date + "T00:00:00"),
+                      )}
                       dateFormat="dd/MM/yyyy"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
                       required
