@@ -91,13 +91,6 @@ app.use(
   }),
 );
 
-app.get("/uptimerobot", (req, res) => {
-  res.status(200).json({
-    success: true,
-    Timestamp: new Date().toISOString(),
-  });
-});
-
 app.use(authRouter);
 app.use(userRouter);
 app.use("/host", hostRouter);
