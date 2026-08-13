@@ -13,6 +13,7 @@ const userRouter = require("./routes/userRouter");
 const hostRouter = require("./routes/hostRouter");
 const homeController = require("./controller/error");
 const paymentRouter = require("./routes/paymentRouter");
+const { Timestamp } = require("bson");
 
 const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
@@ -89,6 +90,13 @@ app.use(
     },
   }),
 );
+
+app.get("/uptimerobot", (req, res) => {
+  res.status(200).json({
+    success: true,
+    Timestamp: new Date().toISOString(),
+  });
+});
 
 app.use(authRouter);
 app.use(userRouter);
