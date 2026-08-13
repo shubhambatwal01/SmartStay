@@ -34,6 +34,9 @@ function AddContact() {
       const response = await axios.post(
         `https://smartstay-d8sz.onrender.com/host/addContact`,
         formData,
+        {
+          withCredentials: true,
+        },
       );
       navigate("/ContactAdded");
 
