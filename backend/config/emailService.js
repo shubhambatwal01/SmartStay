@@ -25,7 +25,7 @@ const createTransporter = () => {
 
   console.log("🔧 Checking SMTP Configuration:", {
     SMTP_HOST: SMTP_HOST ? "✓ Set" : "✗ Missing",
-    SMTP_PORT: SMTP_PORT ? "✓ Set" : "✗ Missing",
+    SMTP_PORT: Number(SMTP_PORT) || 587 ? "✓ Set" : "✗ Missing",
     SMTP_SECURE: SMTP_SECURE ? "✓ Set" : "✗ Missing",
     SMTP_USER: SMTP_USER ? "✓ Set" : "✗ Missing",
     SMTP_PASS: SMTP_PASS
@@ -53,7 +53,15 @@ const createTransporter = () => {
         user: SMTP_USER,
         pass: SMTP_PASS,
       },
+      
       connectionUrl: undefined,
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
+
+      tls: {
+        minVersion: "TLSv1.2",
+      },
     });
 
     // Verify async but don't block
