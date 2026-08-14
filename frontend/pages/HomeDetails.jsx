@@ -458,20 +458,7 @@ function HomeDetails() {
                   </div>
                 )}
 
-                <div className="space-y-3">
-                  {isUser ? (
-                    <FavBtn
-                      className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition transform hover:scale-105"
-                      homeId={home._id}
-                    />
-                  ) : (
-                    <button
-                      disabled
-                      className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-lg opacity-50 cursor-not-allowed"
-                    >
-                      Login as User to Add to Favorites
-                    </button>
-                  )}
+                <div className="space-y-2">
                   <button
                     onClick={() => setIsPaymentOpen(true)}
                     disabled={!checkIn || !checkOut}
