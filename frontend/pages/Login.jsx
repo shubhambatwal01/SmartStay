@@ -140,7 +140,7 @@ function Login() {
             <div className="text-center">
               <span>Don't have an account? </span>
 
-              <Link to="/signup" className="text-blue-600 underline">
+              <Link to="/signup" className="text-blue-600">
                 Signup here
               </Link>
             </div>

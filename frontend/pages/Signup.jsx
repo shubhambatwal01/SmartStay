@@ -227,10 +227,7 @@ function Signup() {
 
                 <span>
                   I agree to the{" "}
-                  <a
-                    href="/SmartStay_Terms_and_Conditions.pdf"
-                    className="text-blue-600 underline"
-                  >
+                  <a href="/terms" className="text-blue-600">
                     terms and conditions
                   </a>
                 </span>
@@ -257,7 +254,7 @@ function Signup() {
             <div className="text-center">
               <span>Already have an account? </span>
 
-              <Link to="/login" className="text-blue-600 underline">
+              <Link to="/login" className="text-blue-600 ">
                 Login here
               </Link>
             </div>
