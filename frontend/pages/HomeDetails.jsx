@@ -29,6 +29,7 @@ function HomeDetails() {
   const [guests, setGuests] = useState(1);
   const [totalPrice, setTotalPrice] = useState(1);
   const [bookedDates, setBookedDates] = useState([]);
+  const [isPaying, setIsPaying] = useState(false);
 
   // When user changes the check-in date, ensure the check-out remains valid.
   const handleCheckInChange = (date) => {
@@ -127,15 +128,19 @@ function HomeDetails() {
     fetchHomeDetails();
   }, [id]);
 
-  const handlePayment = async () => {
+  const paymentHandler = async () => {
+    if (!isUser || isPaying) return;
+
     if (!checkIn || !checkOut) {
-      toast("Please select check-in and check-out dates");
+      toast.error("Please select check-in and check-out dates");
       return;
     }
 
     try {
+      setIsPaying(true);
+
       const { data: order } = await axios.post(
-        `https://smartstay-d8sz.onrender.com/payment/create-order`,
+        "https://smartstay-d8sz.onrender.com/payment/create-order",
         {
           amount: totalPrice || home.housePrice,
         },
@@ -156,7 +161,7 @@ function HomeDetails() {
         handler: async function (response) {
           try {
             const { data } = await axios.post(
-              `https://smartstay-d8sz.onrender.com/payment/verify-payment`,
+              "https://smartstay-d8sz.onrender.com/payment/verify-payment",
               {
                 ...response,
                 homeId: home._id,
@@ -169,12 +174,19 @@ function HomeDetails() {
             );
 
             if (data.success) {
-              navigate("/bookings");
               toast.success("Booking Confirmed!");
+              navigate("/bookings");
             }
           } catch (error) {
             toast.error("Payment verification failed");
+            setIsPaying(false);
           }
+        },
+
+        modal: {
+          ondismiss: () => {
+            setIsPaying(false);
+          },
         },
 
         prefill: {
@@ -192,6 +204,7 @@ function HomeDetails() {
     } catch (error) {
       console.log(error);
       toast.error("Payment failed");
+      setIsPaying(false);
     }
   };
 
@@ -479,7 +492,8 @@ function HomeDetails() {
                     checkOut={checkOut}
                     guests={guests}
                     totalPrice={totalPrice}
-                    paymentHandler={handlePayment}
+                    paymentHandler={paymentHandler}
+                    isPaying={isPaying}
                   >
                     <p className=" leading-8 text-gray-700 whitespace-pre-line">
                       {home.houseDesc}
