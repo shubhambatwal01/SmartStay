@@ -27,7 +27,7 @@ function HomeDetails() {
   const [checkIn, setCheckIn] = useState();
   const [checkOut, setCheckOut] = useState();
   const [guests, setGuests] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(1);
+  const [totalPrice, setTotalPrice] = useState();
   const [bookedDates, setBookedDates] = useState([]);
   const [isPaying, setIsPaying] = useState(false);
 
