@@ -106,7 +106,7 @@ function Home() {
                       </div>
 
                       <Link
-                        to={isLoggedIn ? `/homes/${home._id}` : "/login"}
+                        to={`/homes/${home._id}`}
                         className="shrink-0 bg-[#ff5a5f] hover:bg-[#ff4b51] text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
                       >
                         View Details
