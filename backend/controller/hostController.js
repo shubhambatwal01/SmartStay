@@ -115,7 +115,9 @@ exports.getHostBookings = async (req, res, next) => {
       });
     }
 
-    const homes = await Home.find({ owner: req.session.user._id }).select("_id");
+    const homes = await Home.find({ owner: req.session.user._id }).select(
+      "_id",
+    );
     const homeIds = homes.map((home) => home._id);
 
     const bookings = await Booking.find({ home: { $in: homeIds } })
@@ -166,6 +168,7 @@ exports.postAddHome = async (req, res) => {
       ac,
       smartTv,
       attachedBathroom,
+      rating,
     } = req.body;
 
     if (!req.file) {
@@ -193,6 +196,7 @@ exports.postAddHome = async (req, res) => {
       smartTv: smartTv,
       attachedBathroom: attachedBathroom,
       owner: req.session.user._id,
+      rating: rating,
     });
 
     await home.save();
@@ -234,6 +238,7 @@ exports.postEditHome = async (req, res) => {
       ac,
       smartTv,
       attachedBathroom,
+      rating,
     } = req.body;
 
     const home = await Home.findOne({
@@ -261,6 +266,7 @@ exports.postEditHome = async (req, res) => {
     home.ac = ac;
     home.smartTv = smartTv;
     home.attachedBathroom = attachedBathroom;
+    home.rating = rating;
 
     if (req.file) {
       if (home.houseImg) {

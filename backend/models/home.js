@@ -6,7 +6,7 @@ const homeSchema = mongoose.Schema({
   houseImg: { type: String, required: true },
   // houseImgId: { type: String },
   houseDesc: String,
-  housePrice: String,
+  housePrice: Number,
   bhk: String,
 
   wifi: {
@@ -52,6 +52,10 @@ const homeSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: false,
+  },
+  rating: {
+    type: Number,
+    default: 4.5,
   },
 });
 
