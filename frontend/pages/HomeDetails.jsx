@@ -265,6 +265,20 @@ function HomeDetails() {
                     ₹{home.housePrice}
                     <span className="text-lg text-gray-500">/night</span>
                   </p>
+
+                  <div className="pt-4">
+                    <p className="text-xs text-gray-400 uppercase tracking-wide">
+                      Rating
+                    </p>
+
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="text-sm font-bold text-gray-800">
+                        ⭐ {home.rating}
+                      </span>
+
+                      <span className="text-xs text-gray-400">/ 5</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="text-gray-700 leading-relaxed text-base">
