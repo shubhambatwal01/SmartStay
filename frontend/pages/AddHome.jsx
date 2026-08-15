@@ -33,6 +33,7 @@ function AddHome() {
     ac: false,
     smartTv: false,
     attachedBathroom: false,
+    rating: "",
   });
 
   const [houseImg, setHouseImg] = useState(null);
@@ -71,6 +72,7 @@ function AddHome() {
           ac: home.ac || false,
           smartTv: home.smartTv || false,
           attachedBathroom: home.attachedBathroom || false,
+          rating: home.rating || 4.2,
         });
 
         setPreviewImage(home.houseImg || "");
@@ -135,6 +137,7 @@ function AddHome() {
       data.append("ac", formData.ac);
       data.append("smartTv", formData.smartTv);
       data.append("attachedBathroom", formData.attachedBathroom);
+      data.append("rating", formData.rating);
 
       if (editing) {
         data.append("id", id);
@@ -145,28 +148,20 @@ function AddHome() {
       }
 
       if (editing) {
-        await axios.post(
-          `https://smartstay-d8sz.onrender.com/host/edit-home`,
-          data,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        await axios.post(`https://smartstay-d8sz.onrender.com/host/edit-home`, data, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        );
+        });
         toast.success("Home Updated Successfully!");
       } else {
-        await axios.post(
-          `https://smartstay-d8sz.onrender.com/host/add-home`,
-          data,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        await axios.post(`https://smartstay-d8sz.onrender.com/host/add-home`, data, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        );
+        });
         toast.success("Home Added Successfully!");
       }
 
@@ -292,6 +287,34 @@ function AddHome() {
                     <option value="4 BHK">4 BHK</option>
                     <option value="Villa">Villa</option>
                   </select>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-gray-700 font-semibold mb-2">
+                  Rating
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-3 text-xl text-gray-600">
+                    ✩
+                  </span>
+                  <input
+                    type="number"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleChange}
+                    placeholder="4.5 or 5.0"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    onKeyDown={(e) => {
+                      if (["-", "+", "e", "E"].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    required
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition"
+                  />
                 </div>
               </div>
 
