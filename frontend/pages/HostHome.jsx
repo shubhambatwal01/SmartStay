@@ -40,56 +40,60 @@ function HostHome() {
   }, []);
 
   const handleDelete = async (homeId) => {
-    const showDeleteConfirmation = (onConfirm) => {
-      toast((t) => (
-        <div className="flex flex-col gap-3">
-          <p className="font-medium">
-            Are you sure you want to delete this home?
-          </p>
+    toast((t) => (
+      <div className="flex flex-col gap-3 min-w-280px">
+        <p className="font-semibold text-gray-800">
+          Are you sure you want to delete this home?
+        </p>
 
-          <div className="flex gap-2 justify-end">
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="px-3 py-1 bg-gray-200 rounded"
-            >
-              Cancel
-            </button>
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 transition"
+          >
+            Cancel
+          </button>
 
-            <button
-              onClick={() => {
-                onConfirm();
-                toast.dismiss(t.id);
-              }}
-              className="px-3 py-1 bg-red-500 text-white rounded"
-            >
-              Delete
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={async () => {
+              toast.dismiss(t.id);
+
+              setDeleting(homeId);
+
+              try {
+                await axios.delete(
+                  `https://smartstay-d8sz.onrender.com/host/delete-home/${homeId}`,
+                  {
+                    withCredentials: true,
+                  },
+                );
+
+                toast.success("Home deleted successfully!");
+
+                setHomes((prevHomes) =>
+                  prevHomes.filter((home) => home._id !== homeId),
+                );
+              } catch (error) {
+                console.error("Delete error:", error);
+
+                toast.error(
+                  error.response?.data?.message ||
+                    "Failed to remove home. Please try again.",
+                );
+              } finally {
+                setDeleting(null);
+              }
+            }}
+            disabled={deleting === homeId}
+            className="px-3 py-1.5 rounded-lg bg-red-500 hover:bg-red-600 text-white text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {deleting === homeId || "Delete"}
+          </button>
         </div>
-      ));
-    };
-
-    if (!showDeleteConfirmation) return;
-
-    setDeleting(homeId);
-
-    try {
-      await axios.post(
-        `https://smartstay-d8sz.onrender.com/host/delete-home/${homeId}`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-
-      setHomes((prevHomes) => prevHomes.filter((home) => home._id !== homeId));
-      toast.success("Home Deleted Sucessfully!");
-    } catch (error) {
-      console.log("Error deleting home:", error);
-      toast.error("Failed to delete home");
-    } finally {
-      setDeleting(null);
-    }
+      </div>
+    ));
   };
 
   return (
@@ -175,72 +179,12 @@ function HostHome() {
                           Delete
                         </button>
                       </div>
-
-                      {/* <Link
-                        to={isLoggedIn ? `/homes/${home._id}` : "/login"}
-                        className="shrink-0 bg-[#ff5a5f] hover:bg-[#ff4b51] text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
-                      >
-                        View Details
-                      </Link> */}
                     </div>
                   </div>
                 </li>
               ))}
             </ol>
           </>
-          // <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
-          //   {homes.map((home) => (
-          //     <li
-          //       key={home._id}
-          //       className="bg-[#fde8e9] rounded-xl shadow-lg p-6 hover:bg-[#fbd6d7] transition flex flex-col items-center"
-          //     >
-          //       <div className="text-5xl text-[#ff5a5f] m-2">
-          //         <img
-          //           src={home.houseImg}
-          //           alt={home.houseName}
-          //           className="h-50 w-auto object-cover rounded-lg"
-          //         />
-          //       </div>
-
-          //       <h2 className="text-2xl font-bold text-[#ff5a5f] mb-0.5 text-center">
-          //         {home.houseName}
-          //       </h2>
-
-          //       <p className="text-[#ff5a5f] mb-0.5 text-center">
-          //         <i className="fas fa-map-marker-alt mr-1"></i>
-          //         {home.houseAddr}
-          //       </p>
-
-          //       <p className="text-lg font-semibold text-[#ff5a5f] mb-2 text-center">
-          //         ₹{home.housePrice}/night
-          //       </p>
-
-          //       <div className="flex gap-2">
-          //         <Link
-          //           to={`/host/edit-home/${home._id}`}
-          //           className="mt-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition"
-          //         >
-          //           Edit
-          //         </Link>
-
-          //         <button
-          //           onClick={() => handleDelete(home._id)}
-          //           disabled={deleting === home._id}
-          //           className="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-          //         >
-          //           {deleting === home._id ? (
-          //             <span className="flex items-center justify-center gap-2">
-          //               <Loader fullscreen={false} />
-          //               {`Deleting`}
-          //             </span>
-          //           ) : (
-          //             <>{"Delete"}</>
-          //           )}
-          //         </button>
-          //       </div>
-          //     </li>
-          //   ))}
-          // </ol>
         )}
       </main>
 
