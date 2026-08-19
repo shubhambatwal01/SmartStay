@@ -13,6 +13,8 @@ import HostHome from "../pages/HostHome";
 import HostBookings from "../pages/HostBookings";
 import PageNotFound from "../pages/PageNotFound";
 import ProfilePage from "../pages/ProfilePage";
+import Terms from "../pages/Terms";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
         <Route path="/host/host-home" element={<HostHome />} />
         <Route path="/host/bookings" element={<HostBookings />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
