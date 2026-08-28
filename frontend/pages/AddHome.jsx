@@ -50,7 +50,7 @@ function AddHome() {
 
       try {
         const response = await axios.get(
-          `https://smartstay-d8sz.onrender.com/host/edit-home/${id}`,
+          `https://smartstay-8bre.onrender.com/host/edit-home/${id}`,
           {
             withCredentials: true,
           },
@@ -148,20 +148,28 @@ function AddHome() {
       }
 
       if (editing) {
-        await axios.post(`https://smartstay-d8sz.onrender.com/host/edit-home`, data, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
+        await axios.post(
+          `https://smartstay-8bre.onrender.com/host/edit-home`,
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           },
-        });
+        );
         toast.success("Home Updated Successfully!");
       } else {
-        await axios.post(`https://smartstay-d8sz.onrender.com/host/add-home`, data, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
+        await axios.post(
+          `https://smartstay-8bre.onrender.com/host/add-home`,
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           },
-        });
+        );
         toast.success("Home Added Successfully!");
       }
 

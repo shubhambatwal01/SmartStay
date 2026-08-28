@@ -37,7 +37,7 @@ function Profile({ mobileBottomNavClass }) {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`https://smartstay-d8sz.onrender.com/logout`, {
+      await axios.post(`https://smartstay-8bre.onrender.com/logout`, {
         withCredentials: true,
       });
       logout();

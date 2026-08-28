@@ -19,7 +19,7 @@ function HomeList() {
       document.title = "Homes";
       try {
         const response = await axios.get(
-          `https://smartstay-d8sz.onrender.com/homes`,
+          `https://smartstay-8bre.onrender.com/homes`,
         );
 
         setHomes(response.data.homes || []);

@@ -31,7 +31,7 @@ function ContactUs() {
       setLoading(true);
 
       await axios.post(
-        "https://smartstay-d8sz.onrender.com/host/addContact",
+        "https://smartstay-8bre.onrender.com/host/addContact",
         formData,
         {
           withCredentials: true,

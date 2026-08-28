@@ -20,7 +20,7 @@ function HostBookings() {
 
       try {
         const response = await axios.get(
-          `https://smartstay-d8sz.onrender.com/host/bookings`,
+          `https://smartstay-8bre.onrender.com/host/bookings`,
           { withCredentials: true },
         );
 

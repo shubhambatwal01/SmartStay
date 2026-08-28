@@ -52,7 +52,7 @@ function Signup() {
 
     try {
       const response = await axios.post(
-        `https://smartstay-d8sz.onrender.com/signup`,
+        `https://smartstay-8bre.onrender.com/signup`,
         formData,
         { withCredentials: true },
       );

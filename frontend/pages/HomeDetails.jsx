@@ -113,7 +113,7 @@ function HomeDetails() {
       document.title = "Home Details";
       try {
         const response = await axios.get(
-          `https://smartstay-d8sz.onrender.com/homes/${id}`,
+          `https://smartstay-8bre.onrender.com/homes/${id}`,
         );
 
         setHome(response.data.home);
@@ -140,7 +140,7 @@ function HomeDetails() {
       setIsPaying(true);
 
       const { data: order } = await axios.post(
-        "https://smartstay-d8sz.onrender.com/payment/create-order",
+        "https://smartstay-8bre.onrender.com/payment/create-order",
         {
           amount: totalPrice || home.housePrice,
         },
@@ -161,7 +161,7 @@ function HomeDetails() {
         handler: async function (response) {
           try {
             const { data } = await axios.post(
-              "https://smartstay-d8sz.onrender.com/payment/verify-payment",
+              "https://smartstay-8bre.onrender.com/payment/verify-payment",
               {
                 ...response,
                 homeId: home._id,
