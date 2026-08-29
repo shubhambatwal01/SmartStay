@@ -10,16 +10,25 @@ function HostHome() {
   const [homes, setHomes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
+
   const navigate = useNavigate();
+
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   useEffect(() => {
+    document.title = "Your Registered Homes";
+
+    if (!isLoggedIn || !user || user.userType !== "admin") {
+      sessionStorage.removeItem("isLoggedIn");
+      navigate("/login");
+      return;
+    }
+
     const fetchHomes = async () => {
-      document.title = "Your Registered Homes";
       try {
         const response = await axios.get(
-          `https://smartstay-8bre.onrender.com/host/host-home`,
+          "https://smartstay-8bre.onrender.com/host/host-home",
           {
             withCredentials: true,
           },
@@ -27,73 +36,85 @@ function HostHome() {
 
         setHomes(response.data.homes || response.data);
       } catch (error) {
-        console.log("Error fetching homes:", error);
+        console.error("Error fetching homes:", error);
+
+        toast.error(
+          error.response?.data?.message || "Failed to fetch registered homes.",
+        );
       } finally {
         setLoading(false);
       }
     };
-    if (!isLoggedIn || user.userType !== "admin") {
-      sessionStorage.removeItem("isLoggedIn");
-      navigate("/login");
-    }
+
     fetchHomes();
-  }, []);
+  }, [isLoggedIn, navigate, user]);
 
-  const handleDelete = async (homeId) => {
-    toast((t) => (
-      <div className="flex flex-col gap-3 min-w-280px">
-        <p className="font-semibold text-gray-800">
-          Are you sure you want to delete this home?
-        </p>
+  const deleteHome = async (homeId) => {
+    setDeleting(homeId);
 
-        <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={() => toast.dismiss(t.id)}
-            className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 transition"
-          >
-            Cancel
-          </button>
+    try {
+      await axios.delete(
+        `https://smartstay-8bre.onrender.com/host/delete-home/${homeId}`,
+        {
+          withCredentials: true,
+        },
+      );
 
-          <button
-            type="button"
-            onClick={async () => {
-              toast.dismiss(t.id);
+      setHomes((prevHomes) => prevHomes.filter((home) => home._id !== homeId));
 
-              setDeleting(homeId);
+      toast.success("Home deleted successfully!");
+    } catch (error) {
+      console.error("Delete error:", error);
 
-              try {
-                await axios.delete(
-                  `https://smartstay-8bre.onrender.com/host/delete-home/${homeId}`,
-                  {
-                    withCredentials: true,
-                  },
-                );
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to delete home. Please try again.",
+      );
+    } finally {
+      setDeleting(null);
+    }
+  };
 
-                toast.success("Home deleted successfully!");
+  const handleDelete = (homeId) => {
+    toast(
+      (t) => (
+        <div className="w-calc(100vw-48px) max-w-95">
+          <div className="mb-4">
+            <h3 className="text-base font-bold text-gray-900">
+              Delete this home?
+            </h3>
 
-                setHomes((prevHomes) =>
-                  prevHomes.filter((home) => home._id !== homeId),
-                );
-              } catch (error) {
-                console.error("Delete error:", error);
+            <p className="mt-1 text-sm leading-relaxed text-gray-500">
+              Are you sure you want to delete this home?
+            </p>
+          </div>
 
-                toast.error(
-                  error.response?.data?.message ||
-                    "Failed to remove home. Please try again.",
-                );
-              } finally {
-                setDeleting(null);
-              }
-            }}
-            disabled={deleting === homeId}
-            className="px-3 py-1.5 rounded-lg bg-red-500 hover:bg-red-600 text-white text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {deleting === homeId || "Delete"}
-          </button>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => toast.dismiss(t.id)}
+              className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-200"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                toast.dismiss(t.id);
+                deleteHome(homeId);
+              }}
+              className="rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
         </div>
-      </div>
-    ));
+      ),
+      {
+        duration: Infinity,
+      },
+    );
   };
 
   return (
