@@ -148,17 +148,7 @@ RAZORPAY_KEY_SECRET=your_key_secret
 
 ### Home Page
 
-<img width="1920" height="1080" alt="Screenshot 2026-07-15 151055" src="https://github.com/user-attachments/assets/b8c47497-80f4-4cf1-ba1d-dbd690edac7a" />
-
-
-### Property Details
-
-<img width="1960" height="5142" alt="shubz-smart-stay vercel app_homes_6a428283d0fcf69c2d32f4e6" src="https://github.com/user-attachments/assets/1f571f13-5b93-42bb-ac2f-364fa69ef2ef" />
-
-
-### Booking Page
-
-<img width="1920" height="1080" alt="Screenshot 2026-07-25 202633" src="https://github.com/user-attachments/assets/3bfc3faa-9a3e-4935-84a0-2acf40fbf6ad" />
+![alt text](<Screenshot 2026-08-31 194842.png>)
 
 ---
 
