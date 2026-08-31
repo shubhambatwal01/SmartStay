@@ -148,7 +148,7 @@ RAZORPAY_KEY_SECRET=your_key_secret
 
 ### Home Page
 
-![alt text](<Screenshot 2026-08-31 194842.png>)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/85224048-0cce-4fc3-a086-202962ec7b48" />
 
 ---
 
