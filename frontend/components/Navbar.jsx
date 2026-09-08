@@ -245,7 +245,7 @@ function Navbar() {
     <nav className="bg-[#FF5A5F] px-6 py-8 flex items-center fixed top-0 w-full z-50">
       <Link to="/" className="flex items-center">
         <img
-          src="/Public/SmartStay_creative_white_logo.png"
+          src="https://i.8upload.com/image/b1904ccaade1c142/smartstay-creative-white-logo.png"
           alt="logo"
           className="h-13 w-fit"
         />
