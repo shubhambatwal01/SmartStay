@@ -247,7 +247,7 @@ function Navbar() {
         <img
           src="https://i.8upload.com/image/b1904ccaade1c142/smartstay-creative-white-logo.png"
           alt="logo"
-          className="h-13 w-fit"
+          className="h-12 w-fit"
         />
       </Link>
 
