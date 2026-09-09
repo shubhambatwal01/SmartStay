@@ -61,7 +61,7 @@ function ContactUs() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-gray-50 pt-32 pb-16 px-4">
+      <main className="min-h-screen bg-gray-50 pt-25 pb-16 px-4">
         <section className="max-w-6xl mx-auto text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
             Contact Us

@@ -8,6 +8,7 @@ import { AuthContext } from "../src/AuthContext";
 import toast from "react-hot-toast";
 import Loader from "../components/loader";
 import { Mail, LockKeyhole, LogIn, ArrowRight } from "lucide-react";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Login() {
   document.title = "Login";
@@ -29,6 +30,40 @@ function Login() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    if (!credentialResponse?.credential) {
+      setErrors(["Google did not return a valid credential."]);
+      return;
+    }
+
+    setErrors([]);
+    setSubmitting(true);
+
+    try {
+      const response = await axios.post(
+        "https://smartstay-8bre.onrender.com/auth/google",
+        { credential: credentialResponse.credential },
+        { withCredentials: true },
+      );
+
+      login(response.data.user);
+      toast.success("Signed in with Google successfully!");
+      navigate(response.data.redirect || "/homes");
+    } catch (error) {
+      console.error("Google login failed:", error);
+      setErrors([
+        error.response?.data?.message ||
+          "Google login failed. Please try again.",
+      ]);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setErrors(["Google sign-in was cancelled or failed. Please try again."]);
   };
 
   const handleSubmit = async (e) => {
@@ -163,6 +198,28 @@ function Login() {
                     </>
                   )}
                 </button>
+
+                <div className="my-6 flex items-center gap-4">
+                  <div className="h-px flex-1 bg-gray-200" />
+
+                  <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
+                    Or continue with
+                  </span>
+
+                  <div className="h-px flex-1 bg-gray-200" />
+                </div>
+
+                <div className="flex justify-center">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    useOneTap={false}
+                    shape="rectangular"
+                    size="large"
+                    width="360"
+                    text="signin_with"
+                  />
+                </div>
 
                 <div className="my-7 flex items-center gap-4">
                   <div className="h-px flex-1 bg-gray-200" />
