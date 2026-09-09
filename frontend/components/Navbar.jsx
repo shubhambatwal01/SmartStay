@@ -242,7 +242,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-[#FF5A5F] px-6 py-8 flex items-center fixed top-0 w-full z-50">
+    <nav className="bg-[#FF5A5F] px-6 py-4 flex items-center fixed top-0 w-full z-50">
       <Link to="/" className="flex items-center">
         <img
           src="https://i.8upload.com/image/b1904ccaade1c142/smartstay-creative-white-logo.png"
@@ -430,7 +430,7 @@ function Navbar() {
 
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-0 left-0 w-full md:hidden bg-[#FF5A5F] border-t border-white/20 z-50 shadow-lg mt-16">
-        <ul className="flex justify-around items-center h-16">
+        <ul className="flex justify-around items-center h-15">
           {isLoggedIn && user?.userType === "user" && (
             <>
               <li>
