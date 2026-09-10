@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
@@ -6,8 +6,6 @@ import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
 import Loader from "../components/loader";
 import toast from "react-hot-toast";
-import { GoogleLogin } from "@react-oauth/google";
-import { AuthContext } from "../src/AuthContext";
 import {
   UserRound,
   Mail,
@@ -21,7 +19,6 @@ function Signup() {
   document.title = "Sign Up";
 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -83,60 +80,6 @@ function Signup() {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleGoogleSignup = async (credentialResponse) => {
-    if (!formData.terms) {
-      setErrors([
-        "Please accept Terms and Conditions before signing up with Google.",
-      ]);
-      return;
-    }
-
-    if (!credentialResponse?.credential) {
-      setErrors(["Google did not return a valid credential."]);
-      return;
-    }
-
-    setErrors([]);
-    setSubmitting(true);
-
-    try {
-      const response = await axios.post(
-        "https://smartstay-8bre.onrender.com/auth/google",
-        {
-          credential: credentialResponse.credential,
-          mode: "signup",
-          userType: formData.userType,
-          terms: formData.terms,
-        },
-        {
-          withCredentials: true,
-        },
-      );
-
-      login(response.data.user);
-
-      toast.success(
-        response.data.isNewUser
-          ? "Account created with Google successfully!"
-          : "Google account already exists. Logged in successfully!",
-      );
-
-      navigate(response.data.redirect || "/homes");
-    } catch (error) {
-      console.error("Google signup failed:", error);
-      setErrors([
-        error.response?.data?.message ||
-          "Google signup failed. Please try again.",
-      ]);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleGoogleError = () => {
-    setErrors(["Google sign-up was cancelled or failed. Please try again."]);
   };
 
   return (
@@ -404,28 +347,6 @@ function Signup() {
                     </>
                   )}
                 </button>
-
-                <div className="my-7 flex items-center gap-4">
-                  <div className="h-px flex-1 bg-gray-200" />
-
-                  <span className="whitespace-nowrap text-xs font-medium uppercase tracking-wider text-gray-400">
-                    Or sign up with
-                  </span>
-
-                  <div className="h-px flex-1 bg-gray-200" />
-                </div>
-
-                <div className="flex justify-center">
-                  <GoogleLogin
-                    onSuccess={handleGoogleSignup}
-                    onError={handleGoogleError}
-                    useOneTap={false}
-                    shape="rectangular"
-                    size="large"
-                    width="360"
-                    text="signup_with"
-                  />
-                </div>
 
                 <div className="my-7 flex items-center gap-4">
                   <div className="h-px flex-1 bg-gray-200" />
