@@ -5,6 +5,10 @@ function Footer() {
     <footer className="bg-[#FF5A5F] text-white py-2 mt-10 shadow-inner bottom-0 hidden md:block">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
         <p className="text-sm ml-10">
+          &copy; {new Date().getFullYear()} SmartStay. All rights reserved.
+        </p>
+
+        <p className="text-sm">
           Designed & Developed by{" "}
           <a
             href="https://shubz-portfolio.vercel.app/"
@@ -12,10 +16,6 @@ function Footer() {
           >
             👉🏻 ゛Shubham Batwal ˎˊ˗
           </a>
-        </p>
-
-        <p className="text-sm">
-          &copy; {new Date().getFullYear()} SmartStay. All rights reserved.
         </p>
 
         <div className="flex space-x-4 mt-4 md:mt-0 gap-3 mr-10">
