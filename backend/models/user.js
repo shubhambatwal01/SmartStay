@@ -2,8 +2,33 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
   fullName: { type: String, required: true },
-  email: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    lowercase: true,
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: function () {
+      return this.authProvider !== "google";
+    },
+  },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
+  authProvider: {
+    type: String,
+    enum: ["local", "google", "both"],
+    default: "local",
+  },
+  profileImage: {
+    type: String,
+    default: "",
+  },
   userType: {
     type: String,
     enum: ["user", "admin"],
