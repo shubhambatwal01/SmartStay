@@ -9,6 +9,8 @@ authRouter.post("/login", authController.postLogin);
 authRouter.get("/signup", authController.getSignup);
 authRouter.post("/signup", authController.postSignup);
 
+authRouter.post("/auth/google", authController.postGoogleAuth);
+
 authRouter.post("/logout", authController.postLogout);
 
 module.exports = authRouter;
