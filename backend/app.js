@@ -7,6 +7,7 @@ const express = require("express");
 const app = express();
 const connectDB = require("./config/dbConfig");
 const cors = require("cors");
+const helmet = require("helmet");
 
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
@@ -75,6 +76,13 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(multer(multerOptions).single("houseImg"));
 app.use(express.json());
+app.use(
+  helmet({
+    crossOriginOpenerPolicy: {
+      policy: "same-origin-allow-popups",
+    },
+  }),
+);
 
 app.set("trust proxy", 1);
 app.use(
