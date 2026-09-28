@@ -63,8 +63,11 @@ function ContactUs() {
 
       <main className="min-h-screen bg-gray-50 pt-25 pb-16 px-4">
         <section className="max-w-6xl mx-auto text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
-            Contact Us
+          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+            Contact{" "}
+            <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+              Us
+            </span>
           </h1>
         </section>
 

@@ -153,8 +153,11 @@ function Signup() {
                   Join SmartStay
                 </p>
 
-                <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  Create your account
+                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+                  Create{" "}
+                  <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+                    your account
+                  </span>
                 </h1>
 
                 <p className="mt-3 text-sm leading-6 text-gray-500">

@@ -243,8 +243,11 @@ function HomeDetails() {
       <main className="min-h-screen mt-25 mb-16">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
-              Home Details
+            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+              Home{" "}
+              <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+                Details
+              </span>
             </h1>
           </div>
           <div className="rounded-2xl overflow-hidden w-full h-96 border border-gray-200 bg-gray-100 flex items-center justify-center mb-5">

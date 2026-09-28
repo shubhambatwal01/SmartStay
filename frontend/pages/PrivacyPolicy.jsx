@@ -12,8 +12,11 @@ function PrivacyPolicy() {
       <main className="min-h-screen bg-gray-50 pt-25 pb-16">
         <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
-              Privacy Policy
+            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+              Privacy{" "}
+              <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+                Policy
+              </span>
             </h1>
 
             <p className="mt-3 text-gray-500">

@@ -44,8 +44,11 @@ function HomeList() {
 
       <main className="min-h-screen mt-25 max-w-6xl mx-auto px-4 mb-16">
         <div className="text-center mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
-            Welcome to SmartStay
+          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+            Welcome to{" "}
+            <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+              SmartStay
+            </span>
           </h1>
         </div>
 

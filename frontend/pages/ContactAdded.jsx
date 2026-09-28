@@ -18,8 +18,11 @@ function ContactAdded() {
           />
         </svg>
 
-        <h1 className="text-3xl font-bold text-[#ff5a5f]">
-          Thank You for Contacting Us!
+        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+          Thank You{" "}
+          <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+            for contacting us!
+          </span>
         </h1>
 
         <Link

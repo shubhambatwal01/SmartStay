@@ -193,8 +193,11 @@ function AddHome() {
       <main className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 mt-15 py-12 mb-16">
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="text-center mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
-              {editing ? "Edit" : "Register"} Your Home
+            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+              {editing ? "Edit" : "Register"}{" "}
+              <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+                Your Home
+              </span>
             </h1>
             <p className="text-gray-600 text-lg">
               {editing

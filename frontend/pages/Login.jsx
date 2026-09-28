@@ -109,8 +109,11 @@ function Login() {
                   Welcome back
                 </p>
 
-                <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-                  Login to your account
+                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+                  Login{" "}
+                  <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+                    to your account
+                  </span>
                 </h1>
 
                 <p className="mt-3 text-sm leading-6 text-gray-500">

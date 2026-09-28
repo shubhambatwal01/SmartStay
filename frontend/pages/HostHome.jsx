@@ -123,8 +123,11 @@ function HostHome() {
 
       <main className="min-h-screen mt-25 max-w-6xl mx-auto px-4 mb-16">
         <div className="text-center mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
-            Your Registered Homes
+          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+            Your{" "}
+            <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
+              Registered Homes
+            </span>
           </h1>
         </div>
 
