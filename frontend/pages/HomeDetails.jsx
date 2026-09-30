@@ -10,6 +10,17 @@ import PaymentCard from "../components/PaymentCard";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {
+  MapPin,
+  Star,
+  ShieldCheck,
+  Home as HomeIcon,
+  Check,
+  CalendarDays,
+  Users,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
 
 function HomeDetails() {
   const { id } = useParams();
@@ -225,11 +236,6 @@ function HomeDetails() {
       <>
         <Navbar />
         <main className="min-h-screen flex justify-center items-center">
-          <div className="text-center mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent mb-2">
-              Home Details
-            </h1>
-          </div>
           <h1 className="text-2xl text-red-500">Home not found.</h1>
         </main>
         <Footer />
@@ -240,215 +246,372 @@ function HomeDetails() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen mt-25 mb-16">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-6">
+
+      <main className="min-h-screen bg-[#fafafa] pt-28 pb-24 md:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <section className="flex justify-center items-center mb-6">
             <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
               Home{" "}
               <span className="bg-linear-to-r from-[#ff5a5f] to-[#ff8a8f] bg-clip-text text-transparent">
                 Details
               </span>
             </h1>
-          </div>
-          <div className="rounded-2xl overflow-hidden w-full h-96 border border-gray-200 bg-gray-100 flex items-center justify-center mb-5">
-            <img
-              src={home.houseImg}
-              alt={home.houseName}
-              className="max-w-full max-h-full object-contain hover:scale-105 transition duration-300"
-            />
-          </div>
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                    {home.houseName}
-                  </h2>
-                  <p className="text-2xl font-bold text-[#ff5a5f]">
-                    ₹{home.housePrice}
-                    <span className="text-lg text-gray-500">/night</span>
-                  </p>
+          </section>
 
-                  <div className="pt-4">
-                    <p className="text-xs text-gray-400 uppercase tracking-wide">
-                      Rating
+          <section className="mb-10">
+            <div className="group relative overflow-hidden rounded-3xl bg-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.10)]">
+              <img
+                src={home.houseImg}
+                alt={home.houseName}
+                className="h-75 w-full object-cover transition-transform duration-700 group-hover:scale-[1.02] sm:h-107.5 lg:h-130"
+              />
+
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/65 via-black/10 to-transparent" />
+
+              <div className="absolute top-0 left-0 right-0 p-5 sm:p-7 lg:p-8">
+                <h1 className="truncate text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                  {home.houseName}
+                </h1>
+                <div className="flex flex-col gap-4 text-white sm:flex-row sm:items-end sm:justify-between">
+                  <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500">
+                    <div className="flex items-center gap-1.5">
+                      <Star
+                        size={16}
+                        className="fill-amber-400 text-amber-400"
+                      />
+                      <span className="font-semibold text-gray-800">
+                        {home.rating || "New"}
+                      </span>
+                      {home.rating && (
+                        <span className="text-gray-400">/ 5</span>
+                      )}
+                    </div>
+
+                    <span className="hidden h-1 w-1 rounded-full bg-gray-300 sm:block" />
+
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      <MapPin size={16} className="shrink-0 text-[#ff5a5f]" />
+                      <span className="truncate">{home.houseAddr}</span>
+                    </div>
+                  </div>
+
+                  <div className="absolute top-6 right-6">
+                    <FavBtn homeId={home._id} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 lg:p-8">
+                <div className="flex flex-col gap-4 text-white sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white/80">
+                      Starting from
                     </p>
 
-                    <div className="mt-1 flex items-center gap-2">
-                      <span className="text-sm font-bold text-gray-800">
-                        ⭐ {home.rating}
+                    <div className="mt-1 flex items-end gap-1">
+                      <span className="text-3xl font-bold sm:text-4xl">
+                        ₹{home.housePrice}
                       </span>
+                      <span className="pb-1 text-sm font-medium text-white/80">
+                        / night
+                      </span>
+                    </div>
+                  </div>
 
-                      <span className="text-xs text-gray-400">/ 5</span>
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/15 px-4 py-2 text-sm font-semibold backdrop-blur-md">
+                    <HomeIcon size={17} />
+                    {home.bhk || "Property"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_390px]">
+            <div className="min-w-0 space-y-6">
+              <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_rgba(0,0,0,0.05)] sm:p-8">
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ff5a5f]">
+                      Your stay
+                    </p>
+                    <h2 className="mt-2 text-2xl font-bold text-gray-900">
+                      Comfortable {home.bhk || "home"} in a great location
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-gray-500">
+                      Hosted by {home.owner?.fullName || "SmartStay Host"}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 sm:min-w-75">
+                    <div className="rounded-2xl bg-gray-50 px-3 py-4 text-center">
+                      <HomeIcon className="mx-auto text-[#ff5a5f]" size={20} />
+                      <p className="mt-2 text-xs text-gray-400">Type</p>
+                      <p className="mt-0.5 truncate text-sm font-bold text-gray-800">
+                        {home.bhk || "Home"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-gray-50 px-3 py-4 text-center">
+                      <Star
+                        className="mx-auto fill-amber-400 text-amber-400"
+                        size={20}
+                      />
+                      <p className="mt-2 text-xs text-gray-400">Rating</p>
+                      <p className="mt-0.5 text-sm font-bold text-gray-800">
+                        {home.rating || "New"}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl bg-gray-50 px-3 py-4 text-center">
+                      <ShieldCheck
+                        className="mx-auto text-emerald-600"
+                        size={20}
+                      />
+                      <p className="mt-2 text-xs text-gray-400">Booking</p>
+                      <p className="mt-0.5 text-sm font-bold text-gray-800">
+                        Secure
+                      </p>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="text-gray-700 leading-relaxed text-base">
-                  <p>{home.houseDesc.slice(0, 180)}...</p>
-                  <button
-                    onClick={() => setIsAboutOpen(true)}
-                    className="mt-1 text-[#ff5a5f] font-semibold hover:text-[#ff8a8f] transition"
-                  >
-                    See more
-                  </button>
+              <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_rgba(0,0,0,0.05)] sm:p-8">
+                <div className="mb-5 flex items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#fff1f2] text-[#ff5a5f]">
+                    <Sparkles size={20} />
+                  </div>
+
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
+                      About this place
+                    </h2>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Everything you need to know about your stay
+                    </p>
+                  </div>
                 </div>
+
+                <p className="text-base leading-8 text-gray-600">
+                  {(home.houseDesc || "").length > 260
+                    ? `${home.houseDesc.slice(0, 260)}...`
+                    : home.houseDesc}
+                </p>
+
+                {(home.houseDesc || "").length > 260 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsAboutOpen(true)}
+                    className="mt-5 inline-flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-800 transition hover:border-[#ff5a5f] hover:bg-[#fff8f8] hover:text-[#ff5a5f]"
+                  >
+                    Read full description
+                    <ArrowRight size={16} />
+                  </button>
+                )}
 
                 <AboutProperty
                   isOpen={isAboutOpen}
                   onClose={() => setIsAboutOpen(false)}
                   title="About this property"
                 >
-                  <p className="leading-8 whitespace-pre-line text-gray-700">
+                  <p className="whitespace-pre-line leading-8 text-gray-700">
                     {home.houseDesc}
                   </p>
                 </AboutProperty>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                  <span className="w-1 h-8 bg-[#ff5a5f] rounded mr-3"></span>
-                  House Type
-                </h2>
-                <div className="inline-block bg-linear-to-r from-red-50 to-red-100 px-6 py-3 rounded-lg border border-[#ff5a5f]">
-                  <p className="text-lg font-semibold text-[#ff5a5f]">
-                    🏠 {home.bhk || "Not specified"}
+              <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_rgba(0,0,0,0.05)] sm:p-8">
+                <div className="mb-6">
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ff5a5f]">
+                    Amenities
+                  </p>
+                  <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
+                    What this place offers
+                  </h2>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Comforts and facilities available during your stay
                   </p>
                 </div>
-              </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <span className="w-1 h-8 bg-[#ff5a5f] rounded mr-3"></span>
-                  Home Facilities
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {[
-                    ["wifi", "📶 Free Wi-Fi"],
-                    ["washingMachine", "🧺 Washing Machine"],
-                    ["caretaker", "👨‍🔧 Caretaker Available"],
-                    ["kitchen", "🍳 Kitchen"],
-                    ["parking", "🚗 Free Parking"],
-                    ["ac", "❄️ Air Conditioner"],
-                    ["smartTv", "📺 Smart TV"],
-                    ["attachedBathroom", "🛁 Attached Bathroom"],
-                  ].map(([key, label]) => (
+                    ["wifi", "📶", "Free Wi-Fi"],
+                    ["washingMachine", "🧺", "Washing Machine"],
+                    ["caretaker", "👨‍🔧", "Caretaker Available"],
+                    ["kitchen", "🍳", "Kitchen"],
+                    ["parking", "🚗", "Free Parking"],
+                    ["ac", "❄️", "Air Conditioner"],
+                    ["smartTv", "📺", "Smart TV"],
+                    ["attachedBathroom", "🛁", "Attached Bathroom"],
+                  ].map(([key, icon, label]) => (
                     <div
                       key={key}
-                      className={`flex items-center gap-3 p-4 rounded-lg border-2 transition ${
+                      className={`flex items-center gap-4 rounded-2xl border p-4 transition-all duration-200 ${
                         home[key]
-                          ? "border-[#ff5a5f] bg-red-50"
-                          : "border-gray-200 bg-gray-50 opacity-50"
+                          ? "border-[#ffd9da] bg-[#fffafa] hover:border-[#ffb9bc] hover:shadow-sm"
+                          : "border-gray-100 bg-gray-50 opacity-55"
                       }`}
                     >
-                      <span className="text-2xl">{label.split(" ")[0]}</span>
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-xl shadow-sm">
+                        {icon}
+                      </div>
+
                       <span
-                        className={`font-medium ${home[key] ? "text-gray-800" : "text-gray-500 line-through"}`}
+                        className={`text-sm font-semibold ${
+                          home[key]
+                            ? "text-gray-800"
+                            : "text-gray-400 line-through"
+                        }`}
                       >
-                        {label.substring(label.indexOf(" ") + 1)}
+                        {label}
                       </span>
-                      {home[key] && (
-                        <span className="ml-auto text-[#ff5a5f] font-bold text-lg">
-                          ✓
-                        </span>
-                      )}
+
+                      <span
+                        className={`ml-auto flex h-6 w-6 items-center justify-center rounded-full ${
+                          home[key]
+                            ? "bg-[#ff5a5f] text-white"
+                            : "bg-gray-200 text-gray-400"
+                        }`}
+                      >
+                        {home[key] ? <Check size={14} strokeWidth={3} /> : "×"}
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <span className="w-1 h-8 bg-[#ff5a5f] rounded mr-3"></span>
-                  Hosted By
-                </h2>
+              <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_6px_24px_rgba(0,0,0,0.05)] sm:p-8">
+                <div className="mb-5">
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ff5a5f]">
+                    Your host
+                  </p>
+                  <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
+                    Hosted by {home.owner?.fullName || "SmartStay Host"}
+                  </h2>
+                </div>
 
-                <div className="flex items-center gap-4 p-4 bg-linear-to-r from-gray-50 to-gray-100 rounded-lg">
-                  <img
-                    src="https://i.pravatar.cc/100"
-                    alt="owner"
-                    className="w-16 h-16 rounded-full ring-2 ring-[#ff5a5f]"
-                  />
+                <div className="flex flex-col gap-5 rounded-2xl bg-linear-to-r from-[#fff7f7] to-white p-5 sm:flex-row sm:items-center">
+                  <div className="relative shrink-0">
+                    <img
+                      src="https://i.pravatar.cc/100"
+                      alt={home.owner?.fullName || "Host"}
+                      className="h-20 w-20 rounded-full object-cover shadow-md ring-4 ring-white"
+                    />
+                    <span className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-[#ff5a5f] text-white ring-4 ring-white">
+                      <Check size={14} strokeWidth={3} />
+                    </span>
+                  </div>
 
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-800">
-                      {home.owner?.fullName || "Host"}
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      ⭐ Super Host • Year's Hosting Experience
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {home.owner?.fullName || "SmartStay Host"}
+                      </h3>
+                      <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-[#ff5a5f] shadow-sm">
+                        Super Host
+                      </span>
+                    </div>
+
+                    <p className="mt-2 text-sm leading-6 text-gray-600">
+                      Your host is here to make your stay comfortable, smooth,
+                      and memorable from booking to checkout.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-1 space-y-6">
-              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <p className="text-gray-600 text-sm font-semibold">
-                    Price per night
-                  </p>
-                  <h2 className="text-4xl font-bold text-[#ff5a5f]">
-                    ₹{home.housePrice}
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="mb-5">
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                      Check-In
-                    </label>
-                    <DatePicker
-                      selected={
-                        checkIn ? new Date(checkIn + "T00:00:00") : null
-                      }
-                      minDate={new Date()}
-                      onChange={handleCheckInChange}
-                      excludeDates={bookedDates.map(
-                        (date) => new Date(date + "T00:00:00"),
-                      )}
-                      dateFormat="dd/MM/yyyy"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
-                      required
-                    />
+            <aside className="lg:self-start">
+              <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.10)] sm:p-6 lg:sticky lg:top-28">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-400">
+                      Price per night
+                    </p>
+                    <div className="mt-1 flex items-end gap-1">
+                      <span className="text-3xl font-bold text-gray-900">
+                        ₹{home.housePrice}
+                      </span>
+                      <span className="pb-1 text-sm text-gray-500">
+                        / night
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="mb-5">
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                      Check-Out
-                    </label>
-                    <DatePicker
-                      selected={
-                        checkOut ? new Date(checkOut + "T00:00:00") : null
-                      }
-                      minDate={
-                        checkIn
-                          ? (() => {
-                              const date = new Date(checkIn + "T00:00:00");
-                              date.setDate(date.getDate() + 1);
-                              return date;
-                            })()
-                          : new Date()
-                      }
-                      onChange={handleCheckOutChange}
-                      excludeDates={bookedDates.map(
-                        (date) => new Date(date + "T00:00:00"),
-                      )}
-                      dateFormat="dd/MM/yyyy"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition cursor-pointer"
-                      required
-                    />
+                  <div className="flex items-center gap-1 rounded-full bg-gray-50 px-3 py-2 text-sm font-semibold text-gray-800">
+                    <Star size={15} className="fill-amber-400 text-amber-400" />
+                    {home.rating || "New"}
                   </div>
                 </div>
 
-                <div className="mb-6">
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Number of Guests
+                <div className="mt-6 overflow-hidden rounded-2xl border border-gray-300 bg-white">
+                  <div className="grid grid-cols-1 divide-y divide-gray-300 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-2">
+                    <div className="p-3.5">
+                      <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">
+                        <CalendarDays size={13} />
+                        Check-In
+                      </label>
+
+                      <DatePicker
+                        selected={
+                          checkIn ? new Date(checkIn + "T00:00:00") : null
+                        }
+                        minDate={new Date()}
+                        onChange={handleCheckInChange}
+                        excludeDates={bookedDates.map(
+                          (date) => new Date(date + "T00:00:00"),
+                        )}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Add date"
+                        wrapperClassName="w-full"
+                        className="mt-1.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-gray-900 outline-none placeholder:text-gray-400"
+                        required
+                      />
+                    </div>
+
+                    <div className="p-3.5">
+                      <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">
+                        <CalendarDays size={13} />
+                        Check-Out
+                      </label>
+
+                      <DatePicker
+                        selected={
+                          checkOut ? new Date(checkOut + "T00:00:00") : null
+                        }
+                        minDate={
+                          checkIn
+                            ? (() => {
+                                const date = new Date(checkIn + "T00:00:00");
+                                date.setDate(date.getDate() + 1);
+                                return date;
+                              })()
+                            : new Date()
+                        }
+                        onChange={handleCheckOutChange}
+                        excludeDates={bookedDates.map(
+                          (date) => new Date(date + "T00:00:00"),
+                        )}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Add date"
+                        wrapperClassName="w-full"
+                        className="mt-1.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-gray-900 outline-none placeholder:text-gray-400"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-300 p-3.5">
+                    <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500">
+                      <Users size={13} />
+                      Guests
+                    </label>
+
                     <select
                       value={guests}
                       onChange={(e) => setGuests(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff5a5f] focus:border-transparent transition bg-white cursor-pointer"
+                      className="mt-1.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-gray-900 outline-none"
                     >
                       <option value="1">1 Guest</option>
                       <option value="2">2 Guests</option>
@@ -456,57 +619,83 @@ function HomeDetails() {
                       <option value="4">4 Guests</option>
                       <option value="5">5+ Guests</option>
                     </select>
-                  </label>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex items-start gap-2 rounded-xl bg-emerald-50 px-3.5 py-3 text-xs font-medium leading-5 text-emerald-700">
+                  <ShieldCheck size={16} className="mt-0.5 shrink-0" />
+                  Reserved dates are automatically unavailable in the calendar.
                 </div>
 
                 {totalPrice > 0 && (
-                  <div className="mb-6 bg-linear-to-r from-red-50 to-orange-50 p-4 rounded-lg border border-[#ff5a5f]">
-                    <p className="text-gray-600 text-sm mb-1">Total Price</p>
-                    <h3 className="text-3xl font-bold text-[#ff5a5f]">
-                      ₹{totalPrice.toFixed(0)}
-                    </h3>
-                    <p className="text-gray-500 text-xs mt-2">
-                      {Math.ceil(
-                        (new Date(checkOut) - new Date(checkIn)) /
-                          (1000 * 60 * 60 * 24),
-                      )}{" "}
-                      nights
-                    </p>
+                  <div className="mt-6 rounded-2xl bg-gray-50 p-4">
+                    <div className="flex items-center justify-between gap-4 text-sm text-gray-600">
+                      <span>
+                        ₹{home.housePrice} ×{" "}
+                        {Math.ceil(
+                          (new Date(checkOut) - new Date(checkIn)) /
+                            (1000 * 60 * 60 * 24),
+                        )}{" "}
+                        nights
+                      </span>
+                      <span className="font-semibold text-gray-800">
+                        ₹{totalPrice.toFixed(0)}
+                      </span>
+                    </div>
+
+                    <div className="my-3 h-px bg-gray-200" />
+
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-gray-900">Total</span>
+                      <span className="text-2xl font-bold text-[#ff5a5f]">
+                        ₹{totalPrice.toFixed(0)}
+                      </span>
+                    </div>
                   </div>
                 )}
 
-                <div className="space-y-2">
-                  <button
-                    onClick={() => setIsPaymentOpen(true)}
-                    disabled={!checkIn || !checkOut}
-                    className="w-full bg-linear-to-r from-[#ff5a5f] to-[#ff4b51] hover:from-[#ff4b51] hover:to-[#ff3a41] text-white font-bold py-3 rounded-lg transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
-                  >
-                    Reserve
-                  </button>
-                  <PaymentCard
-                    isOpen={isPaymentOpen}
-                    onClose={() => setIsPaymentOpen(false)}
-                    title="Payment Now"
-                    id={home._id}
-                    name={home.houseName}
-                    img={home.houseImg}
-                    price={home.housePrice}
-                    address={home.houseAddr}
-                    checkIn={checkIn}
-                    checkOut={checkOut}
-                    guests={guests}
-                    totalPrice={totalPrice}
-                    paymentHandler={paymentHandler}
-                    isPaying={isPaying}
-                  >
-                    <p className=" leading-8 text-gray-700 whitespace-pre-line">
-                      {home.houseDesc}
-                    </p>
-                  </PaymentCard>
+                <button
+                  type="button"
+                  onClick={() => setIsPaymentOpen(true)}
+                  disabled={!checkIn || !checkOut}
+                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-[#ff5a5f] to-[#ff4047] px-4 py-3.5 font-bold text-white shadow-lg shadow-red-100 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+                >
+                  Reserve Now
+                  <ArrowRight size={18} />
+                </button>
+
+                <p className="mt-3 text-center text-xs leading-5 text-gray-400">
+                  You won't be charged until payment confirmation.
+                </p>
+
+                <div className="mt-5 flex items-center justify-center gap-2 border-t border-gray-100 pt-5 text-xs font-medium text-gray-500">
+                  <ShieldCheck size={15} className="text-emerald-600" />
+                  Secure payment powered by Razorpay
                 </div>
+
+                <PaymentCard
+                  isOpen={isPaymentOpen}
+                  onClose={() => setIsPaymentOpen(false)}
+                  title="Payment Now"
+                  id={home._id}
+                  name={home.houseName}
+                  img={home.houseImg}
+                  price={home.housePrice}
+                  address={home.houseAddr}
+                  checkIn={checkIn}
+                  checkOut={checkOut}
+                  guests={guests}
+                  totalPrice={totalPrice}
+                  paymentHandler={paymentHandler}
+                  isPaying={isPaying}
+                >
+                  <p className="whitespace-pre-line leading-8 text-gray-700">
+                    {home.houseDesc}
+                  </p>
+                </PaymentCard>
               </div>
-            </div>
-          </div>
+            </aside>
+          </section>
         </div>
       </main>
 
