@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 import toast from "react-hot-toast";
-import { HeartIcon } from "lucide-react";
+import { FaHeart } from "react-icons/fa";
 
 function FavBtn({ homeId, className }) {
   const navigate = useNavigate();
@@ -34,10 +34,10 @@ function FavBtn({ homeId, className }) {
       onClick={handleFavourite}
       className={
         className ||
-        "flex p-2 items-center justify-center rounded-full text-white transition-all duration-300 hover:scale-110 hover:text-[#ff5a5f]"
+        "flex p-2 items-center justify-center rounded-full text-black transition-all duration-300 hover:scale-110 hover:text-[#ff5a5f]"
       }
     >
-      <HeartIcon />
+      <FaHeart size={22} />
     </button>
   );
 }
