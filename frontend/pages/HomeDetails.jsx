@@ -494,7 +494,9 @@ function HomeDetails() {
                 <div className="flex flex-col gap-5 rounded-2xl bg-linear-to-r from-[#fff7f7] to-white p-5 sm:flex-row sm:items-center">
                   <div className="relative shrink-0">
                     <img
-                      src="https://i.pravatar.cc/100"
+                      src={
+                        home.owner?.profileImage || "https://i.pravatar.cc/100"
+                      }
                       alt={home.owner?.fullName || "Host"}
                       className="h-20 w-20 rounded-full object-cover shadow-md ring-4 ring-white"
                     />
