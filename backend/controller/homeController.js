@@ -115,7 +115,7 @@ exports.getDetails = async (req, res) => {
   try {
     const home = await Home.findById(req.params.id).populate(
       "owner",
-      "fullName",
+      "fullName email profileImage",
     );
 
     const bookings = await Booking.find({
