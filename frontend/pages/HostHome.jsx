@@ -170,9 +170,7 @@ function HostHome() {
                       <span>{home.houseAddr}</span>
                     </p>
 
-                    <div className="border-t border-gray-100 my-4"></div>
-
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center justify-between gap-3 my-2">
                       <div>
                         <p className="text-xs text-gray-400 uppercase tracking-wide">
                           Rating
