@@ -95,9 +95,9 @@ Built using the **MERN Stack (MongoDB, Express.js, React.js, Node.js)**, SmartSt
 SmartStay/
 │
 ├── frontend/
-│   ├── components/
-│   ├── pages/
 │   ├── src/
+│   │    ├── components/
+│   │    └── pages/
 │   └── vite.config.js
 │
 ├── backend/
