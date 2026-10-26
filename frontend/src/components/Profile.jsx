@@ -2,17 +2,11 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaUserCircle,
-  FaHeart,
-  FaCalendarAlt,
-  FaHome,
-  FaCog,
   FaSignOutAlt,
-  FaChevronDown,
 } from "react-icons/fa";
-import { CgProfile } from "react-icons/cg";
 import { CiLogin } from "react-icons/ci";
 import axios from "axios";
-import { AuthContext } from "../src/AuthContext";
+import { AuthContext } from "../AuthContext";
 import toast from "react-hot-toast";
 
 function Profile({ mobileBottomNavClass }) {

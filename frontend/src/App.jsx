@@ -1,20 +1,20 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../pages/Login";
-import HomeIndex from "../pages/HomeIndex";
-import Signup from "../pages/Signup";
-import HomeList from "../pages/HomeList";
-import FavList from "../pages/FavList";
-import HomeDetails from "../pages/HomeDetails";
-import UserBookings from "../pages/UserBookings";
-import AddContact from "../pages/AddContact";
-import ContactAdded from "../pages/ContactAdded";
-import AddHome from "../pages/AddHome";
-import HostHome from "../pages/HostHome";
-import HostBookings from "../pages/HostBookings";
-import PageNotFound from "../pages/PageNotFound";
-import ProfilePage from "../pages/ProfilePage";
-import Terms from "../pages/Terms";
-import PrivacyPolicy from "../pages/PrivacyPolicy";
+import Login from "../src/pages/Login";
+import HomeIndex from "../src/pages/HomeIndex";
+import Signup from "../src/pages/Signup";
+import HomeList from "../src/pages/HomeList";
+import FavList from "../src/pages/FavList";
+import HomeDetails from "../src/pages/HomeDetails";
+import UserBookings from "../src/pages/UserBookings";
+import AddContact from "../src/pages/AddContact";
+import ContactAdded from "../src/pages/ContactAdded";
+import AddHome from "../src/pages/AddHome";
+import HostHome from "../src/pages/HostHome";
+import HostBookings from "../src/pages/HostBookings";
+import PageNotFound from "../src/pages/PageNotFound";
+import ProfilePage from "../src/pages/ProfilePage";
+import Terms from "../src/pages/Terms";
+import PrivacyPolicy from "../src/pages/PrivacyPolicy";
 
 function App() {
   return (

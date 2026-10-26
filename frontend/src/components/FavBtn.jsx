@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../src/AuthContext";
+import { AuthContext } from "../AuthContext";
 import toast from "react-hot-toast";
 import { FaHeart } from "react-icons/fa";
 

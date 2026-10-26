@@ -7,8 +7,8 @@ import ErrorMessage from "../components/ErrorMessage";
 import Loader from "../components/loader";
 import toast from "react-hot-toast";
 import { GoogleLogin } from "@react-oauth/google";
-import { AuthContext } from "../src/AuthContext";
-import { API_URL } from "../src/config.js";
+import { AuthContext } from "../AuthContext";
+import { API_URL } from "../config.js";
 import {
   UserRound,
   Mail,

@@ -4,12 +4,12 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ErrorMessage from "../components/ErrorMessage";
-import { AuthContext } from "../src/AuthContext";
+import { AuthContext } from "../AuthContext";
 import toast from "react-hot-toast";
 import Loader from "../components/loader";
 import { Mail, LockKeyhole, LogIn, ArrowRight } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
-import { API_URL } from "../src/config.js";
+import { API_URL } from "../config.js";
 
 function Login() {
   document.title = "Login";
