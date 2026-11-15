@@ -14,6 +14,7 @@ const userRouter = require("./routes/userRouter");
 const hostRouter = require("./routes/hostRouter");
 const homeController = require("./controller/error");
 const paymentRouter = require("./routes/paymentRouter");
+const chatbotRouter = require("./routes/chatbotRouter");
 const { Timestamp } = require("bson");
 
 const store = new MongoDBStore({
@@ -103,6 +104,7 @@ app.use(authRouter);
 app.use(userRouter);
 app.use("/host", hostRouter);
 app.use("/payment", paymentRouter);
+app.use(chatbotRouter);
 app.locals.razorpayKey = process.env.RAZORPAY_KEY_ID;
 
 // ============================================
