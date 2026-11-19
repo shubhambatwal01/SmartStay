@@ -15,6 +15,7 @@ import PageNotFound from "../src/pages/PageNotFound";
 import ProfilePage from "../src/pages/ProfilePage";
 import Terms from "../src/pages/Terms";
 import PrivacyPolicy from "../src/pages/PrivacyPolicy";
+import Chatbot from "./components/Chatbot";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Chatbot />
     </BrowserRouter>
   );
 }
