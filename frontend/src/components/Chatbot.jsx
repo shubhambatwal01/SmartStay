@@ -86,9 +86,8 @@ function Chatbot() {
               </span>
               <div>
                 <h2 className="font-bold">SmartStay Assistant</h2>
-                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-white/85">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
-                  Powered by Gemini
+                <p className="mt-0.5 text-xs text-white/85">
+                  Here to help with your stay
                 </p>
               </div>
             </div>
@@ -152,17 +151,19 @@ function Chatbot() {
             ))}
 
             {messages.length === 0 && !isSending && (
-              <div className="ml-10 flex flex-wrap gap-2">
-                {suggestedPrompts.map((prompt) => (
-                  <button
-                    key={prompt}
-                    type="button"
-                    onClick={() => sendMessage(prompt)}
-                    className="rounded-full border border-[#ffd4d5] bg-white px-3 py-2 text-left text-xs font-medium text-[#d94b50] transition hover:border-[#ff5a5f] hover:bg-[#fff5f5]"
-                  >
-                    {prompt}
-                  </button>
-                ))}
+              <div className="ml-10 space-y-2.5">
+                <div className="flex flex-wrap gap-2">
+                  {suggestedPrompts.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      onClick={() => sendMessage(prompt)}
+                      className="rounded-full border border-[#ffd4d5] bg-white px-3 py-2 text-left text-xs font-medium text-[#d94b50] transition hover:border-[#ff5a5f] hover:bg-[#fff5f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff5a5f]"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -234,7 +235,7 @@ function Chatbot() {
         aria-label={isOpen ? "Close SmartStay Assistant" : "Chat with SmartStay"}
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
-        className="group flex h-14 items-center gap-2.5 rounded-full bg-[#ff5a5f] px-5 text-white shadow-[0_8px_28px_rgba(255,90,95,0.4)] transition hover:-translate-y-0.5 hover:bg-[#ed4d52] hover:shadow-[0_12px_32px_rgba(255,90,95,0.45)]"
+        className="group flex h-14 items-center gap-2.5 rounded-full bg-[#ff5a5f] px-5 text-white shadow-[0_8px_28px_rgba(255,90,95,0.4)] transition hover:-translate-y-0.5 hover:bg-[#ed4d52] hover:shadow-[0_12px_32px_rgba(255,90,95,0.45)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff5a5f]"
       >
         {isOpen ? <X size={21} /> : <MessageCircle size={21} />}
         <span className="text-sm font-bold">
