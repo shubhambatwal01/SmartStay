@@ -85,9 +85,9 @@ function Chatbot() {
                 <Bot size={23} />
               </span>
               <div>
-                <h2 className="font-bold">SmartStay Assistant</h2>
+                <h2 className="font-bold">Ask SmartStay</h2>
                 <p className="mt-0.5 text-xs text-white/85">
-                  Here to help with your stay
+                  ask anything about SmartStay
                 </p>
               </div>
             </div>
@@ -238,9 +238,9 @@ function Chatbot() {
         className="group flex h-14 items-center gap-2.5 rounded-full bg-[#ff5a5f] px-5 text-white shadow-[0_8px_28px_rgba(255,90,95,0.4)] transition hover:-translate-y-0.5 hover:bg-[#ed4d52] hover:shadow-[0_12px_32px_rgba(255,90,95,0.45)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff5a5f]"
       >
         {isOpen ? <X size={21} /> : <MessageCircle size={21} />}
-        <span className="text-sm font-bold">
+        {/* <span className="text-sm font-bold">
           {isOpen ? "Close" : "Ask SmartStay"}
-        </span>
+        </span> */}
       </button>
     </div>
   );
